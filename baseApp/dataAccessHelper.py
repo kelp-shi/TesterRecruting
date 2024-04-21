@@ -10,16 +10,20 @@ class dataAccessHelper():
     err_msg_sortnull = 'テストが見つかりませんでした'
 
     #テストタスク全件取得（条件：募集フラグ==True, 削除フラグ==Falese）
+    #新規クエリ
     def getAllTask(cls):
         cls.get_posts = TestPost.objects.filter(TestPost.RecrutingPeriodFlg==True, TestPost.DelFlg==False).order_by(id)
         return cls.get_posts
     
     #--------------以降検索用--------------
     #名称検索（部分一致可:大小区別なし）
+    #新規クエリ
     def sortTaskName(cls, sortString):
         cls.get_posts_name = TestPost.objects.filter(PostName__icontains = sortString)
+        return cls.get_post_name
             
     #募集期日検索（期日が近い）
+    #全件取得データをソート
     def sortRecrutingUp(cls):
         #取得データ存在有無
         if cls.get_posts:
@@ -31,6 +35,7 @@ class dataAccessHelper():
             return cls.err_msg_sortnull
         
     #募集期日検索（期日が遠い）
+    #全件取得データをソート
     def sortRecrutingDown(cls):
         #取得データ存在有無
         if cls.get_posts:
@@ -40,4 +45,33 @@ class dataAccessHelper():
         else:
             #エラー時：エラーメッセージ返却
             return cls.err_msg_sortnull
+    #募集期日検索（期日終了）
+    #新規クエリ
+    
+    #テスト期日検索（期日が近い）
+    #全件データをソート
+    def sortTestUp(cls):
+        if cls.get_posts:
+            now = datatime.datatime.now()
+            cls.get_post.sort(key=lambda post:post:abs(now - TestPost.RecrutingPeriodSt))
+        else:
+            #エラー時：エラーメッセージ返却
+            return cls.err_msg_sortnull
+            
+    #テスト期日検索（期日が遠い）
+    #全件データソート
+    def sortTestDown(cls):
+        if cls.get_posts:
+            now = datatime.datatime.now()
+            cls.get_post.sort(key=lambda post:post:abs(now + TestPost.RecrutingPeriodSt))
+        else:
+            #エラー時：エラーメッセージ返却
+            return cls.err_msg_sortnull
+    
+    #テスト種類検索
+    #新規クエリ
+    
+    #削除検索（条件：削除フラグ==True）
+    #新規クエリ
+    
     #
