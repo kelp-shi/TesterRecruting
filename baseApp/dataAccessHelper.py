@@ -73,5 +73,8 @@ class dataAccessHelper():
     
     #削除検索（条件：削除フラグ==True）
     #新規クエリ
+    def getDelPost(cls):
+        get_delPosts = TestPost.objects.filter(TestPost.DelFlg==True).order_by(id)
+        return get_delPosts
     
     #
