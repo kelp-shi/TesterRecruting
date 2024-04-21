@@ -52,8 +52,8 @@ class dataAccessHelper():
     #全件データをソート
     def sortTestUp(cls):
         if cls.get_posts:
-            now = datatime.datatime.now()
-            cls.get_post.sort(key=lambda post:post:abs(now - TestPost.RecrutingPeriodSt))
+            now = datetime.datetime.now()
+            cls.get_posts.sort(key=lambda post:abs(now + TestPost.TestStart))
         else:
             #エラー時：エラーメッセージ返却
             return cls.err_msg_sortnull
@@ -62,8 +62,8 @@ class dataAccessHelper():
     #全件データソート
     def sortTestDown(cls):
         if cls.get_posts:
-            now = datatime.datatime.now()
-            cls.get_post.sort(key=lambda post:post:abs(now + TestPost.RecrutingPeriodSt))
+            now = datetime.datetime.now()
+            cls.get_posts.sort(key=lambda post:abs(now + TestPost.TestStart))
         else:
             #エラー時：エラーメッセージ返却
             return cls.err_msg_sortnull
