@@ -8,6 +8,3 @@ class createTask(request):
 
     #TestPostオブジェクトの作成
     post = TestPost()
-
-    if request.method == "GET":
-        form
