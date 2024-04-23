@@ -5,6 +5,11 @@ from baseApp.models import TestPost
 from datetime import date
 
 class Gender(models.TextChoices):
+    """性別選択用クラス
+
+    Note:カスタムユーザークラスで使用する性別選択用クラス
+    Attributes:男性、女性、その他
+    """
     MAN     = 'Man'
     WOMEN   = 'Women'
     OTHER   = 'Other'
@@ -12,8 +17,7 @@ class Gender(models.TextChoices):
 class CustomUser (AbstractUser, PermissionsMixin):
     """カスタムユーザークラス
 
-    Note:
-        ユーザー情報のクラス
+    Note:ユーザー情報のクラス
 
     Attributes:
         AccountName(str):アカウント名(IDとは異なりユーザーが設定できる)
