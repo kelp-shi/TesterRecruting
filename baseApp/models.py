@@ -36,7 +36,7 @@ class TestPost (models.Model):
     ApplyNum = models.IntegerField('Apply People', max_length=3)
 
     #TestType(int):テスト種類
-    TestType = models.IntegerChoices
+    TestType = models.IntegerChoices(initial=1,)
     TEST_TYPE = ((1, 'Game'),(2, 'Application'))
 
     #TestTypeSubcls(str):テスト細分類
