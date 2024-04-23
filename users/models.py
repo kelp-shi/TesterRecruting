@@ -5,7 +5,8 @@ from baseApp.models import TestPost
 from datetime import date
 
 class Gender(models.TextChoices):
-    """性別選択用クラス
+    """
+    性別選択用クラス
 
     Note:カスタムユーザークラスで使用する性別選択用クラス
     Attributes:男性、女性、その他
@@ -15,7 +16,8 @@ class Gender(models.TextChoices):
     OTHER   = 'Other'
 
 class CustomUser (AbstractUser, PermissionsMixin):
-    """カスタムユーザークラス
+    """
+    カスタムユーザークラス
 
     Note:ユーザー情報のクラス
 
@@ -27,14 +29,14 @@ class CustomUser (AbstractUser, PermissionsMixin):
         DoneTest(mtm):完了テスト(テストの外部キーを使用)
     """
     #AccountName(str):アカウント名(IDとは異なりユーザーが設定できる)
-    AccountName = models.CharField(max_length=100)
+    AccountName = models.CharField(max_length=100, required=True)
 
     #UserBirth(dt):ユーザー誕生日
-    UserBirth = models.DateField(blank=True, null=False)
+    UserBirth = models.DateField(blank=True, null=True)
 
     #UserGender(str):ユーザー性別
     GENDER_CHOICES = [(g.value, g.name) for g in Gender]
-    UserGender = models.CharField(max_length=50, choices=GENDER_CHOICES, default=Gender.OTHER)
+    UserGender = models.CharField(max_length=50, choices=GENDER_CHOICES, default=Gender.OTHER, blank=True, null=True)
 
     #RunningTest(mtm):実行中テストタスク(テストの外部キーを使用)
     RunningTest = models.ManyToManyField(TestPost, related_name='running_tests')

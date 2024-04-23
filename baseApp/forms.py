@@ -1,8 +1,10 @@
 from django import forms
-from .forms import TestPost
+from .models import TestPost
+from .TestTypeSubclass import *
 
 class TestPostForm(forms.Form):
-    """テストポストフォームクラス
+    """
+    テストポストフォームクラス
 
     Note:
         テストポストのフォームクラス
@@ -13,7 +15,7 @@ class TestPostForm(forms.Form):
         RecrutingNum(int):募集人数
         ApplyNum(int):応募数
         TestType(int):テスト種類
-        【停止】TestTypeSubcls(str):テスト細分類
+        TestTypeSubcls(str):テスト細分類
         RecrutingPeriodFlg(bool):募集有無フラグ
         RecrutingPeriodSt(DateTime):募集開始日
         RecrutingPeriodEnd(DateTime):募集終了日
@@ -46,22 +48,24 @@ class TestPostForm(forms.Form):
     #ApplyNum(int):応募数
     ApplyNum = forms.IntegerField(
         label='Apply People', 
-        max_length=3
+        max_length=3,
+        required=True
         )
 
     #TestType(int):テスト種類
-    TestType = forms.IntegerChoices
-    TEST_TYPE = (
-        (1, 'Game'),
-        (2, 'Application')
-        )
+    TestType = forms.ChoiceField(
+        label='Test Type',
+        initial=1,
+        choices=TestPost.TEST_TYPE,
+        required=True
+    )
 
     #TestTypeSubcls(str):テスト細分類
-    #TESTTYPE_CHOICES = [(t.value, t.name) for t in TestTypeSubclass]
-    #TestTypeSubcls = forms.CharField(
-     #   choices=TESTTYPE_CHOICES, 
-     #   default=TestTypeSubclass.ART_AND_DESIGN
-     #   )
+    TestTypeSubcls = forms.CharField(
+        choices=TestPost.TESTTYPE_CHOICES, 
+        default=TestTypeSubclass.ART_AND_DESIGN,
+        required=True
+        )
 
     #RecrutingPeriodFlg(bool):募集有無フラグ
     RecrutingPeriodFlg = forms.BooleanField(
