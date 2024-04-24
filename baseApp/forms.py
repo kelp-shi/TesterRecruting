@@ -69,36 +69,38 @@ class TestPostForm(forms.Form):
 
     #RecrutingPeriodFlg(bool):募集有無フラグ
     RecrutingPeriodFlg = forms.BooleanField(
-        'Recruting presence or absence Flag',
+        label='Recruting presence or absence Flag',
+        initial=False,
         required=True
         )
 
     #RecrutingPeriodSt(DateTime):募集開始日
     RecrutingPeriodSt = forms.DateTimeField(
-        'Recruting Period Start',
+        label='Recruting Period Start',
         required=True
         )
 
     #RecrutingPeriodEnd(DateTime):募集終了日
     RecrutingPeriodEnd = forms.DateTimeField(
-        'Recruting Period End',
+        label='Recruting Period End',
         required=True
         )
 
     #TestStart(DateTime):テスト開始日
     TestStart = forms.DateTimeField(
-        'Test Start',
+        label='Test Start',
         required=True
         )
 
     #TestEnd(DateTime):テスト終了日
     TestEnd = forms.DateTimeField(
-        'Test End',
+        label='Test End',
         required=True
         )
 
     #DelFlg(bool):削除フラグ
     DelFlg = forms.BooleanField(
-        'Delete Flag',
+        label='Delete Flag',
+        initial=False,
         required=True
         )

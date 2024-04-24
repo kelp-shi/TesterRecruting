@@ -44,7 +44,7 @@ class TestPost (models.Model):
     TestTypeSubcls = models.CharField(choices=TESTTYPE_CHOICES, default=TestTypeSubclass.ART_AND_DESIGN)
 
     #RecrutingPeriodFlg(bool):募集有無フラグ
-    RecrutingPeriodFlg = models.BooleanField('Recruting presence or absence Flag')
+    RecrutingPeriodFlg = models.BooleanField('Recruting presence or absence Flag', default=False)
 
     #RecrutingPeriodSt(DateTime):募集開始日
     RecrutingPeriodSt = models.DateTimeField('Recruting Period Start')
