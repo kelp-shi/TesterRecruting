@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import TestPost
+from .model.models import TestPost
 from users.models import CustomUser
 
 admin.site.register(TestPost)

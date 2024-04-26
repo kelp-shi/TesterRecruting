@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AbstractUser, PermissionsMixin
 from django.db import models
-from baseApp.models import TestPost
+from testerRecruting.baseApp.model.models import TestPost
 
 from datetime import date
 
