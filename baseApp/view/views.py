@@ -3,8 +3,8 @@ from django.shortcuts import render,redirect
 from django.views.generic import ListView
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
-from .models import TestPost
-from .forms import TestPostForm
+from ..model.models import TestPost
+from ..forms import TestPostForm
 import datetime
 
 # Create your views here.
