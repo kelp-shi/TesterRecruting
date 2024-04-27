@@ -3,7 +3,7 @@ from django.shortcuts import render,redirect
 from django.views.generic import ListView
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
-from ..models.model import TestPost
+from ..db.application.app_models import TestPost
 from ..forms import TestPostForm
 import datetime
 
