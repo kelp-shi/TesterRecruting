@@ -2,7 +2,6 @@ from typing import Any
 from django.db import models
 from .TestTypeSubclass import TestTypeSubclass
 
-
 class TestPost (models.Model):
     """テストタスククラス
     
@@ -23,6 +22,12 @@ class TestPost (models.Model):
         TestEnd(DateTime):テスト終了日
         DelFlg(bool):削除フラグ
     """
+
+    TEST_TYPE_CHOICE = (
+        (1, 'Game'),
+        (2, 'Application')
+    )
+
     #PostName(str):テストタスクの名前
     PostName = models.CharField('Post Name', max_length=100)
 
@@ -30,18 +35,17 @@ class TestPost (models.Model):
     Discription = models.TextField('Discription', max_length=5000)
 
     #RecrutingNum(int):募集人数
-    RecrutingNum = models.IntegerField('Recruting People', max_length=3)
+    RecrutingNum = models.IntegerField('Recruting People')
 
     #ApplyNum(int):応募数
-    ApplyNum = models.IntegerField('Apply People', max_length=3)
+    ApplyNum = models.IntegerField('Apply People')
 
     #TestType(int):テスト種類
-    TestType = models.IntegerChoices(initial=1,)
-    TEST_TYPE = ((1, 'Game'),(2, 'Application'))
+    TestType = models.IntegerField('Test Type', choices=TEST_TYPE_CHOICE, default=1)
 
     #TestTypeSubcls(str):テスト細分類
     TESTTYPE_CHOICES = [(t.value, t.name) for t in TestTypeSubclass]
-    TestTypeSubcls = models.CharField(choices=TESTTYPE_CHOICES, default=TestTypeSubclass.ART_AND_DESIGN)
+    TestTypeSubcls = models.CharField(choices=TESTTYPE_CHOICES, default=TestTypeSubclass.ART_AND_DESIGN, max_length=100)
 
     #RecrutingPeriodFlg(bool):募集有無フラグ
     RecrutingPeriodFlg = models.BooleanField('Recruting presence or absence Flag', default=False)

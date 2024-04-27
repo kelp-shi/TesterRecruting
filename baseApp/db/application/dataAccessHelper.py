@@ -1,5 +1,5 @@
 import datetime
-from .model import TestPost
+from .app_models import TestPost
 
 class dataAccessHelper():
     #全件取得データ
