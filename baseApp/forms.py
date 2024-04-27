@@ -1,6 +1,6 @@
 from django import forms
-from .model.models import TestPost
-from .model.TestTypeSubclass import *
+from .models.models import TestPost
+from .models.TestTypeSubclass import *
 
 class TestPostForm(forms.Form):
     """
