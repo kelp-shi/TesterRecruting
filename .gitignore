@@ -1,5 +1,5 @@
 baseApp/__pycache__/*
 baseApp/migrations/*
 !baseApp/migrations/__init__.py
-baseApp/db/application/__pycache__/*s
+baseApp/db/application/__pycache__/*
 testerRecruting/__pycache__/
