@@ -60,6 +60,21 @@ class Gender(models.TextChoices):
     
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
+    """
+    カスタムユーザークラス
+
+    Note:ユーザー情報のクラス
+
+    Attributes:
+        username(str):アカウント名(IDとは異なりユーザーが設定できる)
+        email(email):Eメール
+        UserBirth(dt):ユーザー誕生日
+        UserGender(str):ユーザー性別
+        RunningTest(mtm):実行中テストタスク(テストの外部キーを使用)
+        DoneTest(mtm):完了テスト(テストの外部キーを使用)
+        #スタッフ権限(bool):スタッフ権限
+        #論理削除フラグ(bool):アクティブかどうか
+    """
 
     username_validator = UnicodeUsernameValidator()
 
@@ -93,12 +108,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     #DoneTest(mtm):完了テスト(テストの外部キーを使用)
     DoneTest = models.ManyToManyField(TestPost, related_name='done_tests', blank=True)
 
+    #スタッフ権限(bool):スタッフ権限
     is_staff = models.BooleanField(
         _("staff status"),
         default=False,
         help_text=_("Designates whether the user can log into this admin site."),
     )
 
+    #論理削除フラグ(bool):アクティブかどうか
     is_active = models.BooleanField(
         _("active"),
         default=True,
