@@ -4,4 +4,4 @@ baseApp/migrations/*
 baseApp/db/application/__pycache__/*
 testerRecruting/__pycache__/
 testerRecruting/baseApp/images/user/profile/*
-testerRecruting/views/__pycache__/*
+testerRecruting/baseApp/views/__pycache__/
