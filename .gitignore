@@ -3,3 +3,5 @@ baseApp/migrations/*
 !baseApp/migrations/__init__.py
 baseApp/db/application/__pycache__/*
 testerRecruting/__pycache__/
+testerRecruting/baseApp/images/user/profile/*
+testerRecruting/views/__pycache__/*

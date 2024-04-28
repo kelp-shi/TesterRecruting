@@ -12,10 +12,11 @@ body {
     justify-content: space-between;
     padding: 0 20px;
 }
-
+/*----------logo img----------*/
 .logo img {
     height: 50px;
     width: auto;
+    user-select: none;
 }
 
 .nav-links {
@@ -38,11 +39,17 @@ body {
     text-decoration: none;
 }
 
+.nav-links a:hover {
+    color: #13a5e4;
+}
+
 .user-actions {
     display: flex;
     align-items: center;
 }
 
+/*----------test投稿ボタン----------*/
+/*----------13a5e4----------*/
 .post-test-btn {
     position: relative;
     overflow: hidden;
@@ -64,15 +71,28 @@ body {
     height: 100%;
     background: linear-gradient(to right, #12d0aa, #45a049);
     transition: left 0.4s;
+    opacity: 0.5;
 }
 
 .post-test-btn:hover::before {
     left: 0;
+    opacity: 1;
 }
 
+.post-test-btn a {
+    position: relative;
+    z-index: 1; /* ボタンの表面に配置 */
+    user-select: none;
+}
+
+/*----------プロフィール----------*/
 .profile-icon {
     width: 40px;
     height: 40px;
-    background-color: #ccc;
+    background-color: #2ab9d5;
     border-radius: 50%;
+}
+
+.profile-icon :hover {
+    color: #13a5e4;
 }

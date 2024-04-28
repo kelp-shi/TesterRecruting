@@ -72,8 +72,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         UserGender(str):ユーザー性別
         RunningTest(mtm):実行中テストタスク(テストの外部キーを使用)
         DoneTest(mtm):完了テスト(テストの外部キーを使用)
-        #スタッフ権限(bool):スタッフ権限
-        #論理削除フラグ(bool):アクティブかどうか
+        is_staff(bool):スタッフ権限
+        is_active(bool):論理削除フラグ
+        profile_img(img):プロフィール画像
     """
 
     username_validator = UnicodeUsernameValidator()
@@ -108,14 +109,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     #DoneTest(mtm):完了テスト(テストの外部キーを使用)
     DoneTest = models.ManyToManyField(TestPost, related_name='done_tests', blank=True)
 
-    #スタッフ権限(bool):スタッフ権限
+    #is_staff(bool):スタッフ権限
     is_staff = models.BooleanField(
         _("staff status"),
         default=False,
         help_text=_("Designates whether the user can log into this admin site."),
     )
 
-    #論理削除フラグ(bool):アクティブかどうか
+    #is_active(bool):論理削除フラグ
     is_active = models.BooleanField(
         _("active"),
         default=True,
@@ -124,6 +125,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             "Unselect this instead of deleting accounts."
         ),
     )
+
+    #profile_img(img):プロフィール画像
+    profile_img = models.ImageField(upload_to='baseApp/images/user/profile/', blank=True, null=True)
 
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
 
