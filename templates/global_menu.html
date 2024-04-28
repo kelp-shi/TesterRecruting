@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<link href="{% static 'css/global_manu.css' %}" rel="stylesheet">
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="logo.png" alt="Logo">
+            </div>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Tests</a></li>
+                <li><a href="#">What's TestHelper</a></li>
+            </ul>
+            <div class="user-actions">
+                <button class="post-test-btn"><a>Post Test</a></button>
+                <div class="profile-icon">
+                    <img src="{{ user.profile_img.url }}" alt="Profile Image">
+                </div>
+            </div>
+        </nav>
+    </header>
+</body>
+{% block content %}
+{% endblock content %}

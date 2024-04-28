@@ -1,0 +1,7 @@
+baseApp/__pycache__/*
+baseApp/migrations/*
+!baseApp/migrations/__init__.py
+baseApp/db/application/__pycache__/*
+testerRecruting/__pycache__/
+baseApp/images/user/profile/*
+baseApp/views/__pycache__/
