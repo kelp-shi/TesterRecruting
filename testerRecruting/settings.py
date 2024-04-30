@@ -76,7 +76,7 @@ STATICFILES_DIRS = [
 WSGI_APPLICATION = 'testerRecruting.wsgi.application'
 
 #media directory
-MEDIA_ROOT = os.path.join(BASE_DIR, '../')
+MEDIA_ROOT = os.path.join(BASE_DIR, './')
 MEDIA_URL = '/'
 
 # Database
