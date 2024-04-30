@@ -1,8 +1,9 @@
-from django.contrib.auth.models import AbstractUser, PermissionsMixin,AbstractBaseUser, UserManager
+from django.contrib.auth.models import PermissionsMixin,AbstractBaseUser, UserManager
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.core.mail import send_mail
 from django.db import models
+from testerRecruting.settings import DEFAULT_PROFILE_IMAGE_PATH
 from baseApp.db.application.app_models import TestPost
 from datetime import date
 from django.utils import timezone
@@ -128,7 +129,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     )
 
     #profile_img(img):プロフィール画像
-    profile_img = models.ImageField(upload_to='baseApp/images/user/profile/', blank=True, null=True)
+    profile_img = models.ImageField(upload_to='baseApp/images/user/profile/', blank=True, null=True, default=DEFAULT_PROFILE_IMAGE_PATH)
 
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
             
@@ -178,4 +179,5 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             today = date.today()
             # 現在の年から生年月日の年を引いて年齢を計算
             self.Age = today.year - self.UserBirth.year - ((today.month, today.day) < (self.UserBirth.month, self.UserBirth.day))
+
         super().save(*args, **kwargs)

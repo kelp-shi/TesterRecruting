@@ -138,3 +138,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'baseApp.CustomUser'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 SITE_ID = 1 
+
+DEFAULT_PROFILE_IMAGE_PATH = 'baseApp/images/user/profile/defalt.png'
