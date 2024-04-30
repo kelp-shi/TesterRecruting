@@ -68,13 +68,6 @@ TEMPLATES = [
     },
 ]
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR.joinpath(BASE_DIR, 'static'),
-]
-
-WSGI_APPLICATION = 'testerRecruting.wsgi.application'
-
 #media directory
 MEDIA_ROOT = os.path.join(BASE_DIR, './')
 MEDIA_URL = '/'
@@ -129,7 +122,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR.joinpath(BASE_DIR, 'static'),
+]
+
+WSGI_APPLICATION = 'testerRecruting.wsgi.application'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
