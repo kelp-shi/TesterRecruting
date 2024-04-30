@@ -129,6 +129,7 @@ STATICFILES_DIRS = [
 
 WSGI_APPLICATION = 'testerRecruting.wsgi.application'
 
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
