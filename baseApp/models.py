@@ -131,7 +131,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     profile_img = models.ImageField(upload_to='baseApp/images/user/profile/', blank=True, null=True)
 
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
-        
+            
     #年齢(int):ユーザーの年齢
     age = models.IntegerField(blank=True, null=True)
 
@@ -171,7 +171,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         #現在月日が記入月日より過ぎていれば0、以前であれば-1
         age = today.year - self.UserBirth.year - ((today.month, today.day) < (self.UserBirth.month, self.UserBirth.day))
         return age
-        
+    
     #保存メソッド（年齢計算結果をインサート）
     def save(self, *args, **kwargs):
         if self.UserBirth:
