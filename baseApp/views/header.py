@@ -8,7 +8,7 @@ class index(LoginRequiredMixin, TemplateView):
     indexビュー
     """
     model = CustomUser
-    template_name = 'index.html'
+    template_name = 'app/index.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
