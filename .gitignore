@@ -5,3 +5,4 @@ baseApp/db/application/__pycache__/*
 testerRecruting/__pycache__/
 baseApp/images/user/profile/*
 baseApp/views/__pycache__/
+baseApp/views/application/__pycache__/

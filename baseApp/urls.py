@@ -1,9 +1,11 @@
 from django.urls import path
-from views.header import index
-from views.application.posts import * 
-from views.application.utility import *
+from .views.header import index
+from .views.application.posts import createTask, TestPostSearchView, PostDetail
+from .views.application.utility import appHelp
 from django.conf import settings
 from django.conf.urls.static import static
+
+app_name = 'baseApp'
 
 urlpatterns = [
     #----------app----------
@@ -19,10 +21,12 @@ urlpatterns = [
     path('help/', appHelp.as_view(), name='help'),
     #----------account----------
     #ウェルカムページ
-    path('welcome/', welcome.as_view(), name='welcome'),
+    #path('welcome/', welcome.as_view(), name='welcome'),
     #登録画面
-    path('account/register/', register.as_view(), name='register'),
+    #path('account/register/', register.as_view(), name='register'),
     #プロフィール画面
-    path('account/profile/', profile.as_view(), name='profile'),
+    #path('account/profile/', profile.as_view(), name='profile'),
     
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
+]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

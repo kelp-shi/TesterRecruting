@@ -32,8 +32,9 @@ class TestPostForm(forms.Form):
         )
 
     #Discription(str):テスト説明
-    Discription = forms.Textarea(
-        label='Discription', 
+    Discription = forms.CharField(
+        widget=forms.Textarea,
+        label='Discription',
         max_length=5000,
         required=True
         )
@@ -41,14 +42,14 @@ class TestPostForm(forms.Form):
     #RecrutingNum(int):募集人数
     RecrutingNum = forms.IntegerField(
         label='Recruting People', 
-        max_length=3,
+        max_value=2,
         required=True
         )
 
     #ApplyNum(int):応募数
     ApplyNum = forms.IntegerField(
         label='Apply People', 
-        max_length=3,
+        max_value=2,
         required=True
         )
 
@@ -56,14 +57,11 @@ class TestPostForm(forms.Form):
     TestType = forms.ChoiceField(
         label='Test Type',
         initial=1,
-        choices=TestPost.TEST_TYPE,
         required=True
     )
 
     #TestTypeSubcls(str):テスト細分類
     TestTypeSubcls = forms.CharField(
-        choices=TestPost.TESTTYPE_CHOICES, 
-        default=TestTypeSubclass.ART_AND_DESIGN,
         required=True
         )
 

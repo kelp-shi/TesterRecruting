@@ -8,13 +8,14 @@
                 <img src="logo.png" alt="Logo">
             </div>
             <ul class="nav-links">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Tests</a></li>
-                <li><a href="#">What's TestHelper</a></li>
+                <li><a href="{% url 'baseApp:index' %}">Home</a></li>
+                <li><a href="{% url 'baseApp:postlist' %}">Tests</a></li>
+                <!--<li><a href="{% url 'baseApp:help' %}">What's TestHelper</a></li>-->
                 <li><a href="#">My Account</a></li>
+                <li><a href="{% url 'baseApp:help' %}">Help</a></li>
             </ul>
             <div class="user-actions">
-                <button class="post-test-btn"><a>Post Test</a></button>
+                <button class="post-test-btn"><a href="{% url 'baseApp:createpost' %}">Post Test</a></button>
                 <div class="profile-icon">
                     {% if user.profile_img %}
                         <img class="user-image" src="{{ user.profile_img.url }}" alt="Profile Image">

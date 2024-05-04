@@ -22,7 +22,7 @@ class createTask(views.View):
 
         #GETリクエスト時の処理
         form = TestPostForm(isinstance = post)
-        return render(request, 'form_html_link', {'form' : form}) #修正必須(HTML_NAME入力)
+        return render(request, 'app/createpost.html', {'form' : form}) #修正必須(HTML_NAME入力)
     
     def post(self, request):
         """
@@ -39,10 +39,10 @@ class createTask(views.View):
             #保存処理
             post = form.save(commit = False)
             post.save()
-            return redirect('net_html_link') #修正必須(HTML_NAME入力)
+            return redirect('app/createpost.html') #修正必須(HTML_NAME入力)
         
         #バリデーション不可時に再度フォーム表示
-        return render(request, 'form_html_link', {'form' : form}) #修正必須(HTML_NAME入力)
+        return render(request, 'app/postlist.html', {'form' : form}) #修正必須(HTML_NAME入力)
 
 class TestPostSearchView(ListView):
     """
@@ -55,7 +55,7 @@ class TestPostSearchView(ListView):
     テスト期日検索（期日が遠い）
     """
     model = TestPost
-    template_name = ''
+    template_name = 'app/postlist.html'
     context_object_name = 'testposts'
     # ページネーション
     paginate_by = 10
