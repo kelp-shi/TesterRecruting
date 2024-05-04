@@ -1,6 +1,6 @@
 from django import views
 from django.shortcuts import render,redirect
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from ...db.application.app_models import TestPost
@@ -104,3 +104,7 @@ class TestPostSearchView(ListView):
             context['no_results_message'] = '検索結果がありません。'
         return context
 
+class PostDetail(DetailView):
+    template_name = 'app/detail.html'
+    model = TestPost
+    queryset = TestPost.objects.all()
