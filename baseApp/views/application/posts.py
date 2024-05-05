@@ -1,5 +1,5 @@
 from django import views
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.views.generic import ListView, DetailView
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
@@ -128,6 +128,12 @@ class TestPostSearchView(ListView):
         return context
 
 class PostDetail(DetailView):
-    template_name = 'app/detail.html'
     model = TestPost
-    queryset = TestPost.objects.all()
+    template_name = 'app/detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # オプション：追加のコンテキストを取得する場合
+        # 例: context['additional_data'] = additional_data
+        context['postdetail'] = TestPost.objects.all()
+        return context

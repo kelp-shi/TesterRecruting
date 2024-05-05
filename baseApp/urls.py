@@ -16,7 +16,7 @@ urlpatterns = [
     #テスト一覧表示ページ（検索含む）
     path('postlist/', TestPostSearchView.as_view(), name='postlist'),
     #テスト詳細ページ
-    path('detail/', PostDetail.as_view(), name='detail'),
+    path('detail/<int:pk>/', PostDetail.as_view(), name='detail'),
     #ヘルプページ
     path('help/', appHelp.as_view(), name='help'),
     #----------account----------

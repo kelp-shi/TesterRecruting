@@ -16,7 +16,7 @@
     </form>
     {% for posts in object_list %}
     <tr>
-        <a>{{ posts.PostName }}</a>
+        <a href="{% url 'baseApp:detail' posts.pk %}">{{ posts.PostName }}</a>
         <a>{{ posts.Discription}}</a>
     </tr>
     {% endfor %}
