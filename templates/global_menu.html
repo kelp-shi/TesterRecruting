@@ -5,11 +5,11 @@
     <header>
         <nav class="navbar">
             <div class="logo">
-                <img src="logo.png" alt="Logo">
+                <a href="{% url 'baseApp:index' %}"><img src="logo.png" alt="Logo"></a>
             </div>
             <ul class="nav-links">
                 <li><a href="{% url 'baseApp:index' %}">Home</a></li>
-                <li><a href="{% url 'baseApp:postlist' %}">Tests</a></li>
+                <li><a href="{% url 'baseApp:postlist' %}">Tests LIst</a></li>
                 <!--<li><a href="{% url 'baseApp:help' %}">What's TestHelper</a></li>-->
                 <li><a href="#">My Account</a></li>
                 <li><a href="{% url 'baseApp:help' %}">Help</a></li>

@@ -6,3 +6,4 @@ testerRecruting/__pycache__/
 baseApp/images/user/profile/*
 baseApp/views/__pycache__/
 baseApp/views/application/__pycache__/
+django.log

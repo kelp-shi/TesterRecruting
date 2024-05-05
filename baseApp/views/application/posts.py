@@ -6,8 +6,10 @@ from django.views.decorators.cache import cache_page
 from ...db.application.app_models import TestPost
 from ...forms import TestPostForm
 import datetime
+import logging
 
 # Create your views here.
+logger = logging.getLogger(__name__)
 
 class createTask(views.View):
     """
@@ -21,8 +23,10 @@ class createTask(views.View):
         post = TestPost()
 
         #GETリクエスト時の処理
-        form = TestPostForm(isinstance = post)
-        return render(request, 'app/createpost.html', {'form' : form}) #修正必須(HTML_NAME入力)
+        #form = TestPostForm(isinstance = post)
+        #return render(request, 'app/createpost.html', {'form' : form}) #修正必須(HTML_NAME入力)
+    
+        return render(request, 'app/createpost.html') #修正必須(HTML_NAME入力)
     
     def post(self, request):
         """
@@ -54,28 +58,38 @@ class TestPostSearchView(ListView):
     テスト期日検索（期日が近い）
     テスト期日検索（期日が遠い）
     """
+    logger.info('---------------start list method[TestPostSearchView]---------------')
     model = TestPost
+    logger.info('model count: ' + str(model.objects.count()))
+    logger.info('active model count: ' + str(model.objects.filter(RecrutingPeriodFlg=True, DelFlg=False).count()))
     template_name = 'app/postlist.html'
-    context_object_name = 'testposts'
     # ページネーション
-    paginate_by = 10
+    #paginate_by = 10
 
     @method_decorator(cache_page(60))  # キャッシュを60秒間有効にする
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
     
     def get_queryset(self):
-        query = self.request.GET.get('q')
+        query = self.request.GET.get('query')
         sort_by = self.request.GET.get('sort_by')
-        now = datetime.datetime.now()
+        logger.debug('query type | sort: ' + str(sort_by) + ' | query: ' + str(query))
+        logger.debug('---------------start get queryset[get_queryset]---------------')
 
         if query:
-            # テストポストの全件取得（条件：募集フラグ==True, 削除フラグ==Falese）
-            queryset = TestPost.objects.filter(RecrutingPeriodFlg=True, DelFlg=False).order_by('id')
-        else:
             # 名称検索（部分一致可:大小区別なし）
             queryset = TestPost.objects.filter(PostName__icontains=query)
+        else:
+            # テストポストの全件取得（条件：募集フラグ==True, 削除フラグ==Falese）
+            queryset = TestPost.objects.filter(RecrutingPeriodFlg=True, DelFlg=False).order_by('id')
+
+        logger.debug('end method -- ' + str(queryset.count()))
+        return queryset
         
+    def post(self):
+        logger.debug('---------------start get queryset[post]---------------')
+        now = datetime.datetime.now()
+        sort_by = self.request.GET.get('sort_by')
         if sort_by:
             # データをソート
             if sort_by == 'recruting_up':
@@ -91,17 +105,26 @@ class TestPostSearchView(ListView):
                 # テスト期日検索（期日が遠い）
                 queryset = sorted(TestPost.objects.filter(RecrutingPeriodFlg=True, DelFlg=False), key=lambda post: abs(now + post.TestStart))
             else:
-                queryset = TestPost.objects.none()  # 何も返さない場合は空のクエリセットを返す
+                # 何も返さない場合は空のクエリセットを返す
+                queryset = TestPost.objects.none()      
 
+        logger.debug('end method -- ' + str(queryset.count()))
+        logger.debug('---------------end get queryset---------------')
         return queryset
         
     def get_context_data(self, **kwargs):
         """
         検索結果が空の場合
         """
+        logger.info('---------------start list method(non object)---------------')
+        logger.debug('---------------start get queryset(non object)---------------')
+
         context = super().get_context_data(**kwargs)
         if not self.object_list.exists():
             context['no_results_message'] = '検索結果がありません。'
+
+        logger.debug('---------------end get queryset(non object)---------------')
+        logger.info('---------------end list method-(non object)[TestPostSearchView]--------------')
         return context
 
 class PostDetail(DetailView):

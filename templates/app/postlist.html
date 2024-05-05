@@ -10,6 +10,16 @@
 <body>
     {% block content %}
     <p>post list</p>
+    <form action="" method="get">
+        <input name="query" value="{{request.GET.query}}" type="text">
+        <button type="submit">検索する</button>
+    </form>
+    {% for posts in object_list %}
+    <tr>
+        <a>{{ posts.PostName }}</a>
+        <a>{{ posts.Discription}}</a>
+    </tr>
+    {% endfor %}
     {% endblock content %}
 </body>
 </html>
