@@ -128,6 +128,11 @@ class TestPostSearchView(ListView):
         return context
 
 class PostDetail(DetailView):
+    """
+    詳細クラス
+    
+    Note:テストポストの詳細を表示
+    """
     model = TestPost
     template_name = 'app/detail.html'
 
