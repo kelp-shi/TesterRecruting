@@ -128,12 +128,18 @@ class TestPostSearchView(ListView):
         return context
 
 class PostDetail(DetailView):
+    """
+    詳細クラス
+    
+    Note:テストポストの詳細を表示
+    """
     model = TestPost
     template_name = 'app/detail.html'
 
     def get_context_data(self, **kwargs):
+        logger.debug('---------------start get_context_method---------------')
         context = super().get_context_data(**kwargs)
-        # オプション：追加のコンテキストを取得する場合
-        # 例: context['additional_data'] = additional_data
         context['postdetail'] = TestPost.objects.all()
+        logger.debug('set context')
+        logger.debug('---------------end get_context_method---------------')
         return context
