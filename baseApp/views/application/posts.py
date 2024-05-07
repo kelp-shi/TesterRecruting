@@ -4,7 +4,7 @@ from django.views.generic import ListView, DetailView
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from ...db.application.app_models import TestPost
-from ...forms import TestPostForm
+from ...forms.application_forms import TestPostForm
 import datetime
 import logging
 
