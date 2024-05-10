@@ -2,6 +2,7 @@ from django.urls import path
 from .views.header import index
 from .views.application.posts import createTask, TestPostSearchView, PostDetail
 from .views.application.utility import appHelp
+from .views.auth.authControl import Profile
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -25,7 +26,7 @@ urlpatterns = [
     #登録画面
     #path('account/register/', register.as_view(), name='register'),
     #プロフィール画面
-    #path('account/profile/', profile.as_view(), name='profile'),
+    path('profile/<str:username>/', Profile.as_view(), name='profile'),
     
 ]
 

@@ -17,11 +17,13 @@
             <div class="user-actions">
                 <button class="post-test-btn"><a href="{% url 'baseApp:createpost' %}">Post Test</a></button>
                 <div class="profile-icon">
+                    <a href="{% url 'baseApp:profile' user.username %}">
                     {% if user.profile_img %}
                         <img class="user-image" src="{{ user.profile_img.url }}" alt="Profile Image">
                     {% else %}
                         <img class="defalt-image" src="../baseApp/images/user/profile/defalt.png" alt="Defalt Profile Image">
                     {% endif %}
+                    </a>
                 </div>
             </div>
         </nav>

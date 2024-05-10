@@ -7,3 +7,5 @@ baseApp/images/user/profile/*
 baseApp/views/__pycache__/
 baseApp/views/application/__pycache__/
 django.log
+baseApp/views/auth/__pycache__/
+baseApp/forms/__pycache__/
