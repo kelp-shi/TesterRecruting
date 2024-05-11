@@ -1,6 +1,7 @@
 from typing import Any
 from django.db import models
 from .TestTypeSubclass import TestTypeSubclass
+from django.contrib.auth import get_user_model
 
 class TestPost (models.Model):
     """テストタスククラス
@@ -21,6 +22,7 @@ class TestPost (models.Model):
         TestStart(DateTime):テスト開始日
         TestEnd(DateTime):テスト終了日
         DelFlg(bool):削除フラグ
+        CreateUser(ForeignKey):投稿者
     """
 
     TEST_TYPE_CHOICE = (
@@ -64,6 +66,9 @@ class TestPost (models.Model):
 
     #DelFlg(bool):削除フラグ
     DelFlg = models.BooleanField('Delete Flag')
+
+    #CreateUser(ForeignKey):投稿者
+    CreateUser = models.ForeignKey('baseApp.CustomUser', on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return self.PostName

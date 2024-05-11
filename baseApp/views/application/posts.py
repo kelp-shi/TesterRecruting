@@ -1,52 +1,27 @@
 from django import views
+from django.urls import reverse_lazy
 from django.shortcuts import render,redirect,get_object_or_404
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from ...db.application.app_models import TestPost
-from ...forms.application_forms import TestPostForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+from ...forms.application_forms import TestPostForm, TestPostForm2
 import datetime
 import logging
 
 # Create your views here.
 logger = logging.getLogger(__name__)
 
-class createTask(views.View):
+class createTask(LoginRequiredMixin,CreateView):
     """
     新規テストポストの作成
     """
-    def get(self, request):
-        """
-        GETリクエスト時の新規テスト作成処理
-        """
-        #新規オブジェクト作成
-        post = TestPost()
-
-        #GETリクエスト時の処理
-        #form = TestPostForm(isinstance = post)
-        #return render(request, 'app/createpost.html', {'form' : form}) #修正必須(HTML_NAME入力)
+    model = TestPost
+    template_name = 'app/createpost.html'
+    fields = ['PostName']
+    success_url = reverse_lazy('baseApp:index')
     
-        return render(request, 'app/createpost.html') #修正必須(HTML_NAME入力)
-    
-    def post(self, request):
-        """
-        POSTリクエスト時の新規テスト保存処理
-        """
-        #新規オブジェクト作成
-        post = TestPost()
-
-        #POSTリクエスト時の処理
-        form = TestPostForm(request.POST, isinstance = post)
-
-        #バリデーションチェック
-        if form.is_valid():
-            #保存処理
-            post = form.save(commit = False)
-            post.save()
-            return redirect('app/createpost.html') #修正必須(HTML_NAME入力)
-        
-        #バリデーション不可時に再度フォーム表示
-        return render(request, 'app/postlist.html', {'form' : form}) #修正必須(HTML_NAME入力)
 
 class TestPostSearchView(ListView):
     """

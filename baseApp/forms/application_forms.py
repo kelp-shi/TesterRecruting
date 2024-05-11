@@ -2,7 +2,7 @@ from django import forms
 from ..db.application.app_models import TestPost
 from ..db.application.TestTypeSubclass import *
 
-class TestPostForm(forms.Form):
+class TestPostForm(forms.ModelForm):
     """
     テストポストフォームクラス
 
@@ -102,3 +102,19 @@ class TestPostForm(forms.Form):
         initial=False,
         required=True
         )
+    
+class TestPostForm2(forms.ModelForm):
+    class Meta:
+        model = TestPost
+        fields = [
+            'PostName',
+            'Discription',
+            'RecrutingNum',
+            'ApplyNum',
+            'TestType',
+            'TestTypeSubcls',
+            'RecrutingPeriodFlg',
+            'RecrutingPeriodSt',
+            'RecrutingPeriodEnd',
+            'TestStart',
+            'TestEnd']
