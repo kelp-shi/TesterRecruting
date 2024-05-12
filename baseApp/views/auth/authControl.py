@@ -26,12 +26,27 @@ class Profile(LoginRequiredMixin,DetailView):
     queryset = CustomUser.objects.all()
     context_object_name = 'profile'
 
-class WelcomePage(TemplateView):
+class Register(CreateView):
     """
-    ウェルカムページ
+    登録・ログインページ
 
-    Note:auth/welcome.htmlのヘルプページを返す
+    Note:auth/register.htmlのヘルプページを返す
     """
-    template_name = 'auth/welcome.html'
+    template_name = 'auth/register.html'
+    success_url = reverse_lazy("baseApp:index")
+
+    def login(request):
+        if request.method == 'POST':
+            form = SignUpForm
+            if form.is_valid():
+                username = form.cleaned_data.get('username')
+                email = form.cleaned_data.get('email')
+                UserBirth = form.cleaned_data.get('UserBirth')
+                UserGender = form.cleaned_data.get('UserGender')
+                profile_img = form.cleaned_data.get('profile_img')
+                age = form.cleaned_data.get('age')
+
+    
+
 
 

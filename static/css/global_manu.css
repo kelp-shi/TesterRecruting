@@ -6,7 +6,7 @@ body {
 /*----------ナビbody----------*/
 .navbar {
     height: 70px;
-    background-color: #333;
+    background-color: #818181;
     display: flex;
     align-items: center;
     justify-content: space-between;

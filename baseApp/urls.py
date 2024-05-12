@@ -2,7 +2,7 @@ from django.urls import path
 from .views.header import index
 from .views.application.posts import createTask, TestPostSearchView, PostDetail
 from .views.application.utility import appHelp
-from .views.auth.authControl import Profile, WelcomePage
+from .views.auth.authControl import Profile, Register
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -21,10 +21,8 @@ urlpatterns = [
     #ヘルプページ
     path('help/', appHelp.as_view(), name='help'),
     #----------account----------
-    #ウェルカムページ
-    path('welcome/', WelcomePage.as_view(), name='welcome'),
     #登録画面
-    #path('account/register/', register.as_view(), name='register'),
+    path('register/', Register.as_view(), name='register'),
     #プロフィール画面
     path('profile/<str:username>/', Profile.as_view(), name='profile'),
     

@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/auth/register.css' %}" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="#"><img src="logo.png" alt="Logo"></a>
+            </div>
+        </nav>
+    </div>
+    <div class="container">
+        <div class="forms-container">
+            <div class="login-logon">
+                <!--処理フォーム-->
+                <!--ログイン-->
+                <form action="#" class="login-form">
+                    {% csrf_token %}
+                    <h2 class="title">ログイン</h2>
+                    <div class="input-field">
+                      <i class="fas fa-user"></i>
+                      <input type="text" placeholder="Username" />
+                    </div>
+                    <div class="input-field">
+                      <i class="fas fa-lock"></i>
+                      <input type="password" placeholder="Password" />
+                    </div>
+                    <input type="submit" name="login_btn" value="ログイン" class="btn solid" />
+                  </form>
+                </form>
+                <!--ログオン-->
+                <form action="#" class="logon-form">
+                  {% csrf_token %}
+                  <h2 class="title">Tester Recruting に登録</h2>
+                  <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <input type="text" placeholder="Username" />
+                  </div>
+                  <div class="input-field">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" placeholder="Email" />
+                  </div>
+                  <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" placeholder="Password" />
+                  </div>
+                  <input type="submit" name="logon_btn" class="btn" value="登録" />
+                </form>
+            </div>
+        </div>
+        <!--処理選択パネル-->
+        <div class="panels-container">
+            <div class="panel left-panel">
+              <div class="content">
+                <h3>アカウントをお持ちですか？</h3>
+                <p>
+                  今すぐ登録してアプリケーションテストに参加しましょう！
+                </p>
+                <button class="btn transparent" id="logon-btn">
+                  登録
+                </button>
+              </div>
+            </div>
+            <div class="panel right-panel">
+              <div class="content">
+                <h3>既にアカウントをお持ちですか？</h3>
+                <p>
+                  ログインし
+                </p>
+                <button class="btn transparent" id="login-btn">
+                  ログイン
+                </button>
+              </div>
+            </div>
+          </div>
+    </div>
+    <script src="{% static 'js/auth/register.js' %}"></script>
+</body>
+</html>
+{% block content %}
+{% endblock content %}

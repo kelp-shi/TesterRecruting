@@ -159,4 +159,4 @@ else:
     )
 
 #Login url
-LOGIN_URL = 'welcome/'
+LOGIN_URL = 'register/'
