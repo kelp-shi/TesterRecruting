@@ -23,7 +23,7 @@ class createTask(LoginRequiredMixin,CreateView):
     success_url = reverse_lazy('baseApp:index')
     
 
-class TestPostSearchView(ListView):
+class TestPostSearchView(LoginRequiredMixin,ListView):
     """
     テストポストの表示・検索
     Note:
@@ -102,7 +102,7 @@ class TestPostSearchView(ListView):
         logger.info('---------------end list method-(non object)[TestPostSearchView]--------------')
         return context
 
-class PostDetail(DetailView):
+class PostDetail(LoginRequiredMixin,DetailView):
     """
     詳細クラス
     

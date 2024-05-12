@@ -142,6 +142,7 @@ SITE_ID = 1
 
 DEFAULT_PROFILE_IMAGE_PATH = 'baseApp/images/user/profile/defalt.png'
 
+#Debug log
 if DEBUG:
     # will output to your console
     logging.basicConfig(
@@ -156,3 +157,6 @@ else:
         filename = '/my_log_file.log',
         filemode = 'a'
     )
+
+#Login url
+LOGIN_URL = 'welcome/'
