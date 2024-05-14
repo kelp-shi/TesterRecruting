@@ -20,35 +20,35 @@
             <div class="login-logon">
                 <!--処理フォーム-->
                 <!--ログイン-->
-                <form action="#" class="login-form">
+                <form method="POST" action="{% url 'baseApp:register' %}" class="login-form">
                     {% csrf_token %}
                     <h2 class="title">ログイン</h2>
                     <div class="input-field">
                       <i class="fas fa-user"></i>
-                      <input type="text" placeholder="Username" />
+                      {{ form_in.username }}
                     </div>
                     <div class="input-field">
                       <i class="fas fa-lock"></i>
-                      <input type="password" placeholder="Password" />
+                      {{ form_in.password }}
                     </div>
                     <input type="submit" name="login_btn" value="ログイン" class="btn solid" />
                   </form>
                 </form>
                 <!--ログオン-->
-                <form action="#" class="logon-form">
+                <form method="POST" action="{% url 'baseApp:register' %}" class="logon-form">
                   {% csrf_token %}
                   <h2 class="title">Tester Recruting に登録</h2>
                   <div class="input-field">
                     <i class="fas fa-user"></i>
-                    <input type="text" placeholder="Username" />
+                    {{ form_up.username }}
                   </div>
                   <div class="input-field">
                     <i class="fas fa-envelope"></i>
-                    <input type="email" placeholder="Email" />
+                    {{ form_up.email }}
                   </div>
                   <div class="input-field">
                     <i class="fas fa-lock"></i>
-                    <input type="password" placeholder="Password" />
+                    {{ form_up.password }}
                   </div>
                   <input type="submit" name="logon_btn" class="btn" value="登録" />
                 </form>
