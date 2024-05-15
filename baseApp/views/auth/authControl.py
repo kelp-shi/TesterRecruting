@@ -6,7 +6,6 @@ from django.http.response import HttpResponseRedirect
 from django.contrib.auth import login, authenticate, logout
 from django.urls import reverse_lazy
 from ...forms.auth_forms import SignUpForm, SignInForm
-from ...models import CustomUser
 import logging
 
 logger = logging.getLogger(__name__)
@@ -57,10 +56,12 @@ class Register(TemplateView):
                 username = form_up.cleaned_data.get('username')
                 email = form_up.cleaned_data.get('email')
                 password = form_up.cleaned_data.get('password')
-                user = CustomUser.objects.create_user(username=username, password=password, email=email)
+                user = CustomUser.objects(username=username, password=password, email=email)
                 if user:
                     login(request, user)
                     return redirect("baseApp:index")
+                else:
+                    logger.debug('------------logon error------------')
             return render(request, 'auth/register.html', {'form_up': form_up, 'form_in': form_in})
         
         elif 'login_btn' in request.POST :
@@ -70,6 +71,8 @@ class Register(TemplateView):
                 if user:
                     login(request, user)
                     return redirect("baseApp:index")
+                else:
+                    logger.debug('------------login error------------')
             return render(request, 'auth/register.html', {'form_up': form_up, 'form_in': form_in})
         
         else:

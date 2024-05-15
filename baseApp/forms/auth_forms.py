@@ -7,7 +7,8 @@ class SignUpForm(UserCreationForm):
         super().__init__(*args, **kwargs)
         self.fields['username'].widget.attrs['class'] = 'form-control'
         self.fields['email'].widget.attrs['class'] = 'form-control'
-        self.fields['password'].widget.attrs['class'] = 'form-control'
+        self.fields['password1'].label = "Password"
+        self.fields['password2'].label = "Confirm Password"
 
     class Meta:
         model = CustomUser
