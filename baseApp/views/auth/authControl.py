@@ -6,6 +6,7 @@ from django.http.response import HttpResponseRedirect
 from django.contrib.auth import login, authenticate, logout
 from django.urls import reverse_lazy
 from ...forms.auth_forms import SignUpForm, SignInForm
+from ...models import CustomUser
 import logging
 
 logger = logging.getLogger(__name__)
