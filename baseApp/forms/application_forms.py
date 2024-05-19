@@ -118,3 +118,33 @@ class TestPostForm2(forms.ModelForm):
             'RecrutingPeriodEnd',
             'TestStart',
             'TestEnd']
+        
+class TestPostForm3(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['PostName'].widget.attrs['class'] = 'form-control'
+        self.fields['Discription'].widget.attrs['class'] = 'form-control'
+        self.fields['RecrutingNum'].widget.attrs['class'] = 'form-control'
+        self.fields['ApplyNum'].widget.attrs['class'] = 'form-control'
+        self.fields['TestType'].widget.attrs['class'] = 'form-control'
+        self.fields['TestTypeSubcls'].widget.attrs['class'] = 'form-control'
+        self.fields['RecrutingPeriodFlg'].widget.attrs['class'] = 'form-control'
+        self.fields['RecrutingPeriodSt'].widget.attrs['class'] = 'form-control'
+        self.fields['RecrutingPeriodEnd'].widget.attrs['class'] = 'form-control'
+        self.fields['TestStart'].widget.attrs['class'] = 'form-control'
+        self.fields['TestEnd'].widget.attrs['class'] = 'form-control'
+
+        class Meta:
+            model = TestPost
+            fields = [
+                'PostName',
+                'Discription',
+                'RecrutingNum',
+                'ApplyNum',
+                'TestType',
+                'TestTypeSubcls',
+                'RecrutingPeriodFlg',
+                'RecrutingPeriodSt',
+                'RecrutingPeriodEnd',
+                'TestStart',
+                'TestEnd']
