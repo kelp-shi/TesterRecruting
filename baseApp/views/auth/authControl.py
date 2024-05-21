@@ -54,7 +54,7 @@ class Register(TemplateView):
         form_in = SignInForm(data=request.POST)
         if 'logon_btn' in request.POST:
             if form_up.is_valid():
-                user = form_up.save()
+                user = CustomUser.objects.create_user()
                 login(request, user)
                 return redirect("baseApp:index")
             else:
