@@ -10,19 +10,14 @@ from ...models import CustomUser
 import logging
 
 logger = logging.getLogger(__name__)
-
-class SignUpView(LoginRequiredMixin,CreateView):
-    form = SignUpForm
-    template_name = ""
-    success_url = reverse_lazy("baseApp:index")
-
-    def form_invalid(self, form):
-        user = form.save()
-        login(self.request, user)
-        self.object = user
-        return HttpResponseRedirect(self.get_success_url())
     
 class Profile(LoginRequiredMixin,DetailView):
+    """
+    プロフィールページ
+
+    note:プロフィールページ出力クラス
+    auth/profile.htmlのページを返す
+    """
     template_name = "auth/profile.html"
     model = CustomUser
     slug_field = 'username'
