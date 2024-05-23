@@ -65,6 +65,7 @@ class Register(TemplateView):
                     return redirect("baseApp:index")
                 else:
                     logger.debug('------------login error------------')
+            logger.debug('------------method end------------')
             return render(request, 'auth/register.html', {'form_up': form_up, 'form_in': form_in})
         
         else:
@@ -72,6 +73,7 @@ class Register(TemplateView):
             pass
             
     def get(self, request, *args, **kwargs):
+        logger.debug('------------get method start------------')
         form_up = SignUpForm()
         form_in = SignInForm()
         return render(request, 'auth/register.html', {'form_up': form_up, 'form_in': form_in}) 
