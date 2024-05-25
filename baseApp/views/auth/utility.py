@@ -1,3 +1,1 @@
-
-def header_img(request):
-    pass
+#utility views
