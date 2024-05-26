@@ -54,6 +54,7 @@ class Register(TemplateView):
                 return redirect("baseApp:index")
             else:
                 logger.debug('------------logon error------------')
+                logger.debug(form_up.errors)
             return render(request, 'auth/register.html', {'form_up': form_up, 'form_in': form_in})
         
         elif 'login_btn' in request.POST :
