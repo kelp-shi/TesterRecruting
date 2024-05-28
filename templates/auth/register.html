@@ -26,11 +26,26 @@
                     <div class="input-field">
                       <i class="fas fa-user"></i>
                       {{ form_in.username }}
+                      {% if form_in.username.errors %}
+                        <div class="error">
+                            {{ form_in.username.errors }}
+                        </div>
+                      {% endif %}
                     </div>
                     <div class="input-field">
                       <i class="fas fa-lock"></i>
                       {{ form_in.password }}
+                      {% if form_in.password.errors %}
+                        <div class="error">
+                            {{ form_in.password.errors }}
+                        </div>
+                      {% endif %}
                     </div>
+                    {% if form_in.non_field_errors %}
+                    <div class="error">
+                        {{ form_in.non_field_errors }}
+                    </div>
+                    {% endif %}
                     <input type="submit" name="login_btn" value="ログイン" class="btn solid" />
                   </form>
                 </form>
@@ -41,19 +56,44 @@
                   <div class="input-field">
                     <i class="fas fa-user"></i>
                     {{ form_up.username }}
+                    {% if form_up.username.errors %}
+                        <div class="error">
+                            {{ form_up.username.errors }}
+                        </div>
+                    {% endif %}
                   </div>
                   <div class="input-field">
                     <i class="fas fa-envelope"></i>
                     {{ form_up.email }}
+                    {% if form_up.email.errors %}
+                        <div class="error">
+                            {{ form_up.email.errors }}
+                        </div>
+                    {% endif %}
                   </div>
                   <div class="input-field">
                     <i class="fas fa-lock"></i>
                     {{ form_up.password1 }}
+                    {% if form_up.password1.errors %}
+                        <div class="error">
+                            {{ form_up.password1.errors }}
+                        </div>
+                    {% endif %}
                   </div>
                   <div class="input-field">
                     <i class="fas fa-lock"></i>
                     {{ form_up.password2 }}
+                    {% if form_up.password2.errors %}
+                        <div class="error">
+                            {{ form_up.password2.errors }}
+                        </div>
+                    {% endif %}
                   </div>
+                  {% if form_up.non_field_errors %}
+                    <div class="error">
+                        {{ form_up.non_field_errors }}
+                    </div>
+                  {% endif %}
                   <input type="submit" name="logon_btn" class="btn" value="登録" />
                 </form>
             </div>

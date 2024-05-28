@@ -49,12 +49,12 @@ class Register(TemplateView):
         form_in = SignInForm(data=request.POST)
         if 'logon_btn' in request.POST:
             if form_up.is_valid():
-                user = CustomUser.objects.create_user()
+                user = form_up.save()
                 login(request, user)
                 return redirect("baseApp:index")
             else:
                 logger.debug('------------logon error------------')
-                logger.debug(form_up.errors)
+                logger.debug(form_up.errors.as_json())
             return render(request, 'auth/register.html', {'form_up': form_up, 'form_in': form_in})
         
         elif 'login_btn' in request.POST :
