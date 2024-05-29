@@ -20,7 +20,14 @@ class createTask(LoginRequiredMixin,CreateView):
     model = TestPost
     template_name = 'app/createpost.html'
     fields = ['PostName']
-    success_url = reverse_lazy('baseApp:index')
+    
+    def post(request)
+        // テストポストのフォーム
+        form = 
+        if form.is_valid():
+        
+        else:
+        logger.debug('---------------form is fail---------------')
     
 
 class TestPostSearchView(LoginRequiredMixin,ListView):
