@@ -1,10 +1,8 @@
 from django.views import View
 from django.shortcuts import redirect, render
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import CreateView, DetailView,TemplateView
-from django.http.response import HttpResponseRedirect
-from django.contrib.auth import login, authenticate, logout
-from django.urls import reverse_lazy
+from django.views.generic import DetailView,TemplateView
+from django.contrib.auth import login, logout
 from ...forms.auth_forms import SignUpForm, SignInForm
 from ...models import CustomUser
 import logging
@@ -73,7 +71,7 @@ class Register(TemplateView):
             logger.debug('auth_control method error')
             pass
             
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         logger.debug('------------get method start------------')
         form_up = SignUpForm()
         form_in = SignInForm()
