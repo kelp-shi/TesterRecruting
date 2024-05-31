@@ -21,13 +21,13 @@ class createTask(LoginRequiredMixin,CreateView):
     template_name = 'app/createpost.html'
     fields = ['PostName']
     
-    def post(request)
-        // テストポストのフォーム
-        form = 
+    def post(request):
+        # テストポストのフォーム
+        form = TestPostForm2
         if form.is_valid():
-        
+            form.save()
         else:
-        logger.debug('---------------form is fail---------------')
+            logger.debug('---------------form is fail---------------')
     
 
 class TestPostSearchView(LoginRequiredMixin,ListView):
