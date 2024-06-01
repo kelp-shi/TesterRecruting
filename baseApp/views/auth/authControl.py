@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView,TemplateView
 from django.contrib.auth import login, logout
-from ...forms.auth_forms import SignUpForm, SignInForm
+from ...forms.auth_forms import SignUpForm, SignInForm, ProfileEditForm
 from ...models import CustomUser
 import logging
 
@@ -22,6 +22,27 @@ class Profile(LoginRequiredMixin,DetailView):
     slug_url_kwarg = 'username'
     queryset = CustomUser.objects.all()
     context_object_name = 'profile'
+
+class ProfileEdit(LoginRequiredMixin, View):
+    """
+    プロフイール編集ページ
+    """
+    def get(self, request):
+        editform = ProfileEditForm
+        return render(request,  '', {'editform':editform})
+    
+    def post(self, request):
+        editform = ProfileEditForm(request.POST or None)
+        if editform.is_valid():
+            user_date = CustomUser.objects.get(id=request.user.id)
+            user_date.UserBirth = editform.cleaned_data['userBirth']
+            user_date.UserGender = editform.cleaned_data['UserGender']
+            if request.FILES.get('profile_img'):
+                user_date.profile_img = editform.cleaned_data['profile_img']
+            user_date.save()
+            return redirect('baseApp:profile')
+        return render(request, 'auth/profile.html')
+            
 
 class LogoutView(View):
     """

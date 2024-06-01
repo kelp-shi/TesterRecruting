@@ -10,6 +10,7 @@ class TestPost (models.Model):
         募集するテストのクラス
 
     Attributes:
+        id(int):テストタスクのID
         PostName(str):テストタスクの名前
         Discription(str):テスト説明
         RecrutingNum(int):募集人数
@@ -29,6 +30,8 @@ class TestPost (models.Model):
         (1, 'Game'),
         (2, 'Application')
     )
+    #id(str):テストタスクのID
+    id = models.BigIntegerField(unique=True, blank=True, primary_key=True)
 
     #PostName(str):テストタスクの名前
     PostName = models.CharField('Post Name', max_length=100)
@@ -68,7 +71,7 @@ class TestPost (models.Model):
     DelFlg = models.BooleanField('Delete Flag')
 
     #CreateUser(ForeignKey):投稿者
-    CreateUser = models.ForeignKey('baseApp.CustomUser', on_delete=models.CASCADE, blank=True, null=True)
+    CreateUser = models.OneToOneField('baseApp.CustomUser', on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return self.PostName

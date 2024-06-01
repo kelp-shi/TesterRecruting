@@ -1,12 +1,10 @@
-from django import views
-from django.urls import reverse_lazy
-from django.shortcuts import render,redirect,get_object_or_404
 from django.views.generic import ListView, DetailView, CreateView
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from ...db.application.app_models import TestPost
 from django.contrib.auth.mixins import LoginRequiredMixin
 from ...forms.application_forms import TestPostForm, TestPostForm2
+from ...models import CustomUser
 import datetime
 import logging
 
@@ -25,9 +23,10 @@ class createTask(LoginRequiredMixin,CreateView):
         # テストポストのフォーム
         form = TestPostForm2
         if form.is_valid():
-            form.save()
+            pass
         else:
             logger.debug('---------------form is fail---------------')
+            logger.debug(form.errors.as_json())
     
 
 class TestPostSearchView(LoginRequiredMixin,ListView):

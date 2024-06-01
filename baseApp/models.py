@@ -149,13 +149,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def email_user(self, subject, message, from_email=None, **kwargs):
         """Send an email to this user."""
         send_mail(subject, message, from_email, [self.email], **kwargs)
-
-    #年齢計算
-    def ageMath(self):
-        today = date.today()
-        #現在月日が記入月日より過ぎていれば0、以前であれば-1
-        age_result = today.year - self.UserBirth.year - ((today.month, today.day) < (self.UserBirth.month, self.UserBirth.day))
-        self.age = age_result
     
     #保存メソッド（年齢計算結果をインサート）
     def save(self, *args, **kwargs):
