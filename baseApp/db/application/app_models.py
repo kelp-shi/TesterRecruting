@@ -24,6 +24,10 @@ class TestPost (models.Model):
         TestEnd(DateTime):テスト終了日
         DelFlg(bool):削除フラグ
         CreateUser(ForeignKey):投稿者
+        
+    実装予定:
+        タスク単価
+        タスク合価
     """
 
     TEST_TYPE_CHOICE = (
