@@ -86,11 +86,11 @@ class Register(TemplateView):
                     'user': user,
                 }
 
-                subject = render_to_string('', context) #テキストのURL
-                message = render_to_string('', context) #テキストのURL
+                subject = render_to_string('auth/mail/subject.txt', context) #テキストのURL
+                message = render_to_string('auth/mail/message.txt', context) #テキストのURL
 
                 user.email_user(subject, message)
-                return redirect('register:user_create_done')
+                return redirect('baseApp:registerDone')
             else:
                 logger.debug('------------logon error------------')
                 logger.debug(form_up.errors.as_json())
@@ -122,7 +122,7 @@ class RegisterDone(TemplateView):
     """
     仮登録完了ページ
     """
-    template_name = ''
+    template_name = 'auth/registerDone.html'
 
 class RegisterComplete(TemplateView):
     """
@@ -130,7 +130,7 @@ class RegisterComplete(TemplateView):
 
     Note:indexへリダイレクト
     """
-    template_name = ''
+    template_name = 'auth/registerComp.html'
     timeout_seconds = ACTIVATION_TIMEOUT_SECONDS
 
     def get(self, request, **kwargs):

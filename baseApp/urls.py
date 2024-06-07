@@ -30,7 +30,7 @@ urlpatterns = [
     #仮登録画面
     path('register/done/', RegisterDone.as_view(), name='registerDone'),
     #本登録画面
-    path('register/complete/', RegisterComplete.as_view(), name='registerComplete')
+    path('register/complete/<token>/', RegisterComplete.as_view(), name='registerComplete')
     
 ]
 
