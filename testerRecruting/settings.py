@@ -136,8 +136,15 @@ WSGI_APPLICATION = 'testerRecruting.wsgi.application'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# 登録に使用するユーザーモデル
 AUTH_USER_MODEL = 'baseApp.CustomUser'
+
+#認証用Email
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+#認証用トークン有効期限
+ACTIVATION_TIMEOUT_SECONDS = 60*60*24
+
 SITE_ID = 1 
 
 DEFAULT_PROFILE_IMAGE_PATH = 'baseApp/images/user/profile/defalt.png'

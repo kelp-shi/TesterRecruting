@@ -2,9 +2,14 @@ from django.views import View
 from django.shortcuts import redirect, render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView,TemplateView
+from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth import login, logout
-from ...forms.auth_forms import SignUpForm, SignInForm, ProfileEditForm
-from ...models import CustomUser
+from django.core.signing import loads, BadSignature, SignatureExpired, dumps
+from baseApp.forms.auth_forms import SignUpForm, SignInForm, ProfileEditForm
+from django.template.loader import render_to_string
+from baseApp.models import CustomUser
+from testerRecruting.settings import ACTIVATION_TIMEOUT_SECONDS
+from django.http import Http404, HttpResponseBadRequest
 import logging
 
 logger = logging.getLogger(__name__)
@@ -68,9 +73,24 @@ class Register(TemplateView):
         form_in = SignInForm(data=request.POST)
         if 'logon_btn' in request.POST:
             if form_up.is_valid():
-                user = form_up.save()
-                login(request, user)
-                return redirect("baseApp:index")
+                user = form_up.save(commit=False)
+                user.is_active = False
+                user.save()
+                # アクティベーションURLの送付
+                current_site = get_current_site(self.request)
+                domain = current_site.domain
+                context = {
+                    'protocol': self.request.scheme,
+                    'domain': domain,
+                    'token': dumps(user.pk),
+                    'user': user,
+                }
+
+                subject = render_to_string('', context) #テキストのURL
+                message = render_to_string('', context) #テキストのURL
+
+                user.email_user(subject, message)
+                return redirect('register:user_create_done')
             else:
                 logger.debug('------------logon error------------')
                 logger.debug(form_up.errors.as_json())
@@ -96,4 +116,48 @@ class Register(TemplateView):
         logger.debug('------------get method start------------')
         form_up = SignUpForm()
         form_in = SignInForm()
-        return render(request, 'auth/register.html', {'form_up': form_up, 'form_in': form_in}) 
+        return render(request, 'auth/register.html', {'form_up': form_up, 'form_in': form_in})
+    
+class RegisterDone(TemplateView):
+    """
+    仮登録完了ページ
+    """
+    template_name = ''
+
+class RegisterComplete(TemplateView):
+    """
+    本登録完了ページ
+
+    Note:indexへリダイレクト
+    """
+    template_name = ''
+    timeout_seconds = ACTIVATION_TIMEOUT_SECONDS
+
+    def get(self, request, **kwargs):
+        token = kwargs.get('token')
+        try:
+            user_pk = loads(token, max_age=self.timeout_seconds)
+
+        # 期限切れ
+        except SignatureExpired:
+            return HttpResponseBadRequest()
+
+        # tokenが間違っている
+        except BadSignature:
+            return HttpResponseBadRequest()
+        
+        else:
+            try:
+                user = CustomUser.objects.get(pk=user_pk)
+            except CustomUser.DoesNotExist:
+                return HttpResponseBadRequest()
+            else:
+                if not user.is_active:
+                    user.is_active = True
+                    user.save()
+                    return super().get(request, **kwargs)
+        
+        return HttpResponseBadRequest
+
+
+

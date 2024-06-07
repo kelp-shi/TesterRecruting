@@ -3,8 +3,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from ...db.application.app_models import TestPost
 from django.contrib.auth.mixins import LoginRequiredMixin
-from ...forms.application_forms import TestPostForm, TestPostForm2
-from ...models import CustomUser
+from ...forms.application_forms import TestPostForm3
 import datetime
 import logging
 
@@ -21,12 +20,12 @@ class createTask(LoginRequiredMixin,CreateView):
     
     def post(request):
         # テストポストのフォーム
-        form = TestPostForm2
-        if form.is_valid():
-            pass
+        postform = TestPostForm3
+        if postform.is_valid():
+            postform.save()
         else:
             logger.debug('---------------form is fail---------------')
-            logger.debug(form.errors.as_json())
+            logger.debug(postform.errors.as_json())
     
 
 class TestPostSearchView(LoginRequiredMixin,ListView):

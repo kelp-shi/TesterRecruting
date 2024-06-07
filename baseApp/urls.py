@@ -2,7 +2,7 @@ from django.urls import path
 from .views.header import index
 from .views.application.posts import createTask, TestPostSearchView, PostDetail
 from .views.application.utility import appHelp
-from .views.auth.authControl import Profile, Register, LogoutView
+from .views.auth.authControl import Profile, Register, LogoutView, RegisterDone, RegisterComplete
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -26,7 +26,11 @@ urlpatterns = [
     #プロフィール画面
     path('profile/<str:username>/', Profile.as_view(), name='profile'),
     #ログアウト
-    path('logout/', LogoutView.as_view(), name='logout')
+    path('logout/', LogoutView.as_view(), name='logout'),
+    #仮登録画面
+    path('register/done/', RegisterDone.as_view(), name='registerDone'),
+    #本登録画面
+    path('register/complete/', RegisterComplete.as_view(), name='registerComplete')
     
 ]
 
