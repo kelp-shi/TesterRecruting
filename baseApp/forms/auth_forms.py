@@ -3,6 +3,9 @@ from ..models import CustomUser
 from django import forms
 
 class SignUpForm(UserCreationForm):
+    """
+    ユーザー登録フォーム
+    """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'].widget.attrs['class'] = 'form-control'
@@ -22,12 +25,18 @@ class SignUpForm(UserCreationForm):
         )
 
 class SignInForm(AuthenticationForm):
+    """
+    ログインフォーム
+    """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'].widget.attrs['class'] = 'form-control'
         self.fields['password'].widget.attrs['class'] = 'form-control'
 
 class ProfileEditForm(forms.Form):
+    """
+    ユーザー情報更新フォーム
+    """
     class Meta:
         model = CustomUser
         fields = (

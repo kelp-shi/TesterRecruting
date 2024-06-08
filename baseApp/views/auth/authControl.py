@@ -1,5 +1,5 @@
 from django.views import View
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView,TemplateView
 from django.contrib.sites.shortcuts import get_current_site
@@ -32,9 +32,14 @@ class ProfileEdit(LoginRequiredMixin, View):
     """
     プロフイール編集ページ
     """
-    def get(self, request):
-        editform = ProfileEditForm
-        return render(request,  '', {'editform':editform})
+    template_name = 'auth/profileEdit.html'
+    slug_field = 'username'
+    slug_url_kwarg = 'username'
+    
+    def get(self, request, username):
+        user = get_object_or_404(CustomUser, username=username)
+        editform = ProfileEditForm(data=request.POST)
+        return render(request, self.template_name, {'editform': editform, 'user': user})
     
     def post(self, request):
         editform = ProfileEditForm(request.POST or None)
@@ -66,12 +71,14 @@ class Register(TemplateView):
     Note:auth/register.htmlのヘルプページを返す
     """
     template_name = 'auth/register.html'
-    #success_url = reverse_lazy("baseApp:index")
+
     logger.debug('------------method start------------')
     def post(self, request, *args, **kwargs):
         form_up = SignUpForm(data=request.POST)
         form_in = SignInForm(data=request.POST)
         if 'logon_btn' in request.POST:
+            # ユーザー登録バリデーションチェック
+            # Trueであった場合、仮登録し認証メールを飛ばす
             if form_up.is_valid():
                 user = form_up.save(commit=False)
                 user.is_active = False
@@ -85,15 +92,16 @@ class Register(TemplateView):
                     'token': dumps(user.pk),
                     'user': user,
                 }
-
-                subject = render_to_string('auth/mail/subject.txt', context) #テキストのURL
-                message = render_to_string('auth/mail/message.txt', context) #テキストのURL
+                # サブジェクト
+                subject = render_to_string('auth/mail/subject.txt', context)
+                # メッセージ
+                message = render_to_string('auth/mail/message.txt', context)
 
                 user.email_user(subject, message)
                 return redirect('baseApp:registerDone')
             else:
-                logger.debug('------------logon error------------')
-                logger.debug(form_up.errors.as_json())
+                logger.error('------------logon error------------')
+                logger.error(form_up.errors.as_json())
             return render(request, 'auth/register.html', {'form_up': form_up, 'form_in': form_in})
         
         elif 'login_btn' in request.POST :
@@ -109,7 +117,7 @@ class Register(TemplateView):
             return render(request, 'auth/register.html', {'form_up': form_up, 'form_in': form_in})
         
         else:
-            logger.debug('auth_control method error')
+            logger.error('auth_control method error')
             pass
             
     def get(self, request):
