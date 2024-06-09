@@ -11,6 +11,7 @@ from baseApp.models import CustomUser
 from testerRecruting.settings import ACTIVATION_TIMEOUT_SECONDS
 from django.http import Http404, HttpResponseBadRequest
 import logging
+from datetime import date
 
 logger = logging.getLogger(__name__)
     
@@ -38,20 +39,26 @@ class ProfileEdit(LoginRequiredMixin, View):
     
     def get(self, request, username):
         user = get_object_or_404(CustomUser, username=username)
-        editform = ProfileEditForm(data=request.POST)
+        editform = ProfileEditForm(instance=user)
         return render(request, self.template_name, {'editform': editform, 'user': user})
     
-    def post(self, request):
-        editform = ProfileEditForm(request.POST or None)
+    def post(self, request, username):
+        user = get_object_or_404(CustomUser, username=username)
+        editform = ProfileEditForm(request.POST, request.FILES, instance=user)
         if editform.is_valid():
-            user_date = CustomUser.objects.get(id=request.user.id)
-            user_date.UserBirth = editform.cleaned_data['userBirth']
-            user_date.UserGender = editform.cleaned_data['UserGender']
+            user_birth = editform.cleaned_data['UserBirth']
+            today = date.today()
+            age = today.year - user_birth.year - ((today.month, today.day) < (user_birth.month, user_birth.day))
+
+            # Save user data
+            user.UserBirth = user_birth
+            user.UserGender = editform.cleaned_data['UserGender']
             if request.FILES.get('profile_img'):
-                user_date.profile_img = editform.cleaned_data['profile_img']
-            user_date.save()
-            return redirect('baseApp:profile')
-        return render(request, 'auth/profile.html')
+                user.profile_img = editform.cleaned_data['profile_img']
+            user.age = age  # Save the calculated age
+            user.save()
+            return redirect('baseApp:profile', username=username)
+        return render(request, self.template_name, {'editform': editform, 'user': user})
             
 
 class LogoutView(View):

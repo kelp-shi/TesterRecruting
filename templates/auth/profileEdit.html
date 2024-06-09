@@ -4,12 +4,15 @@
     {{ form.non_field_errors }}
     <table class="table">
         <tbody>
-            {% for field in form %}
-                <tr>
-                    <th><label for="{{ field.id_for_label }}">{{ field.label }}</label></th>
-                    <td>{{ field }} {{ field.errors }}</td>
-                </tr>
-            {% endfor %}
+            <div class="input-field">
+                <i class="fas fa-user"></i>
+                {{ editform.UserBirth }}
+                {% if editform.UserBirth.errors %}
+                  <div class="error">
+                      {{ editform.UserBirth.errors }}
+                  </div>
+                {% endif %}
+              </div>
         </tbody>
     </table>
     {% csrf_token %}

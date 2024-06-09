@@ -33,10 +33,16 @@ class SignInForm(AuthenticationForm):
         self.fields['username'].widget.attrs['class'] = 'form-control'
         self.fields['password'].widget.attrs['class'] = 'form-control'
 
-class ProfileEditForm(forms.Form):
+class ProfileEditForm(forms.ModelForm):
     """
     ユーザー情報更新フォーム
     """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['UserBirth'].widget.attrs['class'] = 'form-control'
+        self.fields['UserGender'].widget.attrs['class'] = 'form-control'
+        self.fields['profile_img'].widget.attrs['class'] = 'form-control'
+
     class Meta:
         model = CustomUser
         fields = (
