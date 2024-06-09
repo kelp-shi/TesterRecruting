@@ -1,6 +1,6 @@
 {% extends 'global_menu.html' %}
 {% block content %}
-<form action="" method="POST">
+<form enctype="multipart/form-data" method="POST">
     {{ form.non_field_errors }}
     <table class="table">
         <tbody>
@@ -13,6 +13,24 @@
                   </div>
                 {% endif %}
               </div>
+              <div class="input-field">
+                <i class="fas fa-user"></i>
+                {{ editform.UserGender }}
+                {% if editform.UserGender.errors %}
+                  <div class="error">
+                      {{ editform.UserGender.errors }}
+                  </div>
+                {% endif %}
+              </div>
+              <div class="input-field">
+                <i class="fas fa-user"></i>
+                {{ editform.profile_img }}
+                {% if editform.profile_img.errors %}
+                    <div class="error">
+                        {{ editform.profile_img.errors }}
+                    </div>
+                {% endif %}
+            </div>
         </tbody>
     </table>
     {% csrf_token %}

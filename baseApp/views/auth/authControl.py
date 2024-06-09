@@ -54,7 +54,7 @@ class ProfileEdit(LoginRequiredMixin, View):
             user.UserBirth = user_birth
             user.UserGender = editform.cleaned_data['UserGender']
             if request.FILES.get('profile_img'):
-                user.profile_img = editform.cleaned_data['profile_img']
+                user.profile_img = request.FILES['profile_img']
             user.age = age  # Save the calculated age
             user.save()
             return redirect('baseApp:profile', username=username)
