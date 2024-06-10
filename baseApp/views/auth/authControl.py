@@ -11,6 +11,7 @@ from baseApp.models import CustomUser
 from testerRecruting.settings import ACTIVATION_TIMEOUT_SECONDS
 from django.http import Http404, HttpResponseBadRequest
 import logging
+from baseApp.views.auth.utility import imageConvert, imageNameSelect
 from datetime import date
 
 logger = logging.getLogger(__name__)
@@ -54,7 +55,10 @@ class ProfileEdit(LoginRequiredMixin, View):
             user.UserBirth = user_birth
             user.UserGender = editform.cleaned_data['UserGender']
             if request.FILES.get('profile_img'):
-                user.profile_img = request.FILES['profile_img']
+                beforeImg = request.FILES['profile_img']
+                afterImg = imageConvert(beforeImg)
+                imgName = imageNameSelect()
+                user.profile_img.save(imgName, afterImg)
             user.age = age  # Save the calculated age
             user.save()
             return redirect('baseApp:profile', username=username)
