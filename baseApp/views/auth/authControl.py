@@ -11,10 +11,11 @@ from baseApp.models import CustomUser
 from testerRecruting.settings import ACTIVATION_TIMEOUT_SECONDS
 from django.http import Http404, HttpResponseBadRequest
 import logging
-from baseApp.views.auth.utility import imageConvert, imageNameSelect
+from baseApp.views.auth.utility import imageConvert, imageNameSelect, errorEmailSender
 from datetime import date
 
 logger = logging.getLogger(__name__)
+errorMail = errorEmailSender
     
 class Profile(LoginRequiredMixin,DetailView):
     """
@@ -46,17 +47,20 @@ class ProfileEdit(LoginRequiredMixin, View):
     def post(self, request, username):
         user = get_object_or_404(CustomUser, username=username)
         editform = ProfileEditForm(request.POST, request.FILES, instance=user)
+        #プロフイール編集フォーム バリデーションチェック
         if editform.is_valid():
             user_birth = editform.cleaned_data['UserBirth']
             today = date.today()
+            # 年齢計算
             age = today.year - user_birth.year - ((today.month, today.day) < (user_birth.month, user_birth.day))
-
-            # Save user data
             user.UserBirth = user_birth
             user.UserGender = editform.cleaned_data['UserGender']
+            #プロフィール画像アップロード有無確認
             if request.FILES.get('profile_img'):
                 beforeImg = request.FILES['profile_img']
+                #画像をjpgに変換
                 afterImg = imageConvert(beforeImg)
+                #画像名称をランダム設定
                 imgName = imageNameSelect()
                 user.profile_img.save(imgName, afterImg)
             user.age = age  # Save the calculated age
