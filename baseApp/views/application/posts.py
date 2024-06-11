@@ -3,7 +3,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from ...db.application.app_models import TestPost
 from django.contrib.auth.mixins import LoginRequiredMixin
-from ...forms.application_forms import TestPostForm3
+from ...forms.application_forms import TestPostForm
 import datetime
 import logging
 
