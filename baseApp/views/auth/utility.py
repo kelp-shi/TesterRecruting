@@ -2,9 +2,9 @@
 import os
 import io
 import logging
-import random, string
 from PIL import Image
 from baseApp.models import CustomUser
+from baseApp.views.utillity import randomString
 from django.core.signing import dumps
 from django.core.files.base import ContentFile
 from django.template.loader import render_to_string
@@ -25,13 +25,6 @@ def imageConvert(img):
     image.save(output, format='JPEG')  # 画像フォーマットを指定
     output.seek(0)
     return ContentFile(output.getvalue(), '')
-
-def randomString():
-    """
-    ランダムな文字列を作成
-    """
-    randomText = random.choice(string.ascii_letters + string.digits)
-    return randomText
 
 def imageNameSelect():
     """

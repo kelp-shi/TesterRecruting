@@ -2,6 +2,7 @@ from typing import Any
 from django.db import models
 from .TestTypeSubclass import TestTypeSubclass
 from django.contrib.auth import get_user_model
+from django.core.validators import MinValueValidator
 
 class TestPost (models.Model):
     """テストタスククラス
@@ -44,10 +45,10 @@ class TestPost (models.Model):
     Discription = models.TextField('Discription', max_length=5000)
 
     #RecrutingNum(int):募集人数
-    RecrutingNum = models.IntegerField('Recruting People')
+    RecrutingNum = models.IntegerField('Recruting People', validators=[MinValueValidator(1)])
 
     #ApplyNum(int):応募数
-    ApplyNum = models.IntegerField('Apply People')
+    ApplyNum = models.IntegerField('Apply People', validators=[MinValueValidator(1)])
 
     #TestType(int):テスト種類
     TestType = models.IntegerField('Test Type', choices=TEST_TYPE_CHOICE, default=1)
@@ -57,7 +58,7 @@ class TestPost (models.Model):
     TestTypeSubcls = models.CharField(choices=TESTTYPE_CHOICES, default=TestTypeSubclass.ART_AND_DESIGN, max_length=100)
 
     #RecrutingPeriodFlg(bool):募集有無フラグ
-    RecrutingPeriodFlg = models.BooleanField('Recruting presence or absence Flag', default=False)
+    RecrutingPeriodFlg = models.BooleanField('Recruting presence or absence Flag', default=True)
 
     #RecrutingPeriodSt(DateTime):募集開始日
     RecrutingPeriodSt = models.DateTimeField('Recruting Period Start')
@@ -72,10 +73,10 @@ class TestPost (models.Model):
     TestEnd = models.DateTimeField('Test End')
 
     #DelFlg(bool):削除フラグ
-    DelFlg = models.BooleanField('Delete Flag')
+    DelFlg = models.BooleanField('Delete Flag', default=False)
 
     #CreateUser(ForeignKey):投稿者
-    CreateUser = models.OneToOneField('baseApp.CustomUser', on_delete=models.CASCADE, blank=True, null=True)
+    CreateUser = models.ForeignKey('baseApp.CustomUser', on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return self.PostName

@@ -1,31 +1,41 @@
 from django.views.generic import ListView, DetailView, CreateView
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
+from django.urls import reverse_lazy
 from ...db.application.app_models import TestPost
 from django.contrib.auth.mixins import LoginRequiredMixin
 from ...forms.application_forms import TestPostForm
+from baseApp.views.utillity import randomNumver
+
 import datetime
 import logging
 
 # Create your views here.
 logger = logging.getLogger(__name__)
 
-class createTask(LoginRequiredMixin,CreateView):
+class createTask(LoginRequiredMixin, CreateView):
     """
     新規テストポストの作成
     """
     model = TestPost
+    form_class = TestPostForm
     template_name = 'app/createpost.html'
-    fields = ['PostName']
-    
-    def post(request):
-        # テストポストのフォーム
-        postform = TestPostForm3
-        if postform.is_valid():
-            postform.save()
-        else:
-            logger.debug('---------------form is fail---------------')
-            logger.debug(postform.errors.as_json())
+
+    def get_success_url(self):
+        return reverse_lazy('baseApp:detail', kwargs={'pk': self.object.pk})
+
+    def form_valid(self, form):
+        # 投稿者を現在のユーザーに設定
+        form.instance.id = randomNumver(10)
+        form.instance.CreateUser = self.request.user
+        response = super().form_valid(form)
+        self.request.user.MyTest.add(form.instance)
+        return response
+
+    def form_invalid(self, form):
+        logger.debug('---------------form is fail---------------')
+        logger.debug(form.errors.as_json())
+        return super().form_invalid(form)
     
 
 class TestPostSearchView(LoginRequiredMixin,ListView):
