@@ -1,5 +1,6 @@
 from typing import Any
 from django.db import models
+from django.utils import timezone
 from .TestTypeSubclass import TestTypeSubclass
 from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator
@@ -80,5 +81,20 @@ class TestPost (models.Model):
 
     def __str__(self):
         return self.PostName
+    
 
+class JoinRequest(models.Model):
+    """
+    ダイレクトメッセージクラス
+    """
+    #オーナー
+    DmOwner = models.ForeignKey('baseApp.CustomUser', on_delete=models.CASCADE, blank=True, null=True)
 
+    #ユーザー
+    DmUser = models.ForeignKey('baseApp.CustomUser', on_delete=models.CASCADE, blank=True, null=True)
+
+    #アピール文章
+    AppealText = models.TextField('Appeal', max_length=5000)
+
+    #投稿日
+    create_dt = models.DateTimeField("date joined", default=timezone.now)
