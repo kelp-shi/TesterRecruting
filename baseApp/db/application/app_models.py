@@ -72,12 +72,18 @@ class TestPost (models.Model):
 class JoinRequest(models.Model):
     """
     申し込みモデルクラス
+
+    Attributes:
+        Sender(ForeignKey):送り主
+        SubjectTest(ForeignKey):対象テスト
+        AppealText(txt):アピール文章
+        Create_dt(DateTime):投稿日
     """
-    #送り主
+    #Sender(ForeignKey):送り主
     Sender = models.ForeignKey('baseApp.CustomUser', on_delete=models.CASCADE, blank=True, null=True)
-    #テスト
-    subjectTest = models.ForeignKey('baseApp.TestPost', on_delete=models.CASCADE, blank=True, null=True)
-    #アピール文章
+    #SubjectTest(ForeignKey):対象テスト
+    SubjectTest = models.ForeignKey('baseApp.TestPost', on_delete=models.CASCADE, blank=True, null=True)
+    #AppealText(txt):アピール文章
     AppealText = models.TextField('Appeal', max_length=5000)
-    #投稿日
-    create_dt = models.DateTimeField(auto_now_add=True)
+    #Create_dt(DateTime):投稿日
+    Create_dt = models.DateTimeField(auto_now_add=True)
