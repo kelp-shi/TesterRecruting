@@ -1,5 +1,5 @@
 from django import forms
-from ..db.application.app_models import TestPost
+from ..db.application.app_models import TestPost, JoinRequest
 from ..db.application.TestTypeSubclass import *
 
 class TestPostForm(forms.ModelForm):
@@ -27,3 +27,8 @@ class TestPostForm(forms.ModelForm):
             'RecrutingPeriodEnd',
             'TestStart',
             'TestEnd']
+        
+class ApplyForm(forms.ModelForm):
+    class Meta:
+        model = JoinRequest
+        fields = ['AppealText']

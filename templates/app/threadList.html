@@ -1,0 +1,13 @@
+{% extends 'global_menu.html' %}
+
+{% block content %}
+  <h1>Message Threads</h1>
+  <ul>
+    {% for user, messages in threads.items %}
+      <li>
+        <a href="{% url 'message_detail' user.id %}">{{ user.username }}</a>
+        ({{ messages|length }} messages)
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}

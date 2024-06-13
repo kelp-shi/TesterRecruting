@@ -1,11 +1,13 @@
-from django.views.generic import ListView, DetailView, CreateView
+from django.http import HttpResponse
+from django.views.generic import ListView, DetailView, CreateView, FormView
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.urls import reverse_lazy
 from ...db.application.app_models import TestPost
 from django.contrib.auth.mixins import LoginRequiredMixin
-from ...forms.application_forms import TestPostForm
+from ...forms.application_forms import TestPostForm, ApplyForm
 from baseApp.views.utillity import randomNumver
+from django.shortcuts import get_object_or_404
 
 import datetime
 import logging
@@ -133,3 +135,17 @@ class PostDetail(LoginRequiredMixin,DetailView):
         logger.debug('set context')
         logger.debug('---------------end get_context_method---------------')
         return context
+    
+class ApplyTask(FormView):
+    """
+    申請クラス
+
+    Note:詳細ページで応募ボタン押下時に呼び出される
+    """
+    form_class = ApplyForm
+    template_name = ''
+
+    def form_valid(self, form):
+        post_id = self.kwargs['id']
+        post = get_object_or_404(TestPost, id=post_id)
+        return super().form_valid(form)
