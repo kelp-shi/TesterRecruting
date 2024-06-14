@@ -1,0 +1,21 @@
+{% extends 'global_menu.html' %}
+
+{% block content %}
+  <h1>Message Threads</h1>
+  {% if threads %}
+    <ul>
+      {% for user, messages in threads.items %}
+        <li>
+          {% if messages %}
+            <a href="{% url 'message_detail' user.id %}">{{ user.username }}</a>
+            ({{ messages|length }} messages)
+          {% else %}
+            <p>None</p>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No message threads available.</p>
+  {% endif %}
+{% endblock %}

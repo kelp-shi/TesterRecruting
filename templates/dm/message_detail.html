@@ -1,0 +1,18 @@
+{% extends 'global_menu.html' %}
+{% block content %}
+  <h1>Messages with {{ other_user.username }}</h1>
+  <div>
+    {% for message in messages %}
+      <div>
+        <strong>{{ message.sender.username }}</strong>:
+        <p>{{ message.content }}</p>
+        <span>{{ message.timestamp }}</span>
+      </div>
+    {% endfor %}
+  </div>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Send</button>
+  </form>
+{% endblock %}
