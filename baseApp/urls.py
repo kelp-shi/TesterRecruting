@@ -1,9 +1,9 @@
 from django.urls import path
-from .views.header import index
-from .views.application.posts import createTask, TestPostSearchView, PostDetail
-from .views.application.utility import appHelp
-from baseApp.views.application.dmControl import ThreadListView, MessageDetailView
-from .views.auth.authControl import Profile, Register, LogoutView, RegisterDone, RegisterComplete, ProfileEdit
+from baseApp.views.header import index
+from baseApp.views.application.posts import createTask, TestPostSearchView, PostDetail
+from baseApp.views.application.utility import appHelp
+from baseApp.views.dm.dmControl import ThreadListView, MessageDetailView
+from baseApp.views.auth.authControl import Profile, Register, LogoutView, RegisterDone, RegisterComplete, ProfileEdit
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -24,7 +24,7 @@ urlpatterns = [
     #スレッドページ
     path('threads/', ThreadListView.as_view(), name='thread_list'),
     #DMページ
-    path('threads/<int:user_id>/', MessageDetailView.as_view(), name='message_detail'),
+    path('threads/<int:room_id>/', MessageDetailView.as_view(), name='message_detail'),
 
     #----------Help----------
     #ヘルプページ

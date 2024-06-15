@@ -22,7 +22,7 @@ class Massage(models.Model):
     #Sender(ForeignKey):送り主
     Sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='sent_messages')
     #Recipient(ForeignKey):受取人
-    Recipient = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='received_messages')
+    #Recipient = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='received_messages')
     #Text(Text):DM内容
     Text = models.TextField(verbose_name="メッセージ内容")
     #Created_at(DateTime):作成日

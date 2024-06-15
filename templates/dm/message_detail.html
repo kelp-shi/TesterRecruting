@@ -5,8 +5,8 @@
     {% for message in messages %}
       <div>
         <strong>{{ message.sender.username }}</strong>:
-        <p>{{ message.content }}</p>
-        <span>{{ message.timestamp }}</span>
+        <p>{{ message.Text }}</p>
+        <span>{{ message.Created_at }}</span>
       </div>
     {% endfor %}
   </div>
