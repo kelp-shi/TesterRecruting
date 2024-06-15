@@ -19,7 +19,7 @@ class createTask(LoginRequiredMixin, CreateView):
     """
     新規テストポストの作成
     """
-    model = TestPost
+    #model = TestPost
     form_class = TestPostForm
     template_name = 'app/createpost.html'
 
@@ -56,7 +56,7 @@ class TestPostSearchView(LoginRequiredMixin,ListView):
     logger.info('active model count: ' + str(model.objects.filter(RecrutingPeriodFlg=True, DelFlg=False).count()))
     template_name = 'app/postlist.html'
     # ページネーション
-    #paginate_by = 10
+    paginate_by = 10
 
     @method_decorator(cache_page(60))  # キャッシュを60秒間有効にする
     def dispatch(self, *args, **kwargs):
@@ -149,3 +149,11 @@ class ApplyTask(FormView):
         post_id = self.kwargs['id']
         post = get_object_or_404(TestPost, id=post_id)
         return super().form_valid(form)
+    
+class authorization():
+    """
+    テストユーザー認可クラス ※未実装
+
+    Note:申請を送ったユーザーを認証する
+    """
+    pass

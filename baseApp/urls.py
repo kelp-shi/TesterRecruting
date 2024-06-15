@@ -19,10 +19,14 @@ urlpatterns = [
     path('postlist/', TestPostSearchView.as_view(), name='postlist'),
     #テスト詳細ページ
     path('detail/<int:pk>/', PostDetail.as_view(), name='detail'),
+
+    #----------DM----------
     #スレッドページ
     path('threads/', ThreadListView.as_view(), name='thread_list'),
     #DMページ
     path('threads/<int:user_id>/', MessageDetailView.as_view(), name='message_detail'),
+
+    #----------Help----------
     #ヘルプページ
     path('help/', appHelp.as_view(), name='help'),
 

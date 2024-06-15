@@ -1,8 +1,14 @@
 from django.db import models
-    
-class DirectMassage(models.Model):
+from baseApp.models import CustomUser
+
+class DmRoom(models.Model):
+
+    Member = models.ManyToManyField(CustomUser, related_name='room')
+    create_at = models.DateTimeField(auto_now_add=True)
+
+class Massage(models.Model):
     """
-    ダイレクトメッセージクラス
+    メッセージクラス
 
     Attributes:
         Sender(ForeignKey):送り主
@@ -12,10 +18,11 @@ class DirectMassage(models.Model):
         Created_at(DateTime):作成日
         ReadFlg(bool):既読有無フラグ
     """
+    Room = models.ForeignKey(DmRoom, on_delete=models.CASCADE, related_name='related_room')
     #Sender(ForeignKey):送り主
-    Sender = models.ForeignKey('baseApp.TestPost', on_delete=models.CASCADE, related_name='sent_messages')
+    Sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='sent_messages')
     #Recipient(ForeignKey):受取人
-    Recipient = models.ForeignKey('baseApp.TestPost', on_delete=models.CASCADE, related_name='received_messages')
+    Recipient = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='received_messages')
     #Text(Text):DM内容
     Text = models.TextField(verbose_name="メッセージ内容")
     #Created_at(DateTime):作成日
@@ -23,6 +30,5 @@ class DirectMassage(models.Model):
     #ReadFlg(bool):既読有無フラグ
     ReadFlg = models.BooleanField(default=False)
 
-    def __str__(self):
-        return f'{self.sender}: {self.text[:30]}'
-
+    #def __str__(self):
+    #    return self.Sender
