@@ -1,13 +1,14 @@
-from django.http import HttpResponse
-from django.views.generic import ListView, DetailView, CreateView, FormView
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
-from django.urls import reverse_lazy
-from ...db.application.app_models import TestPost
 from django.contrib.auth.mixins import LoginRequiredMixin
-from ...forms.application_forms import TestPostForm, ApplyForm
+from django.views.generic import ListView, DetailView, CreateView, FormView
+from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Q
+from django.urls import reverse_lazy, reverse
+
+from baseApp.db.application.app_models import TestPost
+
+from baseApp.forms.application_forms import *
 from baseApp.views.utillity import randomNumver
-from django.shortcuts import get_object_or_404
+from baseApp.models import CustomUser
 
 import datetime
 import logging
@@ -58,9 +59,9 @@ class TestPostSearchView(LoginRequiredMixin,ListView):
     # ページネーション
     paginate_by = 10
 
-    @method_decorator(cache_page(60))  # キャッシュを60秒間有効にする
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    #@method_decorator(cache_page(60))  # キャッシュを60秒間有効にする
+    #def dispatch(self, *args, **kwargs):
+    #    return super().dispatch(*args, **kwargs)
     
     def get_queryset(self):
         query = self.request.GET.get('query')
@@ -126,34 +127,88 @@ class PostDetail(LoginRequiredMixin,DetailView):
     Note:テストポストの詳細を表示
     """
     model = TestPost
-    template_name = 'app/detail.html'
-
+    context_object_name = 'postdetail'
+    #テストポストデータ取得
     def get_context_data(self, **kwargs):
-        logger.debug('---------------start get_context_method---------------')
+        #存在確認フラグ
+        existenceFlg = False
         context = super().get_context_data(**kwargs)
-        context['postdetail'] = TestPost.objects.all()
-        logger.debug('set context')
-        logger.debug('---------------end get_context_method---------------')
+
+        #存在存在チェック
+        existenceUser = JoinRequest.objects.filter(Q(SubjectTest=self.kwargs['pk']) & (Q(Sender=self.request.user) & Q(authorizationFlg=False)))
+
+        #既に申請されていた場合、存在確認フラグをTrueに
+        if existenceUser.exists():
+            existenceFlg = True
+
+        context['id'] = self.kwargs['pk']
+        context['existenceFlg'] = existenceFlg
         return context
-    
+
+    #accessユーザによってテンプレート切り替え
+    def get_template_names(self):
+        accessUser = self.request.user
+        if self.object.CreateUser == accessUser:
+            return ['app/createUser_detail.html']
+        else:
+            return ['app/detail.html']
+        
 class ApplyTask(FormView):
     """
     申請クラス
 
     Note:詳細ページで応募ボタン押下時に呼び出される
     """
-    form_class = ApplyForm
-    template_name = ''
+    def get(self, request, pk):
+        form = ApplyForm()
+        return render(request, 'app/applytask.html', {'form':form})
 
-    def form_valid(self, form):
-        post_id = self.kwargs['id']
-        post = get_object_or_404(TestPost, id=post_id)
-        return super().form_valid(form)
+    def post(self, request, pk):
+        form = ApplyForm(request.POST)
+        if form.is_valid():
+            post = get_object_or_404(TestPost, pk=pk)
+            join_request = form.save(commit=False)
+            join_request.Sender = request.user
+            join_request.SubjectTest = post
+            join_request.save()
+            return redirect(reverse('baseApp:detail', kwargs={'pk': pk}))
+        return render(request, 'app/applytask.html', {'form': form})
     
-class authorization():
+class Authorization(FormView, ListView):
     """
     テストユーザー認可クラス ※未実装
 
     Note:申請を送ったユーザーを認証する
     """
-    pass
+    template_name = 'app/authorization.html'
+    context = 'authorization'
+    form_class = AuthorizationForm
+
+    def get_queryset(self):
+        testid = self.kwargs['pk']
+        logger.info('get query -- ')
+        # JoinRequestからSubjectTest_idが一致するSender情報を取得
+        sender_ids = JoinRequest.objects.filter(SubjectTest_id=testid, authorizationFlg = False).values_list('Sender_id', flat=True)
+        # Sender情報を元にCustomUserを検索
+        return CustomUser.objects.filter(id__in=sender_ids)
+
+    def get_context_data(self, **kwargs):
+        testid = self.kwargs['pk']
+        context = super().get_context_data(**kwargs)
+        # TestPostオブジェクトを取得してコンテキストに追加
+        subject_test = get_object_or_404(TestPost, pk=testid)
+        context['subject_test'] = subject_test
+        context['custom_users'] = self.get_queryset()
+        return context
+
+    #認証押下時の処理
+    def post(self, request, *args, **kwargs):
+        testid = self.kwargs['pk']
+        join_requests = JoinRequest.objects.filter(SubjectTest_id=testid, authorizationFlg = False)
+        
+        for join_request in join_requests:
+            if str(join_request.Sender_id) in request.POST.getlist('select'):
+                join_request.authorizationFlg = True
+                join_request.save()
+
+        return redirect(reverse('baseApp:detail', kwargs={'pk': testid}))

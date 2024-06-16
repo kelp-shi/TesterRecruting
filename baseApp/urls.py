@@ -1,9 +1,9 @@
 from django.urls import path
 from baseApp.views.header import index
-from baseApp.views.application.posts import createTask, TestPostSearchView, PostDetail
+from baseApp.views.application.posts import *
 from baseApp.views.application.utility import appHelp
 from baseApp.views.dm.dmControl import ThreadListView, MessageDetailView
-from baseApp.views.auth.authControl import Profile, Register, LogoutView, RegisterDone, RegisterComplete, ProfileEdit
+from baseApp.views.auth.authControl import *
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -19,6 +19,10 @@ urlpatterns = [
     path('postlist/', TestPostSearchView.as_view(), name='postlist'),
     #テスト詳細ページ
     path('detail/<int:pk>/', PostDetail.as_view(), name='detail'),
+    #申し込みページ
+    path('detail/<int:pk>/join/', ApplyTask.as_view(), name='ApplyTask'),
+    #申し込み者リスト
+    path('detail/<int:pk>/applylist/', Authorization.as_view(), name='Authorization'),
 
     #----------DM----------
     #スレッドページ

@@ -1,0 +1,9 @@
+{% extends 'global_menu.html' %}
+{% load static %}
+{% block content %}
+<body>
+    <p>creater view</p>
+    <a href="{% url 'baseApp:Authorization' pk=postdetail.pk %}">Apply List</a>
+</body>
+
+{% endblock content %}

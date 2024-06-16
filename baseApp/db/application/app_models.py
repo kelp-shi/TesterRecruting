@@ -77,6 +77,7 @@ class JoinRequest(models.Model):
         Sender(ForeignKey):送り主
         SubjectTest(ForeignKey):対象テスト
         AppealText(txt):アピール文章
+        authorizationFlg(bool):認証フラグ
         Create_dt(DateTime):投稿日
     """
     #Sender(ForeignKey):送り主
@@ -85,5 +86,7 @@ class JoinRequest(models.Model):
     SubjectTest = models.ForeignKey('baseApp.TestPost', on_delete=models.CASCADE, blank=True, null=True)
     #AppealText(txt):アピール文章
     AppealText = models.TextField('Appeal', max_length=5000)
+    #authorizationFlg(bool):認証フラグ
+    authorizationFlg = models.BooleanField(default=False)
     #Create_dt(DateTime):投稿日
     Create_dt = models.DateTimeField(auto_now_add=True)

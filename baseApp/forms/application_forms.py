@@ -29,6 +29,15 @@ class TestPostForm(forms.ModelForm):
             'TestEnd']
         
 class ApplyForm(forms.ModelForm):
+
     class Meta:
         model = JoinRequest
         fields = ['AppealText']
+
+
+class AuthorizationForm(forms.ModelForm):
+    select = forms.BooleanField(required=False, label='認証')
+
+    class Meta:
+        model = JoinRequest
+        fields = []

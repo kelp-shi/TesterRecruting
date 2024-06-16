@@ -11,7 +11,11 @@
 <body>
     {% block content %}
     <p>{{postdetail.PostName}}</p>
-    {% endblock content %}
     <p>help</p>
+    {% if existenceFlg == False %}
+    <a href="{% url 'baseApp:ApplyTask' pk=postdetail.pk %}" class="btn btn-primary">Join Task</a>
+    {% else %}
+    {% endif %}
+    {% endblock content %}
 </body>
 </html>
