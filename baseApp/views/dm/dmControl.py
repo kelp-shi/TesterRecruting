@@ -8,13 +8,6 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-class createDirectMsg():
-    """
-    DM新規作成クラス
-
-    Note:認可されたユーザーとの間にDMを開く
-    """
-
 class ThreadListView(LoginRequiredMixin, View):
     """
     スレッドリストビュークラス
@@ -59,4 +52,13 @@ class MessageDetailView(LoginRequiredMixin, View):
         messages.filter(Sender=request.user).update(ReadFlg=True)
 
         return render(request, 'dm/message_detail.html', {'form': form, 'messages': messages, 'room': room})
+    
+def createDirectMsgforApply():
+    """
+    認証DM新規作成メソッド
+
+    Note:認可されたユーザーとの間にDMを開く
+    """
+    pass
+    
     
