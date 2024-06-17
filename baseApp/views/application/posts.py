@@ -6,6 +6,7 @@ from django.urls import reverse_lazy, reverse
 
 from baseApp.db.application.app_models import TestPost
 
+from baseApp.views.dm.dmControl import createDirectMsgforApply
 from baseApp.forms.application_forms import *
 from baseApp.views.utillity import randomNumver
 from baseApp.models import CustomUser
@@ -205,10 +206,13 @@ class Authorization(FormView, ListView):
     def post(self, request, *args, **kwargs):
         testid = self.kwargs['pk']
         join_requests = JoinRequest.objects.filter(SubjectTest_id=testid, authorizationFlg = False)
+        sender_ids = JoinRequest.objects.filter(SubjectTest_id=testid, authorizationFlg = False).values_list('Sender_id', flat=True)
         
         for join_request in join_requests:
             if str(join_request.Sender_id) in request.POST.getlist('select'):
                 join_request.authorizationFlg = True
                 join_request.save()
+                
+                createDirectMsgforApply(self, request, self.get_queryset(), sender_ids)
 
         return redirect(reverse('baseApp:detail', kwargs={'pk': testid}))
