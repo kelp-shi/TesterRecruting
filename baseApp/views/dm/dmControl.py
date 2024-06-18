@@ -53,14 +53,26 @@ class MessageDetailView(LoginRequiredMixin, View):
 
         return render(request, 'dm/message_detail.html', {'form': form, 'messages': messages, 'room': room})
     
-def createDirectMsgforApply(self, request, menber1, menber2):
+def createDirectMsgforApply(self, request, member1, member2, msg):
     """
     認証DM新規作成メソッド
 
     Note:認可されたユーザーとの間にDMを開く
     """
-    model = DmRoom
-    model.Member = menber1, menber2
-    model.save()
+
+    # DmRoom作成
+    dmRoom = DmRoom.objects.create()
+    dmRoom.Member.add(member1)
+    dmRoom.Member.add(member2)
+    dmRoom.save()
+
+    # Message作成
+    message = Massage.objects.create(
+        Room=dmRoom,
+        Sender=member2,
+        Text=msg
+    )
+    message.save()
+
     
     

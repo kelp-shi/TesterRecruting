@@ -208,11 +208,17 @@ class Authorization(FormView, ListView):
         join_requests = JoinRequest.objects.filter(SubjectTest_id=testid, authorizationFlg = False)
         sender_ids = JoinRequest.objects.filter(SubjectTest_id=testid, authorizationFlg = False).values_list('Sender_id', flat=True)
         
+        # Username取得
+        sender_info = CustomUser.objects.filter(id__in=sender_ids)
+        usernames = [user.username for user in sender_info]
+        usernames_str = ', '.join(usernames)
+        
         for join_request in join_requests:
             if str(join_request.Sender_id) in request.POST.getlist('select'):
                 join_request.authorizationFlg = True
                 join_request.save()
-                
-                createDirectMsgforApply(self, request, self.get_queryset(), sender_ids)
+
+                msg = usernames_str + ' があなたとのDMを作成しました。'
+                createDirectMsgforApply(self, request, self.get_queryset(), sender_ids, msg)
 
         return redirect(reverse('baseApp:detail', kwargs={'pk': testid}))
