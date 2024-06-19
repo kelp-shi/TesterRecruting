@@ -11,6 +11,7 @@
 <body>
     {% block content %}
     <p>{{postdetail.PostName}}</p>
+    <p>user ditail view</p>
     <p>help</p>
     {% if existenceFlg == False %}
     <a href="{% url 'baseApp:ApplyTask' pk=postdetail.pk %}" class="btn btn-primary">Join Task</a>
