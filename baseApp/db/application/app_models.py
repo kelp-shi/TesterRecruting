@@ -66,7 +66,7 @@ class TestPost (models.Model):
     CreateUser = models.ForeignKey('baseApp.CustomUser', on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
-        return self.PostName
+        return f"{self.id} - {self.PostName} - {self.CreateUser.username}"
     
 
 class JoinRequest(models.Model):
@@ -90,3 +90,6 @@ class JoinRequest(models.Model):
     authorizationFlg = models.BooleanField(default=False)
     #Create_dt(DateTime):投稿日
     Create_dt = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.Sender.id
