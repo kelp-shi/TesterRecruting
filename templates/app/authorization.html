@@ -2,6 +2,7 @@
 {% block content %}
   <h1>テストユーザー認可</h1>
   <h2>対象テスト: {{ subject_test.name }}</h2>
+  <p>テストにアサインする</p>
 
   <form method="post">
     {% csrf_token %}
