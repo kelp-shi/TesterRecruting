@@ -66,7 +66,7 @@ class TestPost (models.Model):
     CreateUser = models.ForeignKey('baseApp.CustomUser', on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
-        return f"{self.id} - {self.PostName} - {self.CreateUser.username}"
+        return f"{self.id} - {self.PostName} - {self.CreateUser.id}"
     
 
 class JoinRequest(models.Model):
@@ -92,4 +92,4 @@ class JoinRequest(models.Model):
     Create_dt = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.Sender.id
+        return f"{self.id} - {self.SubjectTest} - {self.Sender.id}"

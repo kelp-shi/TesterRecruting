@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from baseApp.db.application.dm_models import DmRoom, Massage
+from baseApp.models import CustomUser
 from baseApp.forms.dm_forms import MessageForm
 from django.http import Http404
 import logging
@@ -58,18 +59,23 @@ def createDirectMsgforApply(self, request, member1, member2, msg):
     認証DM新規作成メソッド
 
     Note:認可されたユーザーとの間にDMを開く
+    member1: 募集者
+    member2: 申込者
     """
+    #logger.debug(member1 + ":" + member2 + ":" + msg)
 
+    creatuser = CustomUser.objects.get(id=member1)
+    senduser = CustomUser.objects.get(id=member2)
     # DmRoom作成
     dmRoom = DmRoom.objects.create()
-    dmRoom.Member.add(member1)
-    dmRoom.Member.add(member2)
+    dmRoom.Member.add(creatuser)
+    dmRoom.Member.add(senduser)
     dmRoom.save()
 
     # Message作成
     message = Massage.objects.create(
         Room=dmRoom,
-        Sender=member2,
+        Sender=creatuser,
         Text=msg
     )
     message.save()

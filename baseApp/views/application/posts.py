@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import get_user_model
 from django.views.generic import ListView, DetailView, CreateView, FormView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
@@ -205,20 +206,28 @@ class Authorization(FormView, ListView):
     #認証押下時の処理
     def post(self, request, *args, **kwargs):
         testid = self.kwargs['pk']
-        join_requests = JoinRequest.objects.filter(SubjectTest_id=testid, authorizationFlg = False)
-        sender_ids = JoinRequest.objects.filter(SubjectTest_id=testid, authorizationFlg = False).values_list('Sender_id', flat=True)
-        
-        # Username取得
-        sender_info = CustomUser.objects.filter(id__in=sender_ids)
-        usernames = [user.username for user in sender_info]
-        usernames_str = ', '.join(usernames)
-        
-        for join_request in join_requests:
-            if str(join_request.Sender_id) in request.POST.getlist('select'):
-                join_request.authorizationFlg = True
-                join_request.save()
+        targetTest = get_object_or_404(TestPost, id=testid)
+        createuser_id = targetTest.CreateUser.id
 
-                msg = usernames_str + ' があなたとのDMを作成しました。'
-                createDirectMsgforApply(self, request, self.get_queryset(), sender_ids, msg)
+        selected_ids = request.POST.getlist('select')
+        print(f"selected_id: {selected_ids}")
+        print(f"creatuser_id: {createuser_id}")
+
+        if not selected_ids:
+            print("No Ids selected")
+            return
+
+        # Username取得
+        creater_info = get_object_or_404(get_user_model(), id=createuser_id)
+        creater_name = creater_info.username
+
+        for selected_id in selected_ids:
+            # JoinRequestオブジェクトを取得してauthorizationFlgをTrueに設定
+            join_request = get_object_or_404(JoinRequest, Sender_id=selected_id, SubjectTest_id=testid)
+            join_request.authorizationFlg = True
+            join_request.save()
+            
+            msg = creater_name + "があなたとのDMを作成しました。"
+            createDirectMsgforApply(self, request, createuser_id, selected_id, msg)
 
         return redirect(reverse('baseApp:detail', kwargs={'pk': testid}))
