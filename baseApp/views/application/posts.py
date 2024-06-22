@@ -2,6 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
 from django.views.generic import ListView, DetailView, CreateView, FormView
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 from django.db.models import Q
 from django.urls import reverse_lazy, reverse
 
@@ -73,7 +74,7 @@ class TestPostSearchView(LoginRequiredMixin,ListView):
 
         if query:
             # 名称検索（部分一致可:大小区別なし）
-            queryset = TestPost.objects.filter(PostName__icontains=query)
+            queryset = TestPost.objects.filter(PostName__icontains=query, RecrutingPeriodFlg=True)
         else:
             # テストポストの全件取得（条件：募集フラグ==True, 削除フラグ==Falese）
             queryset = TestPost.objects.filter(RecrutingPeriodFlg=True, DelFlg=False).order_by('id')
@@ -176,14 +177,13 @@ class ApplyTask(FormView):
             return redirect(reverse('baseApp:detail', kwargs={'pk': pk}))
         return render(request, 'app/applytask.html', {'form': form})
     
-class Authorization(FormView, ListView):
+class Authorization(FormView):
     """
-    テストユーザー認可クラス ※未実装
+    テストユーザー認可クラス
 
     Note:申請を送ったユーザーを認証する
     """
     template_name = 'app/authorization.html'
-    context = 'authorization'
     form_class = AuthorizationForm
 
     def get_queryset(self):
@@ -214,8 +214,14 @@ class Authorization(FormView, ListView):
         print(f"creatuser_id: {createuser_id}")
 
         if not selected_ids:
-            print("No Ids selected")
-            return
+            messages.error(request, 'エラー！申込者を選択していません。')
+            return self.form_invalid(self.get_form())
+        
+        # 募集人数に対し選択された申込者が多い場合は処理を終了
+        join_request_check = JoinRequest.objects.filter(SubjectTest_id=testid, authorizationFlg=True)
+        if len(selected_ids) > (targetTest.RecrutingNum - join_request_check.count()):
+            messages.error(request, 'エラー！認証人数が募集人数を超えています。募集人数：' + str(targetTest.RecrutingNum))
+            return self.form_invalid(self.get_form())
 
         # Username取得
         creater_info = get_object_or_404(get_user_model(), id=createuser_id)
@@ -228,6 +234,21 @@ class Authorization(FormView, ListView):
             join_request.save()
             
             msg = creater_name + "があなたとのDMを作成しました。"
+            # DM作成メソッド実行
             createDirectMsgforApply(self, request, createuser_id, selected_id, msg)
+        
+        # 終了処理
+        join_request_check = JoinRequest.objects.filter(SubjectTest_id=testid, authorizationFlg=True)
+        if join_request_check.count() >= targetTest.RecrutingNum:
+            #人数に達していれば募集フラグをfalseに変更
+            join_request_end = get_object_or_404(TestPost, id=testid)
+            join_request_end.RecrutingPeriodFlg = False
+            join_request_end.save()
+            return render(request, 'app/authorization.html', {'message': '処理終了'})
+
 
         return redirect(reverse('baseApp:detail', kwargs={'pk': testid}))
+    
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        return self.render_to_response(context)

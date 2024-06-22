@@ -1,18 +1,20 @@
 from django.views import View
+from django.http import HttpResponseBadRequest
 from django.shortcuts import redirect, render, get_object_or_404
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import DetailView,TemplateView
-from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth import login, logout
-from django.core.signing import loads, BadSignature, SignatureExpired, dumps
-from baseApp.forms.auth_forms import SignUpForm, SignInForm, ProfileEditForm
+from django.views.generic import DetailView,TemplateView
 from django.template.loader import render_to_string
-from baseApp.models import CustomUser
+from django.core.signing import loads, BadSignature, SignatureExpired, dumps
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.sites.shortcuts import get_current_site
+
 from testerRecruting.settings import ACTIVATION_TIMEOUT_SECONDS
-from django.http import Http404, HttpResponseBadRequest
-import logging
+from baseApp.forms.auth_forms import SignUpForm, SignInForm, ProfileEditForm
+from baseApp.models import CustomUser
 from baseApp.views.auth.utility import imageConvert, imageNameSelect, errorEmailSender
+
 from datetime import date
+import logging
 
 logger = logging.getLogger(__name__)
 errorMail = errorEmailSender
