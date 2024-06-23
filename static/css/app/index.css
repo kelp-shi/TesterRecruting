@@ -1,0 +1,83 @@
+body {
+    font-family: "M PLUS Rounded 1c", sans-serif;
+    color: #3c3c3c;
+    margin: 0;
+    padding: 0;
+}
+
+h2 {
+    font-weight: 500;
+    font-style: normal;
+    color: #5e5e5e;
+}
+
+h3 {
+    font-weight: 700;
+    font-style: normal;
+    color: #3c3c3c;
+}
+
+.news-header {
+    background: linear-gradient(to right, #2d5431, #89a77f);
+}
+
+.card {
+    border-radius: 10px;
+    margin: 10px;
+}
+
+.card-body {
+    padding: 15px;
+}
+
+.card-title {
+    font-size: 1.25rem;
+}
+
+.card-text {
+    font-size: 0.875rem;
+}
+
+.btn-link {
+    font-size: 0.875rem;
+    text-decoration: none;
+    color: #0066cc;
+    padding-left: 0;
+}
+
+.border-bottom {
+    border-bottom: 2px solid #ddd !important;
+}
+
+.fixed-left, .fixed-right {
+    position: fixed;
+    top: 0;
+    height: 100%;
+    z-index: 1;
+}
+
+.fixed-left {
+    left: 0;
+    border-right: 1px solid #ddd;
+}
+
+.fixed-right {
+    right: 0;
+    border-left: 1px solid #ddd;
+}
+
+.main-content {
+    position: relative;
+    z-index: 2;
+    background: #fff;
+    padding-top: 20px;
+}
+
+@media (min-width: 992px) {
+    .offset-md-2 {
+        margin-left: 16.66666667%;
+    }
+    .offset-lg-2 {
+        margin-left: 16.66666667%;
+    }
+}
