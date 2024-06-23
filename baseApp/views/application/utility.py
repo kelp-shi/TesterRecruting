@@ -12,7 +12,7 @@ class appHelp(LoginRequiredMixin,TemplateView):
     """
     template_name = 'app/help.html'
 
-class eportEmailCsv():
+class exportEmailCsv():
     """
     メーリングリストをCSV出力する ※未実装
     """
