@@ -1,5 +1,9 @@
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
 {% load static %}
 <!DOCTYPE html>
+<link href="{% static 'css/reset.css' %}" rel="stylesheet">
 <link href="{% static 'css/global_manu.css' %}" rel="stylesheet">
 <body>
     <header>
@@ -10,7 +14,6 @@
             <ul class="nav-links">
                 <li><a href="{% url 'baseApp:index' %}">Home</a></li>
                 <li><a href="{% url 'baseApp:postlist' %}">Tests LIst</a></li>
-                <!--<li><a href="{% url 'baseApp:help' %}">What's TestHelper</a></li>-->
                 <li><a href="{% url 'baseApp:profile' user.username %}">My Account</a></li>
                 <li><a href="{% url 'baseApp:thread_list'%}">DM</a></li>
                 <li><a href="{% url 'baseApp:help' %}">Help</a></li>
@@ -29,6 +32,7 @@
             </div>
         </nav>
     </header>
+    {% block content %}
+         <!-- メインコンテンツはここにレンダリングされます -->
+    {% endblock %}            
 </body>
-{% block content %}
-{% endblock content %}

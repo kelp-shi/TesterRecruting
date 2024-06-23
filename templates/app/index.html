@@ -1,16 +1,73 @@
 {% extends 'global_menu.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/app/index.css' %}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap" rel="stylesheet">
 <body>
-    {% block content %}
-    <p>hello world</p>
-    <p>{{user.username}}</p>
-    {% endblock content %}
+    <div class="container-fluid">
+        <div class="row">
+            <!--left erea-->
+            <div class="col-2 d-none d-md-block bg-light text-center fixed-left">
+                <h2 class="mt-4">左エリア</h2>
+            </div>
+            <div class="col-12 col-md-8 offset-md-2 offset-lg-2 ">
+                <!--news-->
+                <div class="news-header py-4 mt-4 mb-5">
+                    <img src="" alt="news-banner">
+                </div>
+                <!--new tests-->
+                <div class="new-tests mb-3">
+                    <h2 class="border-bottom pb-3">新着テスト</h2>
+                    <div class="row justify-content-center">
+                        <!--forループで一つだけ-->
+                        {% for newpost in newpost reversed %}
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    {% if newpost.TestType == 1 %}
+                                        <h3 class="card-title">{{ newpost.PostName}}</h3>
+                                        <p class="card-text">アプリタイプ：ゲーム : {{ newpost.TestTypeSubcls}}<br>オーナー：{{ newpost.CreateUser.username}}</p>
+                                        <p class="card-text">テスト内容<br>{{ newpost.Discription | truncatechars:50}}</p>
+                                        <a href="{% url 'baseApp:detail' newpost.pk %}" class="btn btn-link">詳細を見る &gt;</a>
+                                    {% elif newpost.TestType == 2 %}
+                                        <h3 class="card-title">{{ newpost.PostName}}</h3>
+                                        <p class="card-text">アプリタイプ：アプリケーション : {{ newpost.TestTypeSubcls}}<br>オーナー：{{ newpost.CreateUser.username}}</p>
+                                        <p class="card-text">テスト内容<br>{{ newpost.Discription | truncatechars:50}}</p>
+                                        <a href="{% url 'baseApp:detail' newpost.pk %}" class="btn btn-link">詳細を見る &gt;</a>
+                                    {% endif %}
+
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                <!--recomend tests-->
+                <div class="recommended-tests mb-4">
+                    <h2 class="border-bottom pb-2">おすすめテスト</h2>
+                    <div class="row">
+                        {% for recopost in recomendpost %}
+                        <div class="col-12 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h3 class="card-title">テスト名</h3>
+                                    <p class="card-text">アプリタイプ：ゲーム<br>オーナー：山田太郎</p>
+                                    <p class="card-text">テスト内容<br>文章文章文章文章文章...</p>
+                                    <a href="#" class="btn btn-link">詳細を見る &gt;</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <!--right erea-->
+            <div class="col-2 d-none d-md-block bg-light text-center fixed-right">
+                <h2 class="mt-4">広告エリア</h2>
+            </div>
+        </div>
+    </div>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
-</html>
+
+{% endblock content %}
