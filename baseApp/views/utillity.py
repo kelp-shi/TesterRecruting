@@ -24,15 +24,10 @@ class index(LoginRequiredMixin, TemplateView):
     """
 
     template_name = 'app/index.html'
-    
-
-    def get_queryset(self):
-        queryset = TestPost.objects.filter(RecrutingPeriodFlg=False).order_by('RecrutingPeriodSt')[:3]
-        return queryset
 
     def get_context_data(self, **kwargs):
-
         context = super().get_context_data(**kwargs)
-        context['user'] = self.request.user.is_authenticated
-
+        context['user'] = self.request.user
+        context['newpost'] = TestPost.objects.filter(RecrutingPeriodFlg=False).order_by('RecrutingPeriodSt')[:3]
+        context['recomendpost'] = TestPost.objects.all().order_by('?')[:10]
         return context
