@@ -5,6 +5,10 @@ body {
     padding: 0;
 }
 
+nav{
+    z-index: 7;
+}
+
 h2 {
     font-weight: 500;
     font-style: normal;
@@ -18,13 +22,17 @@ h3 {
 }
 
 .news-header {
-    background: linear-gradient(to right, #2d5431, #89a77f);
+    background: #2d5431;
 }
 
 .card {
     border-radius: 10px;
     margin: 10px;
 }
+
+.col-1 { flex: 0 0 100%; max-width: 100%; }
+.col-2 { flex: 0 0 50%; max-width: 50%; }
+.col-3 { flex: 0 0 33.33%; max-width: 33.33%; }
 
 .card-body {
     padding: 15px;
@@ -36,6 +44,11 @@ h3 {
 
 .card-text {
     font-size: 0.875rem;
+}
+
+.app-type {
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .btn-link {
