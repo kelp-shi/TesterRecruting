@@ -8,81 +8,98 @@
 <body>
     <div class="container-fluid">
         <div class="row">
-            <!--left erea-->
-            <div class="col-2 d-none d-md-block bg-light text-center fixed-left">
+            <!--left area-->
+            <div class="col-lg-2 d-none d-lg-block bg-light text-center left-sidebar">
                 <h2 class="mt-4">左エリア</h2>
             </div>
-            <div class="col-12 col-md-8 offset-md-2 offset-lg-2 ">
+            <div class="col-12 col-lg-8 main-content">
                 <!--news-->
                 <div class="news-header py-4 mt-4 mb-5">
-                    <img src="" alt="news-banner">
+                    <img src="" alt="news-banner" class="img-fluid">
                 </div>
                 <!--new tests-->
                 <div class="new-tests mb-3">
                     <h2 class="pb-3">新着テスト</h2>
                     <div class="row justify-content-center">
-                        <!--forループで一つだけ-->
                         {% if newposts|length == 0 %}
-                            <h3 class="col-md-3">新着テストはありません</h3>
+                            <h3 class="col-12">新着テストはありません</h3>
                         {% else %}
                             {% for newpost in newposts reversed %}
-                            <div class="{% if  newposts|length == 1%} col-md-12 mb-4 {% elif newposts|length == 2 %} col-md-6 mb-4 {% elif newposts|length == 3 %} col-md-4 mb-4 {% endif %}">
+                            <div class="col-12 col-md-6 col-lg-{% if newposts|length == 1 %}12{% elif newposts|length == 2 %}6{% else %}4{% endif %} mb-4">
                                 <div class="card h-100">
                                     <div class="card-body">
-                                        {% if newpost.TestType == 1 %}
-                                            <h3 class="card-title">{{ newpost.PostName}}</h3>
-                                            <p class="card-text app-type">アプリタイプ：ゲーム : {{ newpost.TestTypeSubcls}}<br>オーナー：{{ newpost.CreateUser.username}}</p>
-                                            <p class="card-text">テスト内容<br>{{ newpost.Discription | truncatechars:50}}</p>
-                                            <a href="{% url 'baseApp:detail' newpost.pk %}" class="btn btn-link">詳細を見る &gt;</a>
-                                        {% elif newpost.TestType == 2 %}
-                                            <h3 class="card-title">{{ newpost.PostName}}</h3>
-                                            <p class="card-text app-type">アプリタイプ：アプリケーション : {{ newpost.TestTypeSubcls}}<br>オーナー：{{ newpost.CreateUser.username}}</p>
-                                            <p class="card-text">テスト内容<br>{{ newpost.Discription | truncatechars:50}}</p>
-                                            <a href="{% url 'baseApp:detail' newpost.pk %}" class="btn btn-link">詳細を見る &gt;</a>
-                                        {% endif %}
+                                        <h3 class="card-title">{{ newpost.PostName }}</h3>
+                                        <p class="card-text app-type">アプリタイプ：{% if newpost.TestType == 1 %}ゲーム{% else %}アプリケーション{% endif %} : {{ newpost.TestTypeSubcls }}<br>オーナー：{{ newpost.CreateUser.username }}</p>
+                                        <p class="card-text">テスト内容<br>{{ newpost.Discription | truncatechars:50 }}</p>
+                                        <a href="{% url 'baseApp:detail' newpost.pk %}" class="btn btn-link">詳細を見る &gt;</a>
                                     </div>
                                 </div>
                             </div>
                             {% endfor %}
                         {% endif %}
-                <!--recomend tests-->
-                <div class="recommended-tests mb-4">
+                    </div>
+                </div>
+                <!--recommend tests-->
+                <div class="recommended-tests mt-4">
                     <h2 class="pb-2">おすすめテスト</h2>
                     <div class="row">
-                        {% for recopost in recomendpost %}
-                        <div class="col-12 mb-4">
-                            <div class="card h-90">
-                                <div class="card-body">
-                                    {% if recopost.TestType == 1 %}
-                                        <h3 class="card-title">{{ recopost.PostName}}</h3>
-                                        <p class="card-text app-type">アプリタイプ：ゲーム : {{ recopost.TestTypeSubcls}}<br>オーナー：{{ recopost.CreateUser.username}}</p>
-                                        <p class="card-text">テスト内容<br>{{ recopost.Discription | truncatechars:100}}</p>
+                        {% if recomendpost|length == 0 %}
+                            <div class="nopost col-12 col-lg-8 mb-1">
+                                <h3 class="col-12">おすすめテストはありません</h3>
+                            </div>
+                        {% else %}
+                            {% for recopost in recomendpost %}
+                            <div class="col-12 mb-4">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h3 class="card-title">{{ recopost.PostName }}</h3>
+                                        <p class="card-text app-type">アプリタイプ：{% if recopost.TestType == 1 %}ゲーム{% else %}アプリケーション{% endif %} : {{ recopost.TestTypeSubcls }}<br>オーナー：{{ recopost.CreateUser.username }}</p>
+                                        <p class="card-text">テスト内容<br>{{ recopost.Discription | truncatechars:100 }}</p>
                                         <a href="{% url 'baseApp:detail' recopost.pk %}" class="btn btn-link">詳細を見る &gt;</a>
-                                    {% elif recopost.TestType == 2 %}
-                                        <h3 class="card-title">{{ recopost.PostName}}</h3>
-                                        <p class="card-text app-type">アプリタイプ：アプリケーション : {{ recopost.TestTypeSubcls}}<br>オーナー：{{ recopost.CreateUser.username}}</p>
-                                        <p class="card-text">テスト内容<br>{{ recopost.Discription | truncatechars:100}}</p>
-                                        <a href="{% url 'baseApp:detail' recopost.pk %}" class="btn btn-link">詳細を見る &gt;</a>
-                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        {% endfor %}
+                            {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
             </div>
-            <!--right erea-->
-            <div class="col-2 d-none d-md-block bg-light text-center fixed-right">
+            <!--right area-->
+            <div class="col-lg-2 d-none d-lg-block bg-light text-center right-sidebar">
                 <div class="adArea">
                     <h2 class="mt-4">広告エリア</h2>
+                    <div class="ad-placeholder"></div>
                 </div>
                 <div class="tasks">
                     <h2 class="mt-4">タスクエリア</h2>
+                    <div class="row">
+                        {% if mydms|length == 0 %}
+                            <h3 class="col-12">DMはありません</h3>
+                        {% else %}
+                            {% for dm in mydms %}
+                                <div class="col-12">
+                                    <h3>DM Room ID: {{ dm.id }}</h3>
+                                    <p>他のメンバー:</p>
+                                    <ul>
+                                        {% for member in other_members %}
+                                            <li>
+                                                <img src="{{ member.profile_img.url }}" alt="{{ member.username }}のプロフィール画像" width="50">
+                                                {{ member.username }}
+                                            </li>
+                                        {% empty %}
+                                            <li>他のメンバーはいません</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
+
+
 
 {% endblock content %}
