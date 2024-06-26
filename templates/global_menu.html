@@ -2,37 +2,49 @@
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 {% load static %}
-<!DOCTYPE html>
-<link href="{% static 'css/reset.css' %}" rel="stylesheet">
-<link href="{% static 'css/global_manu.css' %}" rel="stylesheet">
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/reset.css' %}" rel="stylesheet">
+    <link href="{% static 'css/global_manu.css' %}" rel="stylesheet">
+    <title>Your Site Title</title>
+</head>
 <body>
     <header>
-        <nav class="navbar">
-            <div class="logo">
-                <a href="{% url 'baseApp:index' %}"><img src="logo.png" alt="Logo"></a>
-            </div>
-            <ul class="nav-links">
-                <li><a href="{% url 'baseApp:index' %}">Home</a></li>
-                <li><a href="{% url 'baseApp:postlist' %}">Tests LIst</a></li>
-                <li><a href="{% url 'baseApp:profile' user.username %}">My Account</a></li>
-                <li><a href="{% url 'baseApp:thread_list'%}">DM</a></li>
-                <li><a href="{% url 'baseApp:help' %}">Help</a></li>
-            </ul>
-            <div class="user-actions">
-                <button class="post-test-btn"><a href="{% url 'baseApp:createpost' %}">Post Test</a></button>
-                <div class="profile-icon">
-                    <a href="{% url 'baseApp:profile' user.username %}">
-                    {% if user.profile_img %}
-                        <img class="user-image" src="{{ user.profile_img.url }}" alt="Profile Image">
-                    {% else %}
-                        <img class="defalt-image" src="../baseApp/images/user/profile/defalt.png" alt="Defalt Profile Image">
-                    {% endif %}
-                    </a>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'baseApp:index' %}">
+                    <img src="logo.png" alt="Logo" height="50" class="d-inline-block align-text-top">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="{% url 'baseApp:index' %}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'baseApp:postlist' %}">Tests List</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'baseApp:profile' user.username %}">My Account</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'baseApp:thread_list'%}">DM</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'baseApp:help' %}">Help</a></li>
+                    </ul>
+                    <div class="d-flex align-items-center">
+                        <a href="{% url 'baseApp:createpost' %}" class="btn btn-primary me-2"><span>Post Test</span></a>
+                        <a href="{% url 'baseApp:profile' user.username %}" class="profile-icon">
+                            {% if user.profile_img %}
+                                <img class="user-image" src="{{ user.profile_img.url }}" alt="Profile Image">
+                            {% else %}
+                                <img class="default-image" src="../baseApp/images/user/profile/default.png" alt="Default Profile Image">
+                            {% endif %}
+                        </a>
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
-    {% block content %}
-         <!-- メインコンテンツはここにレンダリングされます -->
-    {% endblock %}            
+    <main class="container mt-4">
+        {% block content %}
+            <!-- メインコンテンツはここにレンダリングされます -->
+        {% endblock %}
+    </main>
 </body>
