@@ -28,6 +28,6 @@ class index(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['user'] = self.request.user
-        context['newpost'] = TestPost.objects.filter(RecrutingPeriodFlg=False).order_by('RecrutingPeriodSt')[:3]
-        context['recomendpost'] = TestPost.objects.all().order_by('?')[:10]
+        context['newposts'] = TestPost.objects.filter(RecrutingPeriodFlg=True).order_by('RecrutingPeriodSt')[:3]
+        context['recomendpost'] = TestPost.objects.filter(RecrutingPeriodFlg=True).order_by('?')[:10]
         return context
