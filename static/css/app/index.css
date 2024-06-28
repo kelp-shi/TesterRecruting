@@ -5,7 +5,7 @@ body {
     padding: 0;
 }
 
-nav{
+nav {
     z-index: 7;
 }
 
@@ -27,12 +27,8 @@ h3 {
 
 .card {
     border-radius: 10px;
-    margin: 10px;
+    margin-bottom: 20px;
 }
-
-.col-1 { flex: 0 0 100%; max-width: 100%; }
-.col-2 { flex: 0 0 50%; max-width: 50%; }
-.col-3 { flex: 0 0 33.33%; max-width: 33.33%; }
 
 .card-body {
     padding: 15px;
@@ -62,35 +58,83 @@ h3 {
     border-bottom: 2px solid #ddd !important;
 }
 
-.fixed-left, .fixed-right {
-    position: fixed;
-    top: 0;
-    height: 100%;
-    z-index: 1;
+.left-sidebar, .right-sidebar {
+    position: sticky;
+    top: 70px;
+    height: calc(100vh - 70px);
+    overflow-y: auto;
 }
 
-.fixed-left {
-    left: 0;
+.left-sidebar {
     border-right: 1px solid #ddd;
 }
 
-.fixed-right {
-    right: 0;
+.right-sidebar {
     border-left: 1px solid #ddd;
 }
 
 .main-content {
-    position: relative;
-    z-index: 2;
-    background: #fff;
     padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+@media (max-width: 991.98px) {
+    .main-content {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
 }
 
 @media (min-width: 992px) {
-    .offset-md-2 {
-        margin-left: 16.66666667%;
+    .container-fluid {
+        padding-left: 0;
+        padding-right: 0;
     }
-    .offset-lg-2 {
-        margin-left: 16.66666667%;
+    
+    .row {
+        margin-left: 0;
+        margin-right: 0;
     }
+    
+    .left-sidebar, .right-sidebar {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container-fluid {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+}
+
+@media (min-width: 1400px) {
+    .container-fluid {
+        max-width: 1600px;
+    }
+}
+
+@media (min-width: 1600px) {
+    .container-fluid {
+        max-width: 1800px;
+        width: 100%;
+    }
+}
+
+/* 左右のサイドバーの幅を広げる */
+.left-sidebar, .right-sidebar {
+    width: 20%; /* 左右の幅を20%に */
+}
+
+.main-content {
+    width: 60%; /* メインコンテンツの幅を60%に */
+    margin: 0 auto;
+}
+
+.ad-placeholder {
+    width: 100%;
+    height: 300px;
+    background-color: red;
+    margin: 20px 0;
 }
