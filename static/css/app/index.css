@@ -71,6 +71,7 @@ h3 {
 
 .right-sidebar {
     border-left: 1px solid #ddd;
+    position: sticky;
 }
 
 .main-content {

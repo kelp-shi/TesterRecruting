@@ -1,6 +1,6 @@
 {% extends 'global_menu.html' %}
-{% load custom_filters %}
 {% load static %}
+{% load custom_filters %}
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/app/index.css' %}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -66,7 +66,7 @@
                 </div>
             </div>
             <!--right area-->
-            <div class="col-lg-2 d-none d-lg-block bg-light text-center right-sidebar">
+            <div class="col-lg-2 d-lg-block bg-light text-center right-sidebar">
                 <div class="adArea">
                     <h2 class="mt-4">広告エリア</h2>
                     <div class="ad-placeholder"></div>
@@ -74,27 +74,36 @@
                 <div class="tasks">
                     <h2 class="mt-4">タスクエリア</h2>
                     <div class="row">
-                        {% if mydms|length == 0 %}
+                        {% if rooms|length == 0 %}
                             <h3 class="col-12">DMはありません</h3>
                         {% else %}
-                            {% for dm in mydms %}
-                                <div class="col-12">
-                                    <h3>DM Room ID: {{ dm.id }}</h3>
-                                    <p>他のメンバー:</p>
-                                    <ul>
-                                        {% with members=other_members|dict_key == dm.id %}
-                                            {% for member in members %}
-                                                <li>
-                                                    <img src="{{ member.profile_img.url }}" alt="{{ member.username }}のプロフィール画像" width="50">
-                                                    {{ member.username }}
-                                                </li>
-                                            {% endfor %}
-                                            {% if members|length == 0 %}
-                                                <li>他のメンバーはいません</li>
-                                            {% endif %}
+                            {% for dm in rooms %}
+                            <div class="card w-75 mb-3">
+                                <div class="card-body">
+                                    {% with member=other_members|get_item:dm.id %}
+                                        <p class="card-title">{{ member.username }}さんとのメッセージ</p>
+                                        {% with message=dmMessage|get_item:dm.id %}
+                                            <p class="card-text">{{ message.Text }}</p>
                                         {% endwith %}
-                                    </ul>
+                                        <a href="{% url 'baseApp:message_detail' dm.id %}" class="btn btn-primary">Button</a>
+                                    {% endwith %}
                                 </div>
+                            </div>
+
+                            <!--
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h3 class="card-title">DM Room ID: {{ dm.id }}</h3>
+                                    {% with member=other_members|get_item:dm.id %}
+                                        {% if member %}
+                                            <p>他のメンバー: {{ member.username }}</p>
+                                                <img src="{{ member.profile_img.url }}" alt="{{ member.username }}のプロフィール画像" width="50">
+                                        {% else %}
+                                            <p>他のメンバーがいません</p>
+                                        {% endif %}
+                                    {% endwith %}
+                                </div>
+                            </div>-->
                             {% endfor %}
                         {% endif %}
                     </div>
