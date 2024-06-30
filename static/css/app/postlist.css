@@ -1,0 +1,23 @@
+.card-body {
+    padding: 10px;
+}
+
+.card-title {
+    font-size: 1.25rem;
+}
+
+.card-text {
+    font-size: 0.875rem;
+}
+
+.app-type {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.btn-link {
+    font-size: 0.875rem;
+    text-decoration: none;
+    color: #0066cc;
+    padding-left: 0;
+}

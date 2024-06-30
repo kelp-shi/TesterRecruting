@@ -1,25 +1,36 @@
 {% extends 'global_menu.html' %}
 {% load static %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/app/postlist.css' %}">
 </head>
 <body>
-    {% block content %}
-    <p>post list</p>
-    <form action="" method="get">
-        <input name="query" value="{{request.GET.query}}" type="text">
-        <button type="submit">検索する</button>
-    </form>
-    {% for posts in object_list %}
-    <tr>
-        <a href="{% url 'baseApp:detail' posts.pk %}">{{ posts.PostName }}</a>
-        <a>{{ posts.Discription}}</a>
-    </tr>
-    {% endfor %}
+    <div class="container">
+        <form action="" method="get">
+            <input name="query" value="{{request.GET.query}}" type="text">
+            <button type="submit">検索する</button>
+        </form>
+        <div class="listbox col-12 mt-5">
+            {% for posts in object_list %}
+            <div class="row">
+                <div class="col-12">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h3 class="card-title">{{ posts.PostName }}</h3>
+                            <p class="card-text app-type">アプリタイプ：{% if posts.TestType == 1 %}ゲーム{% else %}アプリケーション{% endif %} : {{ posts.TestTypeSubcls }}<br>オーナー：{{ posts.CreateUser.username }}</p>
+                            <p class="card-text">テスト内容<br>{{ posts.Discription | truncatechars:200 }}</p>
+                            <a href="{% url 'baseApp:detail' posts.pk %}" class="btn btn-link">詳細を見る &gt;</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
     {% endblock content %}
 </body>
 </html>
