@@ -1,26 +1,26 @@
 {% extends 'global_menu.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    {% block content %}
-    <p>profile page</p>
-    <p>{{profile.username}}</p>
-    <p>{{profile.UserBirth}}</p>
-    <p>{{profile.UserGender}}</p>
-    <p>{{profile.RunningTest}}</p>
-    <p>{{profile.DoneTest}}</p>
-    <p>{{profile.age}}</p>
-    <p>{{profile.profile_img}}</p>
-    <p>{{profile.email}}</p>
-    <a href="{% url 'baseApp:ProfileEdit' user.username %}">Edit</a><br>
-    <a href="{% url 'baseApp:logout' %}">logout</a>
-    {% endblock content %}
-    <p>help</p>
-</body>
-</html>
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/app/profile.css' %}">
+<div class="profile-container">
+    <div class="profile-content">
+        <div class="profile-image">
+            <img src="{{ profile.profile_img.url }}" alt="{{ profile.username }}">
+        </div>
+        <div class="profile-info">
+            <h1>{{ profile.username }}</h1>
+            <h2>About</h2>
+            <ul>
+                <li><strong>Birthday:</strong> {{ profile.UserBirth }}</li>
+                <li><strong>Gender:</strong> {{ profile.UserGender }}</li>
+                <li><strong>Age:</strong> {{ profile.age }}</li>
+                <li><strong>Email:</strong> {{ profile.email }}</li>
+            </ul>
+            <div class="profile-actions">
+                <a href="{% url 'baseApp:ProfileEdit' user.username %}" class="btn btn-edit">Edit Profile</a>
+                <a href="{% url 'baseApp:logout' %}" class="btn btn-logout">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
