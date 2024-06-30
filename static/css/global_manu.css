@@ -82,3 +82,52 @@ body {
         margin-top: 1rem;
     }
 }
+
+@media (max-width: 991.98px) {
+    .main-content {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+}
+
+@media (min-width: 992px) {
+    .container-fluid {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    
+    .row {
+        margin-left: 0;
+        margin-right: 0;
+    }
+    
+    .right-sidebar {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container-fluid {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+}
+
+@media (min-width: 1400px) {
+    .container-fluid {
+        max-width: 1600px;
+    }
+}
+
+@media (min-width: 1600px) {
+    .container-fluid {
+        max-width: 1800px;
+        width: 100%;
+    }
+}
+
+.main-content {
+    width: 70%; /* メインコンテンツの幅を60%に */
+    margin: 0 auto;
+}

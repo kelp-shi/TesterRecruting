@@ -9,10 +9,6 @@
 <body>
     <div class="container-fluid">
         <div class="row">
-            <!--left area-->
-            <div class="col-lg-2 d-none d-lg-block bg-light text-center left-sidebar">
-                <h2 class="mt-4">左エリア</h2>
-            </div>
             <div class="col-12 col-lg-8 main-content">
                 <!--news-->
                 <div class="news-header py-4 mt-4 mb-5">
@@ -67,43 +63,41 @@
             </div>
             <!--right area-->
             <div class="col-lg-2 d-lg-block bg-light text-center right-sidebar">
-                <div class="adArea">
-                    <h2 class="mt-4">広告エリア</h2>
+                <!--<div class="adArea">
+                    <h2 class="mt-4"></h2>
                     <div class="ad-placeholder"></div>
-                </div>
+                </div>-->
                 <div class="tasks">
-                    <h2 class="mt-4">タスクエリア</h2>
+                    <h2 class="mt-4 mb-2">ダイレクトメッセージ</h2>
                     <div class="row">
                         {% if rooms|length == 0 %}
-                            <h3 class="col-12">DMはありません</h3>
+                            <h3 class="col-12 text-start">DMはありません</h3>
                         {% else %}
                             {% for dm in rooms %}
-                            <div class="card w-75 mb-3">
-                                <div class="card-body">
-                                    {% with member=other_members|get_item:dm.id %}
-                                        <p class="card-title">{{ member.username }}さんとのメッセージ</p>
-                                        {% with message=dmMessage|get_item:dm.id %}
-                                            <p class="card-text">{{ message.Text }}</p>
-                                        {% endwith %}
-                                        <a href="{% url 'baseApp:message_detail' dm.id %}" class="btn btn-primary">Button</a>
-                                    {% endwith %}
+                            <div class="col-12 mb-1">
+                                <div class="card h-80">
+                                    <a href="{% url 'baseApp:message_detail' dm.id %}" class="text-decoration-none text-reset">
+                                        <div class="card-body d-flex align-items-center">
+                                            {% with member=other_members|get_item:dm.id %}
+                                            {% with message=dmMessage|get_item:dm.id %}
+                                            <div class="row w-100 align-items-center">
+                                                <div class="col-auto">
+                                                    <img class="dm_user-image" src="{{ member.profile_img.url }}" alt="Profile Image">
+                                                </div>
+                                                <div class="col">
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="card-title mb-0 text-start">{{ member.username }}</p>
+                                                        <p class="card-text mb-0 text-muted">{{ message.Created_at|date:"Y m d" }}</p>
+                                                    </div>
+                                                    <p class="card-text text-start">{{ message.Text | truncatechars:15 }}</p>
+                                                </div>
+                                            </div>
+                                            {% endwith %}
+                                            {% endwith %}
+                                        </div>
+                                    </a>
                                 </div>
                             </div>
-
-                            <!--
-                            <div class="card h-100">
-                                <div class="card-body">
-                                    <h3 class="card-title">DM Room ID: {{ dm.id }}</h3>
-                                    {% with member=other_members|get_item:dm.id %}
-                                        {% if member %}
-                                            <p>他のメンバー: {{ member.username }}</p>
-                                                <img src="{{ member.profile_img.url }}" alt="{{ member.username }}のプロフィール画像" width="50">
-                                        {% else %}
-                                            <p>他のメンバーがいません</p>
-                                        {% endif %}
-                                    {% endwith %}
-                                </div>
-                            </div>-->
                             {% endfor %}
                         {% endif %}
                     </div>

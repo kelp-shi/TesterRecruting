@@ -48,10 +48,12 @@ class index(LoginRequiredMixin, TemplateView):
         new_message = {}
         for room in my_dms:
             other_member = room.Member.exclude(id=current_user.id).first()  # 他のメンバーを取得
-            my_message = Massage.objects.filter(Room=room.id).order_by('Created_at')[:1]
+            my_message = Massage.objects.filter(Room=room.id).latest('Created_at')
+            print(my_message)
             if other_member:
                 other_members[room.id] = other_member
                 new_message[room.id] = my_message
+                print(new_message)
 
         context['rooms'] = my_dms
         context['other_members'] = other_members

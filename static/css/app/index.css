@@ -31,7 +31,7 @@ h3 {
 }
 
 .card-body {
-    padding: 15px;
+    padding: 10px;
 }
 
 .card-title {
@@ -97,7 +97,7 @@ h3 {
         margin-right: 0;
     }
     
-    .left-sidebar, .right-sidebar {
+    .right-sidebar {
         padding-left: 15px;
         padding-right: 15px;
     }
@@ -123,13 +123,13 @@ h3 {
     }
 }
 
-/* 左右のサイドバーの幅を広げる */
-.left-sidebar, .right-sidebar {
-    width: 20%; /* 左右の幅を20%に */
+/* 右のサイドバーの幅を広げる */
+.right-sidebar {
+    width: 30%; /* 左右の幅を20%に */
 }
 
 .main-content {
-    width: 60%; /* メインコンテンツの幅を60%に */
+    width: 70%; /* メインコンテンツの幅を60%に */
     margin: 0 auto;
 }
 
@@ -138,4 +138,13 @@ h3 {
     height: 300px;
     background-color: red;
     margin: 20px 0;
+}
+
+.dm_user-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: inline-block;
+    margin-right: 5px; /* 画像と文字の間にマージンを追加 */
 }
