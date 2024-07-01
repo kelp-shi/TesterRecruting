@@ -50,3 +50,7 @@ class ProfileEditForm(forms.ModelForm):
             'UserGender',
             'profile_img'
         )
+    
+    widgets = {
+        'UserBirth': forms.DateInput(attrs={'type': 'date'}),
+    }

@@ -1,39 +1,70 @@
 {% extends 'global_menu.html' %}
 {% block content %}
+<link href="https://cdn.jsdelivr.net/npm/datepicker/dist/css/datepicker.min.css" rel="stylesheet">
 <form enctype="multipart/form-data" method="POST">
-    {{ form.non_field_errors }}
-    <table class="table">
-        <tbody>
-            <div class="input-field">
-                <i class="fas fa-user"></i>
-                {{ editform.UserBirth }}
-                {% if editform.UserBirth.errors %}
-                  <div class="error">
-                      {{ editform.UserBirth.errors }}
-                  </div>
-                {% endif %}
-              </div>
-              <div class="input-field">
-                <i class="fas fa-user"></i>
-                {{ editform.UserGender }}
-                {% if editform.UserGender.errors %}
-                  <div class="error">
-                      {{ editform.UserGender.errors }}
-                  </div>
-                {% endif %}
-              </div>
-              <div class="input-field">
-                <i class="fas fa-user"></i>
-                {{ editform.profile_img }}
-                {% if editform.profile_img.errors %}
-                    <div class="error">
-                        {{ editform.profile_img.errors }}
-                    </div>
-                {% endif %}
-            </div>
-        </tbody>
-    </table>
-    {% csrf_token %}
-    <button type="submit" class="btn btn-success btn-lg" >送信</button>
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+
+  <div class="input-field">
+      <label for="id_UserBirth"><i class="fas fa-user"></i> 生年月日:</label>
+      <input type="text" id="id_UserBirth" name="UserBirth" value="{{ editform.UserBirth.value }}">
+      {% if editform.UserBirth.errors %}
+          <div class="error">
+              {{ editform.UserBirth.errors }}
+          </div>
+      {% endif %}
+  </div>
+
+  <div class="input-field">
+      <label for="id_UserGender"><i class="fas fa-user"></i> 性別:</label>
+      <input type="text" id="id_UserGender" name="UserGender" value="{{ editform.UserGender.value }}">
+      {% if editform.UserGender.errors %}
+          <div class="error">
+              {{ editform.UserGender.errors }}
+          </div>
+      {% endif %}
+  </div>
+
+  <div class="input-field">
+      <label for="id_profile_img"><i class="fas fa-user"></i> プロフィール画像:</label>
+      <input type="file" name="profile_img" accept="image/*" class="form-control" id="id_profile_img">
+      {% if editform.profile_img.errors %}
+          <div class="error">
+              {{ editform.profile_img.errors }}
+          </div>
+      {% endif %}
+  </div>
+
+  <button type="submit" class="btn btn-success btn-lg">送信</button>
 </form>
+<script src="https://cdn.jsdelivr.net/npm/datepicker"></script>
+<script src="https://cdn.jsdelivr.net/npm/datepicker"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+      // ページが読み込まれた後に実行されるコード
+      var currentLink = document.querySelector('.input-field a');
+      if (currentLink) {
+          currentLink.remove(); // リンクを削除する
+      }
+  });
+
+  const datepicker = new Datepicker(document.querySelector('#id_UserBirth'), {
+    format: 'yyyy年mm月dd日',
+    autohide: true,
+    weekStart: 0, // 週の開始曜日の設定 (0: 日曜日)
+    language: 'ja', // 言語設定
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const datepickers = document.querySelectorAll('.datepicker');
+    datepickers.forEach(function(datepicker) {
+        new Datepicker(datepicker, {
+            format: 'yyyy年mm月dd日',
+            autohide: true,
+            weekStart: 0,
+            language: 'ja',
+        });
+    });
+  }); 
+</script>
 {% endblock %}

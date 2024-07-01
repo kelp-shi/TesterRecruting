@@ -61,10 +61,6 @@ class TestPostSearchView(LoginRequiredMixin,ListView):
     template_name = 'app/postlist.html'
     # ページネーション
     paginate_by = 10
-
-    #@method_decorator(cache_page(60))  # キャッシュを60秒間有効にする
-    #def dispatch(self, *args, **kwargs):
-    #    return super().dispatch(*args, **kwargs)
     
     def get_queryset(self):
         query = self.request.GET.get('query')
