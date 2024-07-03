@@ -1,6 +1,10 @@
 .message-container {
     display: flex;
     flex-direction: column;
+    border: 1px solid #ccc; /* Add a border */
+    padding: 10px; /* Optional: Add some padding inside the border */
+    border-radius: 5px; /* Optional: Add rounded corners */
+    margin: 10px 0; /* Optional: Add some margin */
 }
 
 .message {
@@ -9,6 +13,8 @@
     margin: 10px 0;
     border-radius: 10px;
     position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .message-right {
@@ -25,16 +31,31 @@
 
 .message strong {
     display: block;
+    margin-bottom: 5px; /* Add space below the sender name */
 }
 
 .message p {
-    margin: 5px 0;
+    margin: 5px 0; /* Add space above and below the message text */
+    display: block;
 }
 
 .message span {
     font-size: 0.8em;
     color: #666;
-    position: absolute;
-    bottom: 5px;
-    right: 10px;
+    margin-top: 5px; /* Add space above the timestamp */
+    display: block; /* Ensure it takes a new line */
+}
+
+.d-flex.justify-content-center {
+    display: flex;
+    justify-content: center;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+}
+
+.form-group input {
+    margin-right: 10px;
 }
