@@ -1,0 +1,8 @@
+.dm_user-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: inline-block;
+    margin-right: 5px; /* 画像と文字の間にマージンを追加 */
+}

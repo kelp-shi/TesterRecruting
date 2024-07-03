@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
+from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from baseApp.db.application.dm_models import DmRoom, Massage
 from baseApp.models import CustomUser
@@ -9,14 +10,36 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-class ThreadListView(LoginRequiredMixin, View):
+class ThreadListView(LoginRequiredMixin, TemplateView):
     """
     スレッドリストビュークラス
     """
-    def get(self, request):
-        # ログインユーザーがメンバーに含まれているDmRoomを取得
-        rooms = DmRoom.objects.filter(Member=request.user)
-        return render(request, 'dm/threadList.html', {'rooms': rooms})
+    template_name = 'dm/threadList.html'
+
+    def get_context_data(self, **kwargs):
+        # 自身の情報
+        current_user = self.request.user
+        context = super().get_context_data(**kwargs)
+        # ログインユーザ情報
+        context['user'] = current_user
+        # 自身のDM
+        my_dms = DmRoom.objects.filter(Member=current_user)
+        
+        other_members = {}
+        new_message = {}
+        for room in my_dms:
+            other_member = room.Member.exclude(id=current_user.id).first()  # 他のメンバーを取得
+            my_message = Massage.objects.filter(Room=room.id).latest('Created_at')
+            if other_member:
+                other_members[room.id] = other_member
+                new_message[room.id] = my_message
+
+        context['rooms'] = my_dms
+        context['other_members'] = other_members
+        context['dmMessage'] = new_message
+
+        return context
+
 
 class MessageDetailView(LoginRequiredMixin, View):
     def get(self, request, room_id):
@@ -31,7 +54,15 @@ class MessageDetailView(LoginRequiredMixin, View):
 
         messages.filter(Sender=request.user).update(ReadFlg=True)
 
-        return render(request, 'dm/message_detail.html', {'form': form, 'messages': messages, 'room': room})
+        # Get the other user in the room
+        other_user = room.Member.exclude(id=request.user.id).first()
+
+        return render(request, 'dm/message_detail.html', {
+            'form': form,
+            'messages': messages,
+            'room': room,
+            'other_user': other_user
+        })
 
     def post(self, request, room_id):
         room = get_object_or_404(DmRoom, id=room_id)

@@ -1,0 +1,40 @@
+.message-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.message {
+    max-width: 60%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 10px;
+    position: relative;
+}
+
+.message-right {
+    background-color: #dcf8c6;
+    align-self: flex-end;
+    text-align: right;
+}
+
+.message-left {
+    background-color: #f1f0f0;
+    align-self: flex-start;
+    text-align: left;
+}
+
+.message strong {
+    display: block;
+}
+
+.message p {
+    margin: 5px 0;
+}
+
+.message span {
+    font-size: 0.8em;
+    color: #666;
+    position: absolute;
+    bottom: 5px;
+    right: 10px;
+}

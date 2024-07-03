@@ -1,19 +1,44 @@
 {% extends 'global_menu.html' %}
-
+{% load static %}
+{% load custom_filters %}
 {% block content %}
-  <h1>Thread List</h1>
-  <ul>
-    {% for room in rooms %}
-      <li>
-        <a href="{% url 'baseApp:message_detail' room.id %}">Room ID: {{ room.id }}</a>
-        <ul>
-          {% for message in room.messages.all %}
-            <li>{{ message.Text }}</li>
-          {% endfor %}
-        </ul>
-      </li>
-    {% empty %}
-      <li>No rooms found.</li>
-    {% endfor %}
-  </ul>
+<link rel="stylesheet" href="{% static 'css/app/threadList.css' %}">
+<div class="container">
+<div class="page-info">
+<div class="page-name"></div>
+</div>
+    <div class="row">
+        {% if rooms|length == 0 %}
+            <div class="nonDmMsg col-12">
+                <h3>DMはありません</h3>
+            </div>
+        {% else %}
+            {% for dm in rooms %}
+            <div class="col-12 mb-1">
+                <div class="card h-80">
+                    <a href="{% url 'baseApp:message_detail' dm.id %}" class="text-decoration-none text-reset">
+                        <div class="card-body d-flex align-items-center">
+                            {% with member=other_members|get_item:dm.id %}
+                            {% with message=dmMessage|get_item:dm.id %}
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <img class="dm_user-image" src="{{ member.profile_img.url }}" alt="Profile Image">
+                                </div>
+                                <div class="col">
+                                    <div class="d-flex justify-content-between">
+                                        <p class="card-title mb-0 text-start">{{ member.username }}</p>
+                                        <p class="card-text mb-0 text-muted">{{ message.Created_at|date:"Y m d" }}</p>
+                                    </div>
+                                    <p class="card-text text-start">{{ message.Text | truncatechars:30 }}</p>
+                                </div>
+                            </div>
+                            {% endwith %}
+                            {% endwith %}
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
 {% endblock %}
