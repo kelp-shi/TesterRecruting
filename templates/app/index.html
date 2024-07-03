@@ -3,7 +3,6 @@
 {% load custom_filters %}
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/app/index.css' %}">
-<body>
     <div class="container-fluid">
         <div class="row">
             <div class="col-12 col-lg-8 main-content">
@@ -59,7 +58,7 @@
                 </div>
             </div>
             <!--right area-->
-            <div class="col-lg-2 d-lg-block bg-light text-center right-sidebar">
+            <div class="col-lg-2 d-none d-lg-block bg-light text-center right-sidebar">
                 <!--<div class="adArea">
                     <h2 class="mt-4"></h2>
                     <div class="ad-placeholder"></div>
@@ -102,5 +101,4 @@
             </div>
         </div>
     </div>
-</body>
 {% endblock content %}
