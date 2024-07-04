@@ -10,50 +10,78 @@
     <form method="post" novalidate>
       {% csrf_token %}
       {{ form.as_p }}
-      <div class="form-group">
-        <label for="{{ form.post_name.id_for_label }}"></label>
-        {{ form.post_name }}
+      <!--<div class="form-group">
+        <label for="{{ form.PostName.id_for_label }}">Post Name</label>
+        {{ form.PostName }}
       </div>
       <div class="form-group">
-        <label for="{{ form.description.id_for_label }}"></label>
-        {{ form.description }}
+        <label for="{{ form.Discription.id_for_label }}">Description</label>
+        {{ form.Discription }}
       </div>
       <div class="form-group">
-        <label for="{{ form.recruiting_num.id_for_label }}"></label>
-        {{ form.recruiting_num }}
+        <label for="{{ form.RecrutingNum.id_for_label }}">Recruiting Number</label>
+        {{ form.RecrutingNum }}
       </div>
       <div class="form-group">
-        <label for="{{ form.apply_num.id_for_label }}"></label>
-        {{ form.apply_num }}
+        <label for="{{ form.ApplyNum.id_for_label }}">Apply Number</label>
+        {{ form.ApplyNum }}
       </div>
       <div class="form-group">
-        <label for="{{ form.test_type.id_for_label }}"></label>
-        {{ form.test_type }}
+        <label for="{{ form.TestType.id_for_label }}">Test Type</label>
+        {{ form.TestType }}
       </div>
       <div class="form-group">
-        <label for="{{ form.test_type_subcls.id_for_label }}"></label>
-        {{ form.test_type_subcls }}
+        <label for="{{ form.TestTypeSubcls.id_for_label }}">Test Type Subclass</label>
+        {{ form.TestTypeSubcls }}
       </div>
       <div class="form-group">
-        <label for="{{ form.recruiting_period_st.id_for_label }}"></label>
-        {{ form.recruiting_period_st }}
+        <label for="{{ form.RecrutingPeriodSt.id_for_label }}">Recruiting Period Start</label>
+        {{ form.RecrutingPeriodSt }}
       </div>
       <div class="form-group">
-        <label for="{{ form.recruiting_period_end.id_for_label }}"></label>
-        {{ form.recruiting_period_end }}
+        <label for="{{ form.recruiting_period_st_year.id_for_label }}">Year</label>
+        {{ form.recruiting_period_st_year }}
+        <label for="{{ form.recruiting_period_st_month.id_for_label }}">Month</label>
+        {{ form.recruiting_period_st_month }}
+        <label for="{{ form.recruiting_period_st_day.id_for_label }}">Day</label>
+        {{ form.recruiting_period_st_day }}
       </div>
       <div class="form-group">
-        <label for="{{ form.test_start.id_for_label }}"></label>
-        {{ form.test_start }}
+        <label for="{{ form.RecrutingPeriodEnd.id_for_label }}">Recruiting Period End</label>
+        {{ form.RecrutingPeriodEnd }}
       </div>
       <div class="form-group">
-        <label for="{{ form.test_end.id_for_label }}"></label>
-        {{ form.test_end }}
+        <label for="{{ form.recruiting_period_end_year.id_for_label }}">Year</label>
+        {{ form.recruiting_period_end_year }}
+        <label for="{{ form.recruiting_period_end_month.id_for_label }}">Month</label>
+        {{ form.recruiting_period_end_month }}
+        <label for="{{ form.recruiting_period_end_day.id_for_label }}">Day</label>
+        {{ form.recruiting_period_end_day }}
       </div>
       <div class="form-group">
-        <label for="{{ form.del_flg.id_for_label }}"></label>
-        {{ form.del_flg }}
+        <label for="{{ form.TestStart.id_for_label }}">Test Start</label>
+        {{ form.TestStart }}
       </div>
+      <div class="form-group">
+        <label for="{{ form.test_start_year.id_for_label }}">Year</label>
+        {{ form.test_start_year }}
+        <label for="{{ form.test_start_month.id_for_label }}">Month</label>
+        {{ form.test_start_month }}
+        <label for="{{ form.test_start_day.id_for_label }}">Day</label>
+        {{ form.test_start_day }}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.TestEnd.id_for_label }}">Test End</label>
+        {{ form.TestEnd }}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.test_end_year.id_for_label }}">Year</label>
+        {{ form.test_end_year }}
+        <label for="{{ form.test_end_month.id_for_label }}">Month</label>
+        {{ form.test_end_month }}
+        <label for="{{ form.test_end_day.id_for_label }}">Day</label>
+        {{ form.test_end_day }}
+      </div>-->
       <button type="submit" class="btn btn-primary">Create</button>
     </form>
   </div>

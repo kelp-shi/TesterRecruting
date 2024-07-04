@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from baseApp.db.application.app_models import TestPost
 from baseApp.db.application.dm_models import DmRoom, Massage
 from baseApp.models import CustomUser
+from django.utils import timezone
 import random, string
 import logging
 
@@ -21,6 +22,11 @@ def randomNumver(length):
     """
     digits = ''.join(random.choices(string.digits, k=length))
     return digits
+
+def combine_date(year, month, day):
+    current_time = timezone.now()
+    date_str = f"{year:04d}-{month:02d}-{day:02d} {current_time.strftime('%H:%M:%S,%f')}"
+    return timezone.datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S,%f")
 
 class index(LoginRequiredMixin, TemplateView):
     """

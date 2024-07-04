@@ -10,8 +10,9 @@ from baseApp.db.application.app_models import TestPost
 
 from baseApp.views.dm.dmControl import createDirectMsgforApply
 from baseApp.forms.application_forms import *
-from baseApp.views.utillity import randomNumver
+from baseApp.views.utillity import randomNumver, combine_date
 from baseApp.models import CustomUser
+from django.utils import timezone
 
 import datetime
 import logging
@@ -23,7 +24,7 @@ class createTask(LoginRequiredMixin, CreateView):
     """
     新規テストポストの作成
     """
-    #model = TestPost
+    model = TestPost
     form_class = TestPostForm
     template_name = 'app/createpost.html'
 
@@ -34,6 +35,28 @@ class createTask(LoginRequiredMixin, CreateView):
         # 投稿者を現在のユーザーに設定
         form.instance.id = randomNumver(10)
         form.instance.CreateUser = self.request.user
+
+        form.instance.RecrutingPeriodSt = combine_date(
+            form.cleaned_data['recruiting_period_st_year'],
+            form.cleaned_data['recruiting_period_st_month'],
+            form.cleaned_data['recruiting_period_st_day']
+        )
+        form.instance.RecrutingPeriodEnd = combine_date(
+            form.cleaned_data['recruiting_period_end_year'],
+            form.cleaned_data['recruiting_period_end_month'],
+            form.cleaned_data['recruiting_period_end_day']
+        )
+        form.instance.TestStart = combine_date(
+            form.cleaned_data['test_start_year'],
+            form.cleaned_data['test_start_month'],
+            form.cleaned_data['test_start_day']
+        )
+        form.instance.TestEnd = combine_date(
+            form.cleaned_data['test_end_year'],
+            form.cleaned_data['test_end_month'],
+            form.cleaned_data['test_end_day']
+        )
+
         response = super().form_valid(form)
         self.request.user.MyTest.add(form.instance)
         return response
@@ -42,7 +65,6 @@ class createTask(LoginRequiredMixin, CreateView):
         logger.debug('---------------form is fail---------------')
         logger.debug(form.errors.as_json())
         return super().form_invalid(form)
-    
 
 class TestPostSearchView(LoginRequiredMixin,ListView):
     """
