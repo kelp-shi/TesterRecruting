@@ -1,8 +1,9 @@
 from typing import Any
 from django.db import models
-from .TestTypeSubclass import TestTypeSubclass
+from .TestTypeSubclass_jp import TestTypeSubclass
 from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator
+from django.utils import timezone
 
 class TestPost (models.Model):
     """テストタスククラス
@@ -25,6 +26,7 @@ class TestPost (models.Model):
         TestEnd(DateTime):テスト終了日
         DelFlg(bool):削除フラグ
         CreateUser(ForeignKey):投稿者
+        Create_dt(DateTime):投稿日
         
     実装予定:
         タスク単価
@@ -64,6 +66,8 @@ class TestPost (models.Model):
     DelFlg = models.BooleanField('Delete Flag', default=False)
     #CreateUser(ForeignKey):投稿者
     CreateUser = models.ForeignKey('baseApp.CustomUser', on_delete=models.CASCADE, blank=True, null=True)
+    #Create_dt(DateTime):投稿日
+    Create_dt = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.id} - {self.PostName} - {self.CreateUser.id}"
