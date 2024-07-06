@@ -25,6 +25,9 @@ def randomNumver(length):
 
 def combine_date(year, month, day):
     current_time = timezone.now()
+    year = int(year)
+    month = int(month)
+    day = int(day)
     date_str = f"{year:04d}-{month:02d}-{day:02d} {current_time.strftime('%H:%M:%S,%f')}"
     return timezone.datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S,%f")
 
