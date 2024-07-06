@@ -36,6 +36,9 @@ class createTask(LoginRequiredMixin, CreateView):
         form.instance.id = randomNumver(10)
         form.instance.CreateUser = self.request.user
 
+        form.instance.RecrutingNum = form.cleaned_data['RecrutingNumPeople']
+        form.instance.ApplyNum = form.cleaned_data['ApplyPeople']
+
         form.instance.RecrutingPeriodSt = combine_date(
             form.cleaned_data['recruiting_period_st_year'],
             form.cleaned_data['recruiting_period_st_month'],

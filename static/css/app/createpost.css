@@ -26,3 +26,7 @@
 .btn:hover {
   background-color: #4cae4c;
 }
+
+.formlabel {
+  padding-left: 0;
+}
