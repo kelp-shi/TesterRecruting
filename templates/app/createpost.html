@@ -73,20 +73,24 @@
         </div>
       </div>
       <!--人数選択-->
-      <div class="row mb-3 align-items-center">
-        <div class="col-10 col-sm-5">
-          <label class="fs-4 mb-2" for="{{ form.RecrutingNumPeople.id_for_label }}">募集人数（応募上限数）</label>
-          {{ form.RecrutingNumPeople }}
+      <!--人数選択：募集人数（応募上限数）-->
+      <div class="row mb-3">
+        <div class="col-12 col-sm-6">
+            <label class="fs-4 mb-2">募集人数（応募上限数）</label>
+            <div class="d-flex align-items-center">
+                <label class="fs-5 mb-2" for="{{ form.RecrutingNumPeople.id_for_label }}"></label>
+                {{ form.RecrutingNumPeople }}
+                <p class="fs-3 mb-0 ms-2">人</p>
+            </div>
         </div>
-        <div class="col-1 col-sm-1 pt-4">
-          <p class="fs-3">人</p>
-        </div>
-        <div class="col-10 col-sm-5">
-          <label class="fs-4 mb-2" for="{{ form.ApplyPeople.id_for_label }}">採用任数</label>
-          {{ form.ApplyPeople }}
-        </div>
-        <div class="col-1 col-sm-1 pt-4">
-          <p class="fs-3">人</p>
+        <!--人数選択：採用任数-->
+        <div class="col-12 col-sm-6">
+            <label class="fs-4 mb-2">採用任数</label>
+            <div class="d-flex align-items-center">
+                <label class="fs-5 mb-2" for="{{ form.ApplyPeople.id_for_label }}"></label>
+                {{ form.ApplyPeople }}
+                <p class="fs-3 mb-0 ms-2">人</p>
+            </div>
         </div>
       </div>
       <!--Application種別-->
