@@ -2,9 +2,18 @@ from django.db import models
 from baseApp.models import CustomUser
 
 class DmRoom(models.Model):
+    """
+    DMルームクラス
+
+    Attributes:
+        Member(ManyToMany):Dm参加メンバー
+        create_at(DateTime):作成日
+        delFlg(Bool):削除フラグ
+    """
 
     Member = models.ManyToManyField(CustomUser, related_name='room')
     create_at = models.DateTimeField(auto_now_add=True)
+    delFlg = models.BooleanField(default=False)
 
 class Massage(models.Model):
     """
