@@ -1,22 +1,40 @@
 {% extends 'global_menu.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>detail</title>
-    <!--タイトルはタスク名を入れる-->
-</head>
-<body>
-    {% block content %}
-    <p>{{postdetail.PostName}}</p>
-    <p>user ditail view</p>
-    <p>help</p>
-    {% if existenceFlg == False %}
-    <a href="{% url 'baseApp:ApplyTask' pk=postdetail.pk %}" class="btn btn-primary">Join Task</a>
-    {% else %}
-    {% endif %}
-    {% endblock content %}
-</body>
-</html>
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/app/detail.css' %}">
+    <div class="post-title">
+        <h1 class="title">{{postdetail.PostName}}</h1>
+        {% if postdetail.TestType == 1 %}
+            <h3 class="testtype">テストの種類：ゲーム</h3>
+        {% else %}
+            <h3 class="testtype">テストの種類：アプリ</h3>
+        {% endif %}
+        <h3 class="TestTypeSubcls">テストの細分類：{{postdetail.TestTypeSubcls}}</h3>
+        <h3 class="createdby">作成者：<a href="{% url 'baseApp:profile' postdetail.CreateUser %}">{{postdetail.CreateUser}}</a></h3>
+    </div>
+    <div class="post-info">
+        <div class="post-discription">
+            <p class="textlabel">テスト内容</p>
+            <p>{{postdetail.Discription}}</p>
+        </div>
+        <div class="post-RecrNum">
+            <p class="textlabel">募集人数</p>
+            <p>{{postdetail.RecrutingNum}}</p>
+        </div>
+    </div>
+    <div class="common-discription">
+    </div>
+    <div class="ApplyBtn">
+        {% if postdetail.RecrutingPeriodFlg == True %}
+            <h3 class="RecFlgLabel">現在テスター募集中！</h3>
+        {% else %}
+            <h3 class="RecFlgLabel">テスター募集終了</h3>
+        {% endif %}
+
+        {% if existenceFlg == False %}
+            <a href="{% url 'baseApp:ApplyTask' pk=postdetail.pk %}" class="btn applybtn-primary ">Join Task</a>
+        {% else %}
+            <h3>申請済み</h3>
+        {% endif %}
+    </div>
+{% endblock content %}

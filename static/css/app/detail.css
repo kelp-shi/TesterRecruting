@@ -1,0 +1,84 @@
+.post-title { 
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-size: 1em;
+}
+
+.post-title > .title{
+    font-size: 1.2em;
+}
+.post-title > .testtype {
+    margin: 10px 0 5px 0;
+    font-size: 0.8em;
+}
+
+.post-title > .TestTypeSubcls {
+    font-size: 0.8em;
+    margin-bottom:5px;
+}
+
+.post-title > .createdby {
+    font-size: 0.8em;
+}
+
+.post-info {
+    margin: 10px;
+}
+
+.post-discription {
+    margin: 10px 0 10px 0;
+}
+
+.RecFlgLabel {
+    font-weight: 450;
+}
+
+.applybtn-primary {
+    color: white;
+    background-color: #13a5e4;
+    border-color: #13a5e4;
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.4s;
+}
+
+.applybtn-primary:hover {
+    background-color: #12d0aa;
+    border-color: #12d0aa;
+    color: white;
+}
+
+.applybtn-primary::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(18, 208, 170, 0.5), rgba(69, 160, 73, 0.5));
+    transition: left 0.4s;
+    color: white;
+}
+
+.applybtn-primary:hover::after {
+    left: 0;
+}
+
+.applybtn-primary span {
+    position: relative;
+    z-index: 1;
+}
+
+@media (max-width: 991px) {
+    .applybtn-primary {
+        margin-top: 0.5rem;
+        width: 100%;
+    }
+}
+
+@media (min-width: 992px) {
+    .applybtn-primary {
+        margin-top: 0.5rem;
+        width: 100%;
+    }
+}

@@ -2,7 +2,28 @@
 {% load static %}
 {% block content %}
 <body>
-    <p>creater view</p>
+    <div class="post-title">
+        <h1 class="title">{{postdetail.PostName}}</h1>
+        {% if postdetail.TestType == 1 %}
+            <h3 class="testtype">テストの種類：ゲーム</h3>
+        {% else %}
+            <h3 class="testtype">テストの種類：アプリ</h3>
+        {% endif %}
+        <h3 class="TestTypeSubcls">テストの細分類：{{postdetail.TestTypeSubcls}}</h3>
+        <h3 class="createdby">作成者：<a href="{% url 'baseApp:profile' postdetail.CreateUser %}">{{postdetail.CreateUser}}</a></h3>
+    </div>
+    <div class="post-info">
+        <div class="post-discription">
+            <p class="textlabel">テスト内容</p>
+            <p>{{postdetail.Discription}}</p>
+        </div>
+        <div class="post-RecrNum">
+            <p class="textlabel">募集人数</p>
+            <p>{{postdetail.RecrutingNum}}</p>
+        </div>
+    </div>
+    <div class="common-discription">
+    </div>
     <a href="{% url 'baseApp:Authorization' pk=postdetail.pk %}">Apply List</a>
 </body>
 
