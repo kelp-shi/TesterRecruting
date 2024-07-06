@@ -257,6 +257,11 @@ class Authorization(FormView):
             msg = creater_name + "があなたとのDMを作成しました。"
             # DM作成メソッド実行
             createDirectMsgforApply(self, request, createuser_id, selected_id, msg)
+
+            #CustomUserモデルのRunningTestへ登録
+            running_user = get_object_or_404(CustomUser, id=selected_id)
+            running_user.RunningTest.set([targetTest])
+            running_user.save()
         
         # 終了処理
         join_request_check = JoinRequest.objects.filter(SubjectTest_id=testid, authorizationFlg=True)
