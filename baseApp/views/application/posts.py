@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
-from django.views.generic import ListView, DetailView, CreateView, FormView
+from django.views.generic import ListView, CreateView, FormView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.db.models import Q
@@ -8,11 +8,10 @@ from django.urls import reverse_lazy, reverse
 
 from baseApp.db.application.app_models import TestPost
 
-from baseApp.views.dm.dmControl import createDirectMsgforApply
+from baseApp.views.dm.dmControl import createDirectMsgforApply, createExistingDirectMsgforApply
 from baseApp.forms.application_forms import *
 from baseApp.views.utillity import randomNumver, combine_date
 from baseApp.models import CustomUser
-from django.utils import timezone
 
 import datetime
 import logging
@@ -150,6 +149,10 @@ class PostDetail(LoginRequiredMixin, FormView):
     
     Note:テストポストの詳細を表示
     """
+    template_name = ''
+    #クローズ用ボタンフォーム
+    closeForm = TestCloseForm
+
     def get(self, request, pk):
         #対象テストID
         testid = self.kwargs['pk']
@@ -179,8 +182,28 @@ class PostDetail(LoginRequiredMixin, FormView):
         return render(request, set_template, {
             'id':self.kwargs['pk'],
             'existenceFlg':existenceFlg,
-            'postdetail':target_test
+            'postdetail':target_test,
+            'form': self.form_class
         })
+    
+    def post(self, request, pk):
+        #対象テストの削除フラグをTrueにする
+        target_test = get_object_or_404(TestPost, id=pk)
+        target_test.DelFlg = True
+        target_test.save()
+
+        #テスターを取得
+        tester_list = CustomUser.objects.filter(RunningTest=pk)
+        createuser_info = {'userid':target_test.CreateUser.id, 'userName':target_test.CreateUser.username}
+
+        if tester_list.count() > 0:
+            for tester in tester_list:
+                msg = target_test.PostName + " が" + createuser_info['userName'] + " によってクローズされました"
+                # DM作成メソッド実行(既存DmRoom)
+                createExistingDirectMsgforApply(self, request, createuser_info['userid'], pk, msg)
+            
+        return redirect('baseApp:postlist')
+        
         
 class ApplyTask(FormView):
     """
@@ -261,7 +284,7 @@ class Authorization(FormView):
             
             msg = creater_name + "があなたとのDMを作成しました。"
             # DM作成メソッド実行
-            createDirectMsgforApply(self, request, createuser_id, selected_id, msg)
+            createDirectMsgforApply(self, request, createuser_id, selected_id, testid, msg)
 
             #CustomUserモデルのRunningTestへ登録
             running_user = get_object_or_404(CustomUser, id=selected_id)

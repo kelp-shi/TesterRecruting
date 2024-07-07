@@ -1,5 +1,6 @@
 from django.db import models
 from baseApp.models import CustomUser
+from baseApp.db.application.app_models import TestPost
 
 class DmRoom(models.Model):
     """
@@ -7,11 +8,13 @@ class DmRoom(models.Model):
 
     Attributes:
         Member(ManyToMany):Dm参加メンバー
+        TargetTest(ForeignKey):対象テスト
         create_at(DateTime):作成日
         delFlg(Bool):削除フラグ
     """
 
     Member = models.ManyToManyField(CustomUser, related_name='room')
+    TargetTest = models.ForeignKey(TestPost, related_name='targetTest', on_delete=models.CASCADE)
     create_at = models.DateTimeField(auto_now_add=True)
     delFlg = models.BooleanField(default=False)
 

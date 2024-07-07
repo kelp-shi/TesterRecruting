@@ -78,3 +78,10 @@ class AuthorizationForm(forms.ModelForm):
     class Meta:
         model = JoinRequest
         fields = []
+
+class TestCloseForm(forms.ModelForm):
+    close = forms.BooleanField(required=True, label="クローズ")
+
+    class Meta:
+        model = TestPost
+        fields = []
