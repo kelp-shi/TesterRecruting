@@ -204,7 +204,6 @@ class PostDetail(LoginRequiredMixin, FormView):
             
         return redirect('baseApp:postlist')
         
-        
 class ApplyTask(FormView):
     """
     申請クラス
