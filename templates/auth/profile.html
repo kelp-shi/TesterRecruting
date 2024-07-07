@@ -11,15 +11,15 @@
             <h1>{{ profile.username }}</h1>
             <h2>About</h2>
             <ul>
-                <li><strong>Birthday:</strong> {{ profile.UserBirth }}</li>
+                <li><strong>Birthday:</strong> {{ profile.UserBirth|date:"F j" }}</li>
                 <li><strong>Gender:</strong> {{ profile.UserGender }}</li>
-                <li><strong>Age:</strong> {{ profile.age }}</li>
-                <li><strong>Email:</strong> {{ profile.email }}</li>
             </ul>
-            <div class="profile-actions">
-                <a href="{% url 'baseApp:ProfileEdit' user.username %}" class="btn btn-edit">Edit Profile</a>
-                <a href="{% url 'baseApp:logout' %}" class="btn btn-logout">Logout</a>
-            </div>
+            {% if profile.username == request.user.username %}
+                <div class="profile-actions">
+                    <a href="{% url 'baseApp:ProfileEdit' user.username %}" class="btn btn-edit">Edit Profile</a>
+                    <a href="{% url 'baseApp:logout' %}" class="btn btn-logout">Logout</a>
+                </div>
+            {% endif %}
         </div>
     </div>
 </div>
