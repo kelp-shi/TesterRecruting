@@ -144,38 +144,43 @@ class TestPostSearchView(LoginRequiredMixin,ListView):
         logger.info('---------------end list method-(non object)[TestPostSearchView]--------------')
         return context
 
-class PostDetail(LoginRequiredMixin,DetailView):
+class PostDetail(LoginRequiredMixin, FormView):
     """
     詳細クラス
     
     Note:テストポストの詳細を表示
     """
-    model = TestPost
-    context_object_name = 'postdetail'
-    #テストポストデータ取得
-    def get_context_data(self, **kwargs):
-        #存在確認フラグ
+    def get(self, request, pk):
+        #対象テストID
+        testid = self.kwargs['pk']
+        #申請者用テンプレート
+        testuser_template = 'app/detail.html'
+        #オーナー用テンプレート
+        createuser_template = 'app/createUser_detail.html'
+        #出力テンプレート変数
+        set_template = ''
+        #申請有無フラグ(申請者用)
         existenceFlg = False
-        context = super().get_context_data(**kwargs)
-
+        #対象テストオブジェクト取得
+        target_test = get_object_or_404(TestPost, id=testid)
         #存在存在チェック
-        existenceUser = JoinRequest.objects.filter(Q(SubjectTest=self.kwargs['pk']) & (Q(Sender=self.request.user) & Q(authorizationFlg=False)))
+        existenceUser = JoinRequest.objects.filter(Q(SubjectTest=testid) & (Q(Sender=self.request.user) & Q(authorizationFlg=False)))
 
-        #既に申請されていた場合、存在確認フラグをTrueに
+        #アクセスユーザーによって出力テンプレートを変える
+        if request.user == target_test.CreateUser:
+            set_template = createuser_template
+        else:
+            set_template = testuser_template
+        
+        #申請有無チェック、既に申請されていたらフラグをTrueに変える
         if existenceUser.exists():
             existenceFlg = True
-
-        context['id'] = self.kwargs['pk']
-        context['existenceFlg'] = existenceFlg
-        return context
-
-    #accessユーザによってテンプレート切り替え
-    def get_template_names(self):
-        accessUser = self.request.user
-        if self.object.CreateUser == accessUser:
-            return ['app/createUser_detail.html']
-        else:
-            return ['app/detail.html']
+        
+        return render(request, set_template, {
+            'id':self.kwargs['pk'],
+            'existenceFlg':existenceFlg,
+            'postdetail':target_test
+        })
         
 class ApplyTask(FormView):
     """
