@@ -1,13 +1,8 @@
 {% extends 'global_menu.html' %}
 {% load static %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/app/postlist.css' %}">
-</head>
+<link rel="stylesheet" href="{% static 'css/app/postlist.css' %}">
+<title>{% block title %}Terec - テスト一覧{% endblock %}</title>
 <body>
     <div class="container">
         <form action="" method="get">
@@ -33,4 +28,3 @@
     </div>
     {% endblock content %}
 </body>
-</html>

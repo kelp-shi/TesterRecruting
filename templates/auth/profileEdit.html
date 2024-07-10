@@ -1,6 +1,7 @@
 {% extends 'global_menu.html' %}
 {% block content %}
 <link href="https://cdn.jsdelivr.net/npm/datepicker/dist/css/datepicker.min.css" rel="stylesheet">
+<title>{% block title %}Terec - プロフィール編集{% endblock %}</title>
 <form enctype="multipart/form-data" method="POST">
   {% csrf_token %}
   {{ form.non_field_errors }}

@@ -1,28 +1,29 @@
 {% extends 'global_menu.html' %}
 {% block content %}
-  <h1>テストユーザー認可</h1>
-  <h2>対象テスト: {{ subject_test.name }}</h2>
-  <p>テストにアサインする</p>
+<title>{% block title %}Terec - 応募者認証ページ{% endblock %}</title>
+<h1>テストユーザー認可</h1>
+<h2>対象テスト: {{ subject_test.name }}</h2>
+<p>テストにアサインする</p>
 
-  {% if messages %}
+{% if messages %}
     <ul class="messages">
-      {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-      {% endfor %}
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
     </ul>
-  {% endif %}
+{% endif %}
 
-  <form method="post">
+<form method="post">
     {% csrf_token %}
     {% if custom_users %}
-      {% for user in custom_users %}
+        {% for user in custom_users %}
         <div>
-          <input type="checkbox" name="select" value="{{ user.id }}"> {{ user.username }}
+             <input type="checkbox" name="select" value="{{ user.id }}"> {{ user.username }}
         </div>
-      {% endfor %}
-      <button type="submit">認可する</button>
+        {% endfor %}
+        <button type="submit">認可する</button>
     {% else %}
-      <p>no list</p>
+        <p>no list</p>
     {% endif %}
-  </form>
+</form>
 {% endblock %}

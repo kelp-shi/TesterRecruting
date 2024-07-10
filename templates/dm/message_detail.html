@@ -2,6 +2,7 @@
 {% load static %}
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/app/message.css' %}">
+<title>{% block title %}Terec - {{ other_user.username }}とのDM{% endblock %}</title>
 <h1>Messages with {{ other_user.username }}</h1>
 <div class="message-container">
     {% for message in messages %}
