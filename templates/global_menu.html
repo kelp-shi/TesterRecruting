@@ -12,7 +12,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <title>Your Site Title</title>
 </head>
 <body>
     <header>
@@ -30,7 +29,7 @@
                         <li class="nav-item"><a class="nav-link" href="{% url 'baseApp:postlist' %}">Tests List</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'baseApp:profile' user.username %}">My Account</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'baseApp:thread_list'%}">DM</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'baseApp:help' %}">Help</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'baseApp:contact' %}">Help</a></li>
                     </ul>
                     <div class="d-flex align-items-center">
                         <a href="{% url 'baseApp:createpost' %}" class="btn btn-primary me-2"><span>Post Test</span></a>

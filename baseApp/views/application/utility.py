@@ -4,9 +4,9 @@ from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from baseApp.models import CustomUser
 
-class appHelp(LoginRequiredMixin,TemplateView):
+class contact(LoginRequiredMixin,TemplateView):
     """
-    ヘルプページ表示クラス
+    コンタクトページ表示クラス
 
     Note:app/help.htmlのヘルプページを返す
     """
