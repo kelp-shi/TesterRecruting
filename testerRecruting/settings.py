@@ -151,7 +151,17 @@ SITE_ID = 1
 
 DEFAULT_PROFILE_IMAGE_PATH = 'baseApp/images/user/profile/defalt.png'
 
-#Debug log
+#Debug log------------------------------------------------------------------------------------
+# logフォルダのパス
+LOG_DIR = os.path.join(BASE_DIR, 'log')
+
+# ログファイルのパス
+LOG_FILE_PATH = os.path.join(LOG_DIR, 'Terec_log_file.log')
+
+if not os.path.exists(LOG_FILE_PATH):
+    with open(LOG_FILE_PATH, 'w'):
+        pass
+
 if DEBUG:
     # will output to your console
     logging.basicConfig(
@@ -163,7 +173,7 @@ else:
     logging.basicConfig(
         level = logging.DEBUG,
         format = '%(asctime)s %(levelname)s %(message)s',
-        filename = '/my_log_file.log',
+        filename=LOG_FILE_PATH,
         filemode = 'a'
     )
 
