@@ -1,4 +1,5 @@
 testerRecruting/__pycache__/
+log/*
 baseApp/__pycache__/
 baseApp/views/__pycache__/
 baseApp/db/application/__pycache__/
