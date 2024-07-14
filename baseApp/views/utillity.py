@@ -2,7 +2,7 @@ from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from baseApp.db.application.app_models import TestPost
 from baseApp.db.application.dm_models import DmRoom, Massage
-from baseApp.models import CustomUser
+from baseApp.db.application.utillity_models import BannerImg
 from django.utils import timezone
 import random, string
 import logging
@@ -50,7 +50,8 @@ class index(LoginRequiredMixin, TemplateView):
         context['recomendpost'] = TestPost.objects.filter(RecrutingPeriodFlg=True).order_by('?')[:10]
         # 自身のDM
         my_dms = DmRoom.objects.filter(Member=current_user)
-        # context['room'] = my_dms
+        # バナー画像を取得
+        banner_info = BannerImg.objects.get(activeFlg=True)
         
 
         other_members = {}
@@ -67,5 +68,6 @@ class index(LoginRequiredMixin, TemplateView):
         context['rooms'] = my_dms
         context['other_members'] = other_members
         context['dmMessage'] = new_message
+        context['banner'] = banner_info
 
         return context
