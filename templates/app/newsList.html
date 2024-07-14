@@ -1,0 +1,17 @@
+{% extends 'global_menu.html' %}
+{% load static %}
+{% block content %}
+<div class="listbox col-12 mt-5">
+    {% for news in object_list %}
+        <div class="col-12">
+            <div class="card h-40">
+                <div class="card-body">
+                    <h3 class="card-title">{{ news.NewsTitle }}</h3>
+                    <p class="card-text mb-3">{{ news.Newsinner }}</p>
+                    <span>{{ news.Create_at }}</span>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock content %}

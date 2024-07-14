@@ -1,8 +1,9 @@
 import csv
 from django.http import HttpResponse
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from baseApp.models import CustomUser
+from baseApp.db.application.utillity_models import news
 
 class contact(LoginRequiredMixin,TemplateView):
     """
@@ -11,6 +12,14 @@ class contact(LoginRequiredMixin,TemplateView):
     Note:app/help.htmlのヘルプページを返す
     """
     template_name = 'app/help.html'
+
+class newslist(LoginRequiredMixin, ListView):
+    """
+    ニュースリスト表示クラス
+    """
+    template_name = 'app/newsList.html'
+    model = news
+    ordering = '-Create_at'
 
 class exportEmailCsv():
     """

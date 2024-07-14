@@ -10,6 +10,7 @@ admin.site.register(JoinRequest)
 admin.site.register(CustomUser)
 admin.site.register(DmRoom)
 admin.site.register(Massage)
+admin.site.register(news)
 
 class BannerImages(admin.ModelAdmin):
     list_display = ('bannerTitle', 'bannerTitle', 'activeFlg')

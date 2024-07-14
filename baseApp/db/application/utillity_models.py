@@ -16,3 +16,16 @@ class BannerImg(models.Model):
 
     def __str__(self):
         return self.bannerTitle
+    
+class news(models.Model):
+    """
+    news
+    """
+    NewsTitle = models.CharField(max_length=150)
+    Newsinner = models.TextField(max_length=5000)
+    CreateUser = models.ForeignKey('baseApp.CustomUser', on_delete=models.CASCADE, blank=True, null=True)
+    RelatedBanner = models.ForeignKey(BannerImg, blank=True, null=True, on_delete=models.CASCADE)
+    Create_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.NewsTitle

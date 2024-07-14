@@ -1,7 +1,7 @@
 from django.urls import path
 from baseApp.views.utillity import index
 from baseApp.views.application.posts import *
-from baseApp.views.application.utility import contact
+from baseApp.views.application.utility import *
 from baseApp.views.dm.dmControl import ThreadListView, MessageDetailView
 from baseApp.views.auth.authControl import *
 from django.conf import settings
@@ -30,7 +30,9 @@ urlpatterns = [
     #DMページ
     path('threads/<int:room_id>/', MessageDetailView.as_view(), name='message_detail'),
 
-    #----------contact----------
+    #----------other----------
+    #ニュースリスト
+    path('news/', newslist.as_view(), name='newslist'),
     #コンタクトページ
     path('contact/', contact.as_view(), name='contact'),
 
