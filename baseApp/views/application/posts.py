@@ -94,7 +94,7 @@ class TestPostSearchView(LoginRequiredMixin,ListView):
 
         if query:
             # 名称検索（部分一致可:大小区別なし）
-            queryset = TestPost.objects.filter(PostName__icontains=query, RecrutingPeriodFlg=True)
+            queryset = TestPost.objects.filter(PostName__icontains=query, RecrutingPeriodFlg=True, DelFlg=False)
         else:
             # テストポストの全件取得（条件：募集フラグ==True, 削除フラグ==Falese）
             queryset = TestPost.objects.filter(RecrutingPeriodFlg=True, DelFlg=False).order_by('id')
