@@ -11,7 +11,6 @@ baseApp/forms/__pycache__/
 baseApp/migrations/
 baseApp/images/user/profile/
 baseApp/views/application/__pycache__/
-baseApp/images/org/banner/
 baseApp/templatetags/__pycache__/
 
 django.log
