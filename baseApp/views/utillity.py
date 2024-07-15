@@ -3,7 +3,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from baseApp.db.application.app_models import TestPost
 from baseApp.db.application.dm_models import DmRoom, Massage
 from baseApp.db.application.utillity_models import BannerImg
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
 from django.utils import timezone
+from baseApp.models import CustomUser
 import random, string
 import logging
 
@@ -31,6 +34,24 @@ def combine_date(year, month, day):
     date_str = f"{year:04d}-{month:02d}-{day:02d} {current_time.strftime('%H:%M:%S,%f')}"
     return timezone.datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S,%f")
 
+def errorEmailSender(self, errorMsg):
+    """
+    管理者へエラーメッセージを送付する
+    """
+    user = CustomUser.objects.get(self)
+    current_site = get_current_site(self.request)
+    domain = current_site.domain
+    context = {
+        'protocol': self.request.scheme,
+        'domain': domain,
+        'errorMsg': errorMsg,
+    }
+    # サブジェクト
+    subject = render_to_string('admin/email/subject.txt', context)
+    # メッセージ
+    message = render_to_string('admin/email/message.txt', context)
+    user.email_user(subject, message)
+
 class index(LoginRequiredMixin, TemplateView):
     """
     indexビュー
@@ -45,9 +66,9 @@ class index(LoginRequiredMixin, TemplateView):
         # ログインユーザ情報
         context['user'] = current_user
         # 新規ポスト(3件)
-        context['newposts'] = TestPost.objects.filter(RecrutingPeriodFlg=True).order_by('RecrutingPeriodSt')[:3]
+        context['newposts'] = TestPost.objects.filter(RecrutingPeriodFlg=True, DelFlg=False).order_by('RecrutingPeriodSt')[:3]
         # おすすめポスト(10件)
-        context['recomendpost'] = TestPost.objects.filter(RecrutingPeriodFlg=True).order_by('?')[:10]
+        context['recomendpost'] = TestPost.objects.filter(RecrutingPeriodFlg=True, DelFlg=False).order_by('?')[:10]
         # 自身のDM
         my_dms = DmRoom.objects.filter(Member=current_user)
         # バナー画像を取得

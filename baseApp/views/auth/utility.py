@@ -42,23 +42,6 @@ def imageNameSelect():
     logger.debug('Failed to generate unique name after 2 attempts.')
     return None
 
-def errorEmailSender(self, errorMsg):
-    """
-    管理者へエラーメッセージを送付する
-    """
-    user = CustomUser.objects.get(self)
-    current_site = get_current_site(self.request)
-    domain = current_site.domain
-    context = {
-        'protocol': self.request.scheme,
-        'domain': domain,
-        'errorMsg': errorMsg,
-    }
-    # サブジェクト
-    subject = render_to_string('admin/email/subject.txt', context)
-    # メッセージ
-    message = render_to_string('admin/email/message.txt', context)
-    user.email_user(subject, message)
 
 
         
