@@ -5,10 +5,7 @@ import logging
 from PIL import Image
 from baseApp.models import CustomUser
 from baseApp.views.utillity import randomString
-from django.core.signing import dumps
 from django.core.files.base import ContentFile
-from django.template.loader import render_to_string
-from django.contrib.sites.shortcuts import get_current_site
 
 logger = logging.getLogger(__name__)
 
