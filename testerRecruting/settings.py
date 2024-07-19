@@ -143,6 +143,13 @@ AUTH_USER_MODEL = 'baseApp.CustomUser'
 
 #認証用Email
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'your-email@gmail.com'
+EMAIL_HOST_PASSWORD = 'your-email-password'
+DEFAULT_FROM_EMAIL = 'noreply@example.com'
+CONTACT_EMAIL = 'contact-receiver@example.com'
 
 #認証用トークン有効期限
 ACTIVATION_TIMEOUT_SECONDS = 60*60*24

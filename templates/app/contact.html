@@ -1,9 +1,99 @@
 {% extends 'global_menu.html' %}
 {% load static %}
+{% block content %}
 <title>{% block title %}Terec - コンタクト{% endblock %}</title>
-<body>
-    {% block content %}
-    {% endblock content %}
-    <p>コンタクト</p>
-</body>
-</html>
+<div class="container">
+    <h1>お問い合わせ/要望</h1>
+    <form id="contactForm" method="post" action="{% url 'baseApp:contact' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="button" class="btn btn-primary" id="contactSubmitBtn">送信</button>
+    </form>
+</div>
+
+<!-- 確認モーダル -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">確認</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>以下の内容で送信します。よろしいですか？</p>
+                <ul>
+                    <li>名前: <span id="modalName"></span></li>
+                    <li>メールアドレス: <span id="modalEmail"></span></li>
+                    <li>本文: <span id="modalMessage"></span></li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+                <button type="button" class="btn btn-primary" id="modalConfirmBtn">送信</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 成功モーダル -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel">送信成功</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>お問い合わせを受け付けました。ありがとうございます。</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Custom JS -->
+<script>
+    document.getElementById('contactSubmitBtn').addEventListener('click', function() {
+        // フォームの値を取得
+        const name = document.getElementById('id_name').value;
+        const email = document.getElementById('id_email').value;
+        const message = document.getElementById('id_message').value;
+
+        // モーダルに値を設定
+        document.getElementById('modalName').innerText = name;
+        document.getElementById('modalEmail').innerText = email;
+        document.getElementById('modalMessage').innerText = message;
+
+        // モーダルを表示
+        $('#confirmModal').modal('show');
+    });
+
+    document.getElementById('modalConfirmBtn').addEventListener('click', function() {
+        // モーダルを閉じる
+        $('#confirmModal').modal('hide');
+
+        // AJAXリクエストでフォームを送信
+        const form = $('#contactForm');
+        $.ajax({
+            type: form.attr('method'),
+            url: form.attr('action'),
+            data: form.serialize(),
+            success: function() {
+                // 成功モーダルを表示
+                $('#successModal').modal('show');
+            },
+            error: function() {
+                alert('送信中にエラーが発生しました。');
+            }
+        });
+    });
+</script>
+{% endblock content %}

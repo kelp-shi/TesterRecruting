@@ -85,3 +85,8 @@ class TestCloseForm(forms.ModelForm):
     class Meta:
         model = TestPost
         fields = []
+
+class contactForm(forms.Form):
+    name = forms.CharField(max_length=100, label='名前')
+    email = forms.EmailField(label='メールアドレス')
+    message = forms.CharField(widget=forms.Textarea, label='本文')
