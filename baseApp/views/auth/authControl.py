@@ -11,7 +11,8 @@ from django.contrib.sites.shortcuts import get_current_site
 from testerRecruting.settings import ACTIVATION_TIMEOUT_SECONDS
 from baseApp.forms.auth_forms import SignUpForm, SignInForm, ProfileEditForm
 from baseApp.models import CustomUser
-from baseApp.views.auth.utility import imageConvert, imageNameSelect, errorEmailSender
+from baseApp.views.auth.utility import imageConvert, imageNameSelect
+from baseApp.views.utillity import errorEmailSender
 
 from datetime import date
 import logging
