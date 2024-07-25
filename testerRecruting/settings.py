@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-)6g2ly%#ikat7&$ev$6$-on0$*0(!70aa=n-1)_qq&qx80-cj8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
 
 
 # Application definition
@@ -81,12 +81,11 @@ MEDIA_URL = '/'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'testerHelper',
-        'USER': 'root',
-        'PASSWORD': 'ajwE6RfiyZKZwUETeUXJ',
-        'HOST': 'localhost',
-        'PORT': '3306',
-        
+        'NAME': os.getenv('DB_NAME', 'testerHelper'),
+        'USER': os.getenv('DB_USER', 'user'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'myrootpassword'),
+        'HOST': os.getenv('DB_HOST', 'db'),  # ここが 'db' になっていることを確認
+        'PORT': os.getenv('DB_PORT', '3306'),
     }
 }
 
