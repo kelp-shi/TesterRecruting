@@ -1,16 +1,34 @@
+# Environments
+.env
+# .env.prodを.gitignoreする
+.env.prod
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+・・・
+
+# ignore static files
+
+
+
+#app----
 testerRecruting/__pycache__/
 log/*
-baseApp/__pycache__/
-baseApp/views/__pycache__/
-baseApp/db/application/__pycache__/
-baseApp/views/auth/__pycache__/
-baseApp/views/dm/__pycache__/
-baseApp/forms/__pycache__/
+src/baseApp/__pycache__/
+src/baseApp/views/__pycache__/
+src/baseApp/db/application/__pycache__/
+src/baseApp/views/auth/__pycache__/
+src/baseApp/views/dm/__pycache__/
+src/baseApp/forms/__pycache__/
 
-!baseApp/migrations/__init__.py
-baseApp/migrations/
-baseApp/images/user/profile/
-baseApp/views/application/__pycache__/
-baseApp/templatetags/__pycache__/
-
+src/baseApp/migrations/__init__.py
+src/baseApp/migrations/
+src/baseApp/images/user/profile/
+src/baseApp/views/application/__pycache__/
+src/baseApp/templatetags/__pycache__/
+src/testerRecruting/__pycache__/
 django.log
