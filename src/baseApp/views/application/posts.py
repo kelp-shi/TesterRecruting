@@ -78,10 +78,7 @@ class TestPostSearchView(LoginRequiredMixin,ListView):
     テスト期日検索（期日が近い）
     テスト期日検索（期日が遠い）
     """
-    logger.info('---------------start list method[TestPostSearchView]---------------')
     model = TestPost
-    logger.info('model count: ' + str(model.objects.count()))
-    logger.info('active model count: ' + str(model.objects.filter(RecrutingPeriodFlg=True, DelFlg=False).count()))
     template_name = 'app/postlist.html'
     # ページネーション
     paginate_by = 10
