@@ -130,7 +130,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, '/static')  # ここで静的ファイルが収集されるディレクトリ
-print(BASE_DIR)
 
 WSGI_APPLICATION = 'testerRecruting.wsgi.application'
 
