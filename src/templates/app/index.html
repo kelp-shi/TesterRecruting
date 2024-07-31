@@ -8,9 +8,11 @@
         <div class="row">
             <div class="col-12 col-lg-8 main-content">
                 <!--news-->
-                <div class="news-header py-4 mt-4 mb-5">
-                    <img src="{{ banner.bannerImg.url }}" alt="{{ banner.bannerTitle }}" class="img-fluid">
-                </div>
+                {% if banner|length > 0 %}
+                    <div class="news-header py-4 mt-4 mb-5">
+                        <img src="{{ banner.bannerImg.url }}" alt="{{ banner.bannerTitle }}" class="img-fluid">
+                    </div>
+                {% endif %}
                 <!--new tests-->
                 <div class="new-tests mb-3">
                     <h2 class="pb-3">新着テスト</h2>

@@ -72,7 +72,7 @@ class index(LoginRequiredMixin, TemplateView):
         # 自身のDM
         my_dms = DmRoom.objects.filter(Member=current_user)
         # バナー画像を取得
-        banner_info = BannerImg.objects.get(activeFlg=True)
+        banner_info = BannerImg.objects.filter(activeFlg=True)
         
 
         other_members = {}
