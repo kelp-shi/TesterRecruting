@@ -1,3 +1,0 @@
-GRANT ALL PRIVILEGES ON terecdb.* TO 'adminUser'@'%';
-
-FLUSH PRIVILEGES;
