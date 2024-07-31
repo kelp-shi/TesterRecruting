@@ -31,4 +31,5 @@ src/baseApp/images/user/profile/
 src/baseApp/views/application/__pycache__/
 src/baseApp/templatetags/__pycache__/
 src/testerRecruting/__pycache__/
+src/log
 django.log

@@ -1,0 +1,6 @@
+送信者：{{ user.username }} 様 お問い合わせ
+
+お問い合わせ内容
+{{message}}
+
+Tester Recruting
