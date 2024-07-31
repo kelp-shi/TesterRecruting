@@ -1,6 +1,7 @@
 import csv
 from django.http import HttpResponse
 from django.core.mail import send_mail
+from django.template.loader import render_to_string
 from django.conf import settings
 from django.views.generic import TemplateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -8,6 +9,8 @@ from django.http import JsonResponse
 from baseApp.models import CustomUser
 from baseApp.db.application.utillity_models import news
 from baseApp.forms.application_forms import contactForm
+import logging
+logger = logging.getLogger(__name__)
 
 class contact(LoginRequiredMixin, TemplateView):
     template_name = 'app/contact.html'
@@ -24,14 +27,18 @@ class contact(LoginRequiredMixin, TemplateView):
             message = form.cleaned_data['message']
 
             # メール送信
-            send_mail(
-                f'お問い合わせ from {name}',
-                message,
-                email,
-                [settings.CONTACT_EMAIL],
-                fail_silently=False,
-            )
-            return JsonResponse({'status': 'success'})
+            try:
+                send_mail(
+                    f'お問い合わせ from {name} : {email}',
+                    message,
+                    settings.DEFAULT_FROM_EMAIL,
+                    settings.CONTACT_EMAIL,
+                    fail_silently=False,
+                )
+                return JsonResponse({'status': 'success'}, status=200)
+            except Exception as e:
+                print(f"Error sending email: {e}")
+                return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 
         return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
 
