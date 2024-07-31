@@ -12,22 +12,25 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 import logging
+import pymysql
 from django.contrib import messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# connect mysql
+pymysql.install_as_MySQLdb()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-)6g2ly%#ikat7&$ev$6$-on0$*0(!70aa=n-1)_qq&qx80-cj8'
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
+DEBUG = os.environ.get("DJANGO_DEBUG")
+#DEBUG = True
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(" ")
 
 
 # Application definition
@@ -81,11 +84,11 @@ MEDIA_URL = '/'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('DB_NAME', 'testerHelper'),
-        'USER': os.getenv('DB_USER', 'user'),
-        'PASSWORD': os.getenv('DB_PASSWORD', 'myrootpassword'),
-        'HOST': os.getenv('DB_HOST', 'db'),  # ここが 'db' になっていることを確認
-        'PORT': os.getenv('DB_PORT', '3306'),
+        'NAME': os.environ.get("MYSQL_DATABASE"),
+        'USER': os.environ.get("MYSQL_USER"),
+        'PASSWORD': os.environ.get("MYSQL_PASSWORD"),
+        'HOST': os.environ.get("MYSQL_HOST"),
+        'PORT': os.environ.get("MYSQL_PORT"),
     }
 }
 
@@ -125,9 +128,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR.joinpath(BASE_DIR, 'static'),
-]
+STATIC_ROOT = os.path.join(BASE_DIR, '/static')  # ここで静的ファイルが収集されるディレクトリ
+print(BASE_DIR)
 
 WSGI_APPLICATION = 'testerRecruting.wsgi.application'
 
@@ -141,14 +143,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'baseApp.CustomUser'
 
 #認証用Email
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'your-email@gmail.com'
-EMAIL_HOST_PASSWORD = 'your-email-password'
-DEFAULT_FROM_EMAIL = 'noreply@example.com'
-CONTACT_EMAIL = 'contact-receiver@example.com'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.environ.get("DJANGO_EMAIL")
+EMAIL_PORT = os.environ.get("DJANGO_EMAIL_PORT")
+EMAIL_USE_TLS = os.environ.get("DJANGO_EMAIL_USE_TLS")
+EMAIL_HOST_USER = os.environ.get("DJANGO_EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("DJANGO_EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = os.environ.get("DJANGO_DEFAULT_FROM_EMAIL")
+CONTACT_EMAIL = os.environ.get("DJANGO_CONTACT_EMAIL")
 
 #認証用トークン有効期限
 ACTIVATION_TIMEOUT_SECONDS = 60*60*24
