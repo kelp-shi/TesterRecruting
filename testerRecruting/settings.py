@@ -14,6 +14,7 @@ from pathlib import Path
 import logging
 import pymysql
 from django.contrib import messages
+from google.cloud import logging as cloud_logging
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -160,30 +161,34 @@ SITE_ID = 1
 DEFAULT_PROFILE_IMAGE_PATH = 'baseApp/images/user/profile/defalt.png'
 
 #Debug log------------------------------------------------------------------------------------
-# logフォルダのパス
-LOG_DIR = os.path.join(BASE_DIR, 'log')
-
-# ログファイルのパス
-LOG_FILE_PATH = os.path.join(LOG_DIR, 'Terec_log_file.log')
-
-if not os.path.exists(LOG_FILE_PATH):
-    with open(LOG_FILE_PATH, 'w'):
-        pass
-
 if DEBUG:
-    # will output to your console
+    # コンソールに出力
     logging.basicConfig(
-        level = logging.DEBUG,
-        format = '%(asctime)s %(levelname)s %(message)s',
+        level=logging.DEBUG,
+        format='%(asctime)s %(levelname)s %(message)s',
     )
 else:
-    # will output to logging file
-    logging.basicConfig(
-        level = logging.DEBUG,
-        format = '%(asctime)s %(levelname)s %(message)s',
-        filename=LOG_FILE_PATH,
-        filemode = 'a'
-    )
+    # GCP環境用のログ設定
+    client = cloud_logging.Client()
+    client.setup_logging(logging.INFO)
+
+    # カスタムログハンドラー（オプション）
+    class GCPHandler(logging.Handler):
+        def emit(self, record):
+            client.logger(record.name).log_text(self.format(record))
+
+    # ルートロガーにGCPハンドラーを追加
+    root_logger = logging.getLogger()
+    root_logger.setLevel(logging.INFO)
+    root_logger.addHandler(GCPHandler())
+
+# アプリケーション全体で使用するロガーの設定
+logger = logging.getLogger(__name__)
+
+# 使用例
+logger.info("アプリケーションが起動しました")
+logger.debug("これはデバッグメッセージです")
+logger.error("エラーが発生しました", exc_info=True)
 
 #MESSAGE LEVEL
 MESSAGE_TAGS = {
