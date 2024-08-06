@@ -1,23 +1,7 @@
 # Environments
 .env
-# .env.prodを.gitignoreする
-.env.prod
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-・・・
-
-# ignore static files
-
-
-
 #app----
 testerRecruting/__pycache__/
-log/*
 src/baseApp/__pycache__/
 src/baseApp/views/__pycache__/
 src/baseApp/db/application/__pycache__/
