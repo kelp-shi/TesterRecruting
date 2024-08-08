@@ -6,7 +6,7 @@ RUN mkdir $APP_HOME
 
 WORKDIR $APP_HOME
 
-COPY . $APP_HOME/
+COPY . .
 
 RUN pip install -r requirements.txt
 
