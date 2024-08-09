@@ -20,6 +20,7 @@ from django.contrib import messages
 from google.cloud import secretmanager
 import google.auth
 from google.auth.exceptions import DefaultCredentialsError
+print("DJANGO_SECRET_KEY:", os.environ.get('DJANGO_SECRET_KEY'))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
