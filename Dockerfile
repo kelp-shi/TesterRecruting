@@ -1,15 +1,25 @@
-FROM python:3.12
+# Use an official Python runtime as a parent image
+FROM python:3.12-slim
 
-ENV APP_HOME=/src
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+ENV APP_HOME /app
+ENV PORT 8080
 
-RUN mkdir $APP_HOME
-
+# Set work directory
 WORKDIR $APP_HOME
 
+# Install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy project
 COPY . .
 
-RUN pip install -r requirements.txt
+# Collect static files and apply migrations
+RUN python manage.py collectstatic --noinput
+RUN python manage.py migrate
 
-EXPOSE 8080
-
-CMD ["gunicorn", "config.wsgi:application", "-b", "0.0.0.0:8080"]
+# Run gunicorn
+CMD ["sh", "-c", "gunicorn config.wsgi:application --bind 0.0.0.0:$PORT"]
