@@ -24,61 +24,38 @@ from google.auth.exceptions import DefaultCredentialsError
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-env = environ.Env(DEBUG=(bool, True))
-env_file = os.path.join(BASE_DIR, ".env")
+env = environ.Env(
+    DEBUG=(bool, False),
+    GOOGLE_CLOUD_PROJECT=(str, None),
+    USE_GCP_SECRETS=(bool, False),
+)
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
+# Read local .env file
+env.read_env(os.path.join(BASE_DIR, ".env"))
 
+# Check if we should use GCP Secret Manager
+USE_GCP_SECRETS = env("USE_GCP_SECRETS")
+
+if USE_GCP_SECRETS:
+    try:
+        # Pull secrets from Secret Manager
+        project_id = env("GOOGLE_CLOUD_PROJECT")
+        client = secretmanager.SecretManagerServiceClient()
+        settings_name = env("SETTINGS_NAME", default="django_settings")
+        name = f"projects/{project_id}/secrets/{settings_name}/versions/latest"
+        payload = client.access_secret_version(name=name).payload.data.decode("UTF-8")
+        env.read_env(io.StringIO(payload))
+    except Exception as e:
+        print(f"Error loading secrets from GCP: {e}")
+        # Fallback to local .env file
+        pass
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
-
-# Attempt to load the Project ID into the environment, safely failing on error.
-try:
-    _, os.environ["GOOGLE_CLOUD_PROJECT"] = google.auth.default()
-except google.auth.exceptions.DefaultCredentialsError:
-    os.environ["GOOGLE_CLOUD_PROJECT"] = "terec-00000"
-
-if os.path.isfile(env_file):
-    # Use a local secret file, if provided
-    env.read_env(env_file)
-# [START_EXCLUDE]
-elif os.getenv("TRAMPOLINE_CI", None):
-    # Create local settings if running with CI, for unit testing
-    placeholder = (
-        "SECRET_KEY=a\n"
-        "GS_BUCKET_NAME=None\n"
-        f"DATABASE_URL=sqlite://{os.path.join(BASE_DIR, 'db.sqlite3')}"
-    )
-    env.read_env(io.StringIO(placeholder))
-# [END_EXCLUDE]
-elif os.environ.get("GOOGLE_CLOUD_PROJECT", None):
-    # Pull secrets from Secret Manager
-    project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
-
-    client = secretmanager.SecretManagerServiceClient()
-    settings_name = os.environ.get("SETTINGS_NAME", "django_settings")
-    name = f"projects/{project_id}/secrets/{settings_name}/versions/latest"
-    payload = client.access_secret_version(name=name).payload.data.decode("UTF-8")
-
-    env.read_env(io.StringIO(payload))
-else:
-    raise Exception("No local .env or GOOGLE_CLOUD_PROJECT detected. No secrets found.")
+SECRET_KEY = env("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DJANGO_DEBUG")
-#DEBUG = True
+DEBUG = env("DJANGO_DEBUG")
 
-CLOUDRUN_SERVICE_URL = env("CLOUDRUN_SERVICE_URL", default=None)
-if CLOUDRUN_SERVICE_URL:
-    ALLOWED_HOSTS = [urlparse(CLOUDRUN_SERVICE_URL).netloc]
-    CSRF_TRUSTED_ORIGINS = [CLOUDRUN_SERVICE_URL]
-    SECURE_SSL_REDIRECT = True
-    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-else:
-    ALLOWED_HOSTS = ["*"]
-    
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(" ")
+ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS")
 
 
 # Application definition
