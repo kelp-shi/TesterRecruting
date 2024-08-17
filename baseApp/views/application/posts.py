@@ -86,9 +86,6 @@ class TestPostSearchView(LoginRequiredMixin,ListView):
     def get_queryset(self):
         query = self.request.GET.get('query')
         sort_by = self.request.GET.get('sort_by')
-        logger.debug('query type | sort: ' + str(sort_by) + ' | query: ' + str(query))
-        logger.debug('---------------start get queryset[get_queryset]---------------')
-
         if query:
             # 名称検索（部分一致可:大小区別なし）
             queryset = TestPost.objects.filter(PostName__icontains=query, RecrutingPeriodFlg=True, DelFlg=False)
@@ -96,7 +93,6 @@ class TestPostSearchView(LoginRequiredMixin,ListView):
             # テストポストの全件取得（条件：募集フラグ==True, 削除フラグ==Falese）
             queryset = TestPost.objects.filter(RecrutingPeriodFlg=True, DelFlg=False).order_by('id')
 
-        logger.debug('end method -- ' + str(queryset.count()))
         return queryset
         
     def post(self):
