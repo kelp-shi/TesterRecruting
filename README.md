@@ -22,8 +22,8 @@ DATABASES = {
 }
 ```
 
-9. [ python manage.py makemigrations ]でマイグレーションファイルを作成
-10. [ python manage.py migrate ]でDBへマイグレーション情報を反映
-11. [ python manage.py createsuperuser ] でスーパーユーザー（管理者アカウント）を作成
-12. [python manage.py runserver ] でサーバー起動（エラー表記が出るがgcpデプロイ用の処理がコケてるだけなので無視）
-13. 遊ぶ
+8. [ python manage.py makemigrations ]でマイグレーションファイルを作成
+9. [ python manage.py migrate ]でDBへマイグレーション情報を反映
+10. [ python manage.py createsuperuser ] でスーパーユーザー（管理者アカウント）を作成
+11. [python manage.py runserver ] でサーバー起動（エラー表記が出るがgcpデプロイ用の処理がコケてるだけなので無視）
+12. 遊ぶ
