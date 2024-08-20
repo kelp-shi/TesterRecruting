@@ -5,12 +5,15 @@
 3. settings.pyのDB関連情報をインストールしたMysqlに沿って修正（userやpass）
 
 ※　mysqlではなくsqlite3を使用する場合は下記に書き換え（mysqlではなくベースディレクトリにdbを作成する）
+
+```python
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+```
 
 1. ルートフォルダ作成
 2. ルートにvenv作成
