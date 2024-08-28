@@ -27,3 +27,18 @@ DATABASES = {
 10. [ python manage.py createsuperuser ] でスーパーユーザー（管理者アカウント）を作成
 11. [python manage.py runserver ] でサーバー起動（エラー表記が出るがgcpデプロイ用の処理がコケてるだけなので無視）
 12. 遊ぶ
+
+### ファイル構成図
+```ini
+roor
+ ├─venv
+ └─testerRecruting
+      ├─baseApp(appF)
+      ├─templates
+      ├─testerRecruting(projectF)
+      ├─.env
+      ├─.gitignore
+      ├─manage.py
+      └─requirements.txt
+```
+
