@@ -52,21 +52,27 @@ class ProfileEdit(LoginRequiredMixin, View):
         editform = ProfileEditForm(request.POST, request.FILES, instance=user)
         #プロフイール編集フォーム バリデーションチェック
         if editform.is_valid():
-            user_birth = editform.cleaned_data['UserBirth']
-            today = date.today()
-            # 年齢計算
-            age = today.year - user_birth.year - ((today.month, today.day) < (user_birth.month, user_birth.day))
-            user.UserBirth = user_birth
-            user.UserGender = editform.cleaned_data['UserGender']
+
+            if editform.cleaned_data.get('UserBirth'):
+                user_birth = editform.cleaned_data['UserBirth']
+                today = date.today()
+                # 年齢計算
+                age = today.year - user_birth.year - ((today.month, today.day) < (user_birth.month, user_birth.day))
+                user.UserBirth = user_birth
+                user.age = age  # Save the calculated age
+            
+            if editform.cleaned_data.get('UserGender'):
+                user.UserGender = editform.cleaned_data['UserGender']
+
             #プロフィール画像アップロード有無確認
             if request.FILES.get('profile_img'):
-                beforeImg = request.FILES['profile_img']
+                beforeImg = editform.cleaned_data['profile_img']
                 #画像をjpgに変換
                 afterImg = imageConvert(beforeImg)
                 #画像名称をランダム設定
                 imgName = imageNameSelect()
-                user.profile_img.save(imgName, afterImg)
-            user.age = age  # Save the calculated age
+                user.profile_img.save(imgName, afterImg, save=False)
+
             user.save()
             return redirect('baseApp:profile', username=username)
         return render(request, self.template_name, {'editform': editform, 'user': user})

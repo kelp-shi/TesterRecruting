@@ -39,6 +39,10 @@ class ProfileEditForm(forms.ModelForm):
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['UserBirth'].required = False
+        self.fields['UserGender'].required = False
+        self.fields['profile_img'].required = False
+
         self.fields['UserBirth'].widget.attrs['class'] = 'form-control'
         self.fields['UserGender'].widget.attrs['class'] = 'form-control'
         self.fields['profile_img'].widget.attrs['class'] = 'form-control'
