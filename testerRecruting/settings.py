@@ -11,15 +11,14 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
 from pathlib import Path
-import logging
-import pymysql
 from django.contrib import messages
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-# connect mysql
-pymysql.install_as_MySQLdb()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -162,29 +161,29 @@ DEFAULT_PROFILE_IMAGE_PATH = 'baseApp/images/user/profile/defalt.png'
 
 #Debug log------------------------------------------------------------------------------------
 # logフォルダのパス
-LOG_DIR = os.path.join(BASE_DIR, 'log')
-
-# ログファイルのパス
-LOG_FILE_PATH = os.path.join(LOG_DIR, 'Terec_log_file.log')
-
-if not os.path.exists(LOG_FILE_PATH):
-    with open(LOG_FILE_PATH, 'w'):
-        pass
-
-if DEBUG:
-    # will output to your console
-    logging.basicConfig(
-        level = logging.DEBUG,
-        format = '%(asctime)s %(levelname)s %(message)s',
-    )
-else:
-    # will output to logging file
-    logging.basicConfig(
-        level = logging.DEBUG,
-        format = '%(asctime)s %(levelname)s %(message)s',
-        filename=LOG_FILE_PATH,
-        filemode = 'a'
-    )
+#LOG_DIR = os.path.join(BASE_DIR, 'log')
+#
+## ログファイルのパス
+#LOG_FILE_PATH = os.path.join(LOG_DIR, 'Terec_log_file.log')
+#
+#if not os.path.exists(LOG_FILE_PATH):
+#    with open(LOG_FILE_PATH, 'w'):
+#        pass
+#
+#if DEBUG:
+#    # will output to your console
+#    logging.basicConfig(
+#        level = logging.DEBUG,
+#        format = '%(asctime)s %(levelname)s %(message)s',
+#    )
+#else:
+#    # will output to logging file
+#    logging.basicConfig(
+#        level = logging.DEBUG,
+#        format = '%(asctime)s %(levelname)s %(message)s',
+#        filename=LOG_FILE_PATH,
+#        filemode = 'a'
+#    )
 
 #MESSAGE LEVEL
 MESSAGE_TAGS = {
