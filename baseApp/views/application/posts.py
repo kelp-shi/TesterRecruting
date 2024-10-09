@@ -146,13 +146,10 @@ class PostDetail(LoginRequiredMixin, FormView):
     
     Note:テストポストの詳細を表示
     """
-    template_name = ''
     #クローズ用ボタンフォーム
     closeForm = TestCloseForm
 
     def get(self, request, pk):
-        #対象テストID
-        testid = self.kwargs['pk']
         #申請者用テンプレート
         testuser_template = 'app/detail.html'
         #オーナー用テンプレート
@@ -162,9 +159,9 @@ class PostDetail(LoginRequiredMixin, FormView):
         #申請有無フラグ(申請者用)
         existenceFlg = False
         #対象テストオブジェクト取得
-        target_test = get_object_or_404(TestPost, id=testid)
+        target_test = get_object_or_404(TestPost, id=pk)
         #存在存在チェック
-        existenceUser = JoinRequest.objects.filter(Q(SubjectTest=testid) & (Q(Sender=self.request.user) & Q(authorizationFlg=False)))
+        existenceUser = JoinRequest.objects.filter(Q(SubjectTest=pk) & (Q(Sender=self.request.user) & Q(authorizationFlg=False)))
 
         #アクセスユーザーによって出力テンプレートを変える
         if request.user == target_test.CreateUser:
@@ -177,7 +174,7 @@ class PostDetail(LoginRequiredMixin, FormView):
             existenceFlg = True
         
         return render(request, set_template, {
-            'id':self.kwargs['pk'],
+            'id':pk,
             'existenceFlg':existenceFlg,
             'postdetail':target_test,
             'form': self.form_class
