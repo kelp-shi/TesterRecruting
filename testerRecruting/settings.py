@@ -10,13 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
-import io
 import os
 from pathlib import Path
 import logging
 import environ
 from django.contrib import messages
-from google.cloud import secretmanager
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -79,66 +77,26 @@ MEDIA_URL = '/'
 # Load environment variables from .env file
 env.read_env(os.path.join(BASE_DIR, ".env"))
 
-if env("DEBUG", default=True):
-    # デバッグモードでは .env ファイルから環境変数を取得
-    SECRET_KEY = env("DJANGO_SECRET_KEY")
-    DEBUG = env("DJANGO_DEBUG")
-    ALLOWED_HOSTS = env.list("D_DJANGO_ALLOWED_HOSTS")
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': env("D_MYSQL_DATABASE"),
-            'USER': env("D_MYSQL_USER"),
-            'PASSWORD': env("D_MYSQL_ROOT_PASSWORD"),
-            'HOST': env("D_MYSQL_HOST"),
-            'PORT': env("D_MYSQL_PORT"),
-        }
+SECRET_KEY = env("DJANGO_SECRET_KEY")
+DEBUG = env("DJANGO_DEBUG")
+ALLOWED_HOSTS = env.list("D_DJANGO_ALLOWED_HOSTS")
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': env("D_MYSQL_DATABASE"),
+        'USER': env("D_MYSQL_USER"),
+        'PASSWORD': env("D_MYSQL_ROOT_PASSWORD"),
+        'HOST': env("D_MYSQL_HOST"),
+        'PORT': env("D_MYSQL_PORT"),
     }
-    EMAIL_HOST = env("DJANGO_EMAIL")
-    EMAIL_PORT = env("DJANGO_EMAIL_PORT")
-    EMAIL_USE_TLS = env.bool("DJANGO_EMAIL_USE_TLS", default=False)
-    EMAIL_HOST_USER = env("DJANGO_EMAIL_HOST_USER")
-    EMAIL_HOST_PASSWORD = env("DJANGO_EMAIL_HOST_PASSWORD")
-    DEFAULT_FROM_EMAIL = env("DJANGO_DEFAULT_FROM_EMAIL")
-    CONTACT_EMAIL = [env("DJANGO_CONTACT_EMAIL")]
-else:
-    # 本番環境では GCP Secret Manager を使用
-    USE_GCP_SECRETS = env("USE_GCP_SECRETS")
-    if USE_GCP_SECRETS:
-        try:
-            # Pull secrets from Secret Manager
-            project_id = env("GOOGLE_CLOUD_PROJECT")
-            client = secretmanager.SecretManagerServiceClient()
-            settings_name = env("SETTINGS_NAME", default="django_settings")
-            name = f"projects/{project_id}/secrets/{settings_name}/versions/latest"
-            payload = client.access_secret_version(name=name).payload.data.decode("UTF-8")
-            env.read_env(io.StringIO(payload))
-        except Exception as e:
-            print(f"Error loading secrets from GCP: {e}")
-            # Fallback to local .env file
-            pass
-    
-    SECRET_KEY = env("DJANGO_SECRET_KEY")
-    DEBUG = env.bool("DJANGO_DEBUG", default=False)
-    ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS")
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': env("MYSQL_DATABASE"),
-            'USER': env("MYSQL_USER"),
-            'PASSWORD': env("MYSQL_PASSWORD"),
-            'HOST': env("MYSQL_HOST"),
-            'PORT': env("MYSQL_PORT"),
-        }
-    }
-    EMAIL_HOST = env("DJANGO_EMAIL")
-    EMAIL_PORT = env("DJANGO_EMAIL_PORT")
-    EMAIL_USE_TLS = env.bool("DJANGO_EMAIL_USE_TLS", default=False)
-    EMAIL_HOST_USER = env("DJANGO_EMAIL_HOST_USER")
-    EMAIL_HOST_PASSWORD = env("DJANGO_EMAIL_HOST_PASSWORD")
-    DEFAULT_FROM_EMAIL = env("DJANGO_DEFAULT_FROM_EMAIL")
-    CONTACT_EMAIL = [env("DJANGO_CONTACT_EMAIL")]
-
+}
+EMAIL_HOST = env("DJANGO_EMAIL")
+EMAIL_PORT = env("DJANGO_EMAIL_PORT")
+EMAIL_USE_TLS = env.bool("DJANGO_EMAIL_USE_TLS", default=False)
+EMAIL_HOST_USER = env("DJANGO_EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env("DJANGO_EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = env("DJANGO_DEFAULT_FROM_EMAIL")
+CONTACT_EMAIL = [env("DJANGO_CONTACT_EMAIL")]
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
