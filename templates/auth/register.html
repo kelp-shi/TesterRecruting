@@ -56,6 +56,9 @@
                   <div class="input-field">
                     <i class="fas fa-user"></i>
                     {{ form_up.username }}
+                    {% if error_user != null %}
+                      <p>{{error_user}}</p>
+                    {% endif %}
                     {% if form_up.username.errors %}
                         <div class="error">
                             {{ form_up.username.errors }}

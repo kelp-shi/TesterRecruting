@@ -9,11 +9,13 @@ class SignUpForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'].widget.attrs['class'] = 'form-control'
+        self.fields['username'].initial = 'username'
         self.fields['email'].widget.attrs['class'] = 'form-control'
+        self.fields['email'].initial = 'email'
         self.fields['password1'].widget.attrs['class'] = 'form-control'
         self.fields['password2'].widget.attrs['class'] = 'form-control'
-        self.fields['password1'].label = "Password"
-        self.fields['password2'].label = "Confirm Password"
+        self.fields['password1'].initial = 'Password'
+        self.fields['password2'].initial = 'Confirm Password'
 
     class Meta:
         model = CustomUser

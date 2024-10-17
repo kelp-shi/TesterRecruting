@@ -98,6 +98,10 @@ class Register(TemplateView):
             # ユーザー登録バリデーションチェック
             # Trueであった場合、仮登録し認証メールを飛ばす
             if form_up.is_valid():
+                username = form_up.cleaned_data.get('username')
+                if username == 'username':
+                    logger.error(form_up.errors.as_json())
+                    return render(request, 'auth/register.html', {'form_up': form_up, 'form_in': form_in, 'error_user':'Please use a name other than username'})
                 user = form_up.save(commit=False)
                 user.is_active = False
                 user.save()
