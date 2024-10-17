@@ -15,11 +15,11 @@ from django.contrib import messages
 import environ
 
 env = environ.Env()
-environ.Env.read_env()
+#environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+env.read_env(os.path.join(BASE_DIR, ".env"))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -30,7 +30,6 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 DEBUG = os.environ.get("DJANGO_DEBUG")
 #DEBUG = True
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(" ")
-
 
 # Application definition
 
@@ -83,12 +82,12 @@ MEDIA_URL = '/'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get("MYSQL_DATABASE"),
-        'USER': os.environ.get("MYSQL_USER"),
-        'PASSWORD': os.environ.get("MYSQL_PASSWORD"),
-        'HOST': os.environ.get("MYSQL_HOST"),
-        'PORT': os.environ.get("MYSQL_PORT"),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get("PSGQ_DATABASE"),
+        'USER': os.environ.get("PSGQ_USER"),
+        'PASSWORD': os.environ.get("PSGQ_PASSWORD"),
+        'HOST': os.environ.get("PSGQ_HOST"),
+        'PORT': os.environ.get("PSGQ_PORT"),
     }
 }
 
