@@ -27,7 +27,6 @@ baseApp/forms/__pycache__/
 
 baseApp/migrations/__init__.py
 baseApp/migrations/
-baseApp/images/user/profile/
 baseApp/views/application/__pycache__/
 baseApp/templatetags/__pycache__/
 testerRecruting/__pycache__/
