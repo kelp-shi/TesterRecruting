@@ -113,7 +113,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     )
 
     #profile_img(img):プロフィール画像
-    profile_img = models.ImageField(upload_to='baseApp/images/user/profile/', blank=True, null=True, default=DEFAULT_PROFILE_IMAGE_PATH)
+    profile_img = models.ImageField(upload_to='baseApp/static/user/profile', blank=True, null=True, default=DEFAULT_PROFILE_IMAGE_PATH)
 
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
             

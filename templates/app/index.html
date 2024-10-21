@@ -9,9 +9,11 @@
             <div class="col-12 col-lg-8 main-content">
                 <!--news-->
                 {% if banner|length > 0 %}
-                    <div class="news-header py-4 mt-4 mb-5">
-                        <img src="{{ banner.bannerImg.url }}" alt="{{ banner.bannerTitle }}" class="img-fluid">
-                    </div>
+                    {% for bannerimg in banner %}
+                        <div class="news-header py-4 mt-4 mb-5">
+                            <img src="{{ bannerimg.bannerImg.url }}" alt="{{ bannerimg.bannerTitle }}" class="img-fluid">
+                        </div>
+                    {% endfor %}
                 {% endif %}
                 <!--new tests-->
                 <div class="new-tests mb-3">

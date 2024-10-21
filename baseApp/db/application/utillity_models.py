@@ -5,7 +5,7 @@ class BannerImg(models.Model):
     index.htmlのBanner
     """
     bannerTitle = models.CharField(max_length=255)
-    bannerImg = models.ImageField(upload_to='baseApp/images/org/banner', null=False)
+    bannerImg = models.ImageField(upload_to='baseApp/static/org/banner', null=False)
     activeFlg = models.BooleanField(default=False)
     create_at = models.DateTimeField(auto_now_add=True)
 

@@ -19,7 +19,6 @@ env_file = os.path.join(BASE_DIR, ".env")
 # Cloud Run の環境変数設定
 env = environ.Env(DEBUG=(bool, True))
 env_file = os.path.join(BASE_DIR, ".env")
-print("SECRET_KEY:", os.environ.get("SECRET_KEY"))
 # Attempt to load the Project ID into the environment, safely failing on error.
 print("アクセス開始")
 try:
@@ -60,20 +59,34 @@ else:
     raise Exception("No local .env or GOOGLE_CLOUD_PROJECT detected. No secrets found.")
 # [END cloudrun_django_secret_config]
 SECRET_KEY = env("SECRET_KEY")
-print("secret_key=", os.environ.get("SECRET_KEY"))
 
 DEBUG = env("DEBUG")
-print("debug=", os.environ.get("DEBUG"))
 
 # Cloud Run 特有の設定
-CLOUDRUN_SERVICE_URL = env("CLOUDRUN_SERVICE_URL", default=None)
-if CLOUDRUN_SERVICE_URL:
-    ALLOWED_HOSTS = [urlparse(CLOUDRUN_SERVICE_URL).netloc]
-    CSRF_TRUSTED_ORIGINS = [CLOUDRUN_SERVICE_URL]
+CLOUDRUN_SERVICE_URLS = env("CLOUDRUN_SERVICE_URL", default=None)
+if CLOUDRUN_SERVICE_URLS and DEBUG == False:
+    # 環境変数のURLをカンマ区切りで分割
+    urls = CLOUDRUN_SERVICE_URLS.split(',')
+    
+    # ALLOWED_HOSTS のリストを作成
+    ALLOWED_HOSTS = [urlparse(url).netloc for url in urls if urlparse(url).netloc]
+    
+    # CSRF_TRUSTED_ORIGINS のリストを作成
+    CSRF_TRUSTED_ORIGINS = [url for url in urls if url]
+    
+    # セキュリティ設定
     SECURE_SSL_REDIRECT = True
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    print("ALLOWED_HOSTS", ALLOWED_HOSTS)
+    print("CSRF_TRUSTED_ORIGINS:", CSRF_TRUSTED_ORIGINS)
+    print("DEBUG:", DEBUG)
 else:
     ALLOWED_HOSTS = ["*"]
+    CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000']
+    print("ALLOWED_HOSTS", ALLOWED_HOSTS)
+    print("DEBUG:", DEBUG)
+
+
 
 # Application definition
 INSTALLED_APPS = [
@@ -131,7 +144,6 @@ STORAGES = {
     },
 }
 GS_DEFAULT_ACL = 'publicRead'
-
 # WSGI
 WSGI_APPLICATION = 'testerRecruting.wsgi.application'
 print("---DB接続----")
@@ -170,6 +182,6 @@ MESSAGE_TAGS = {
 
 LOGIN_URL = 'register/'
 
-DEFAULT_PROFILE_IMAGE_PATH = 'baseApp/images/user/profile/defalt.png'
+DEFAULT_PROFILE_IMAGE_PATH = 'baseApp/static/org/user/profile/defalt.png'
 
 ACTIVATION_TIMEOUT_SECONDS = 60*60*24
