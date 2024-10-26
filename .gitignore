@@ -14,9 +14,11 @@ venv.bak/
 # ignore static files
 test push
 requirements.txt
+db.sqlite3
 
 #app----
 testerRecruting/__pycache__/
+testerRecruting/settings.py
 log/*
 baseApp/__pycache__/
 baseApp/views/__pycache__/
@@ -24,7 +26,6 @@ baseApp/db/application/__pycache__/
 baseApp/views/auth/__pycache__/
 baseApp/views/dm/__pycache__/
 baseApp/forms/__pycache__/
-testerRecruting/settings.py
 
 baseApp/migrations/__init__.py
 baseApp/migrations/
