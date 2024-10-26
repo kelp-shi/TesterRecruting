@@ -13,8 +13,6 @@ venv.bak/
 
 # ignore static files
 test push
-requirements.txt
-db.sqlite3
 
 #app----
 testerRecruting/__pycache__/
