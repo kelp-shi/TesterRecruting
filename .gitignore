@@ -16,7 +16,6 @@ test push
 
 #app----
 testerRecruting/__pycache__/
-testerRecruting/settings.py
 log/*
 baseApp/__pycache__/
 baseApp/views/__pycache__/
