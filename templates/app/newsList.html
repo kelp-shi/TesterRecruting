@@ -4,13 +4,15 @@
 <div class="listbox col-12 mt-5">
     {% for news in object_list %}
         <div class="col-12">
+            <a href="{% url 'baseApp:newsDetail' news.pk %}">
             <div class="card h-40">
                 <div class="card-body">
-                    <h3 class="card-title">{{ news.NewsTitle }}</h3>
-                    <p class="card-text mb-3">{{ news.Newsinner }}</p>
-                    <span>{{ news.Create_at }}</span>
+                    <h3 class="card-title fs-3">{{ news.NewsTitle }}</h3>
+                    <p class="card-text mb-3">{{ news.Newsinner | linebreaks  }}</p>
+                    <span>{{ news.Create_at }} : {{ news.CreateUser }}</span>
                 </div>
             </div>
+            </a>
         </div>
     {% endfor %}
 </div>
