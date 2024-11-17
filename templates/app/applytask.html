@@ -1,12 +1,45 @@
 {% extends 'global_menu.html' %}
 {% load static %}
 {% block content %}
+<script>
+    /*document.addEventListener('DOMContentLoaded', function(event){
+        const targetButton = document.getElementById('submitButton');
+        const targetCheckbox = document.querySelector('input[name="NDAagree"]');
+
+        targetButton.disabled = true;
+        targetButton.classList.add('is-inactive');
+        targetButton.style.backgroundColor = "gray";
+
+        targetCheckbox.addEventListener('change', function(){
+            if (this.checked) {
+                targetButton.disabled = false;
+                targetButton.classList.remove('is-inactive');
+                targetButton.classList.add('is-active');
+                targetButton.style.backgroundColor = "green";
+            } else {
+                targetButton.disabled = true;
+                targetButton.classList.remove('is-active');
+                targetButton.classList.add('is-inactive');
+                targetButton.style.backgroundColor = "gray";
+            }
+        }, false);
+    }, false);*/
+</script>
+
 <div class="container mt-5">
-    <h1>Apply for Task</h1>
+    <h1>テストに申請する</h1>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="row mb-3">
+            <div class="col-12">
+                <label class="fs-5 mb-2 mt-3">アピール文</label>
+            <div class="col-12">
+                {{ form.AppealText }}
+            </div>
+            </div>
+          </div>
+        <!--<label><input type="checkbox" name="NDAagree" value="agreement">NDAに同意し署名する</label>-->
+        <button type="submit" class="btn btn-primary"  id="submitButton">テスター申請</button>
     </form>
 </div>
     

@@ -61,28 +61,13 @@ h3 {
     overflow-y: auto;
 }
 
-.left-sidebar {
-    border-right: 1px solid #ddd;
-}
-
 .right-sidebar {
     border-left: 1px solid #ddd;
     position: sticky;
 }
 
-.main-content {
-    padding-top: 20px;
-    padding-bottom: 20px;
-}
 
-@media (max-width: 991.98px) {
-    .main-content {
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-    }
-}
-
-@media (min-width: 992px) {
+@media (max-width: 992px) {
     .container-fluid {
         padding-left: 0;
         padding-right: 0;
@@ -93,10 +78,6 @@ h3 {
         margin-right: 0;
     }
     
-    .right-sidebar {
-        padding-left: 15px;
-        padding-right: 15px;
-    }
 }
 
 @media (min-width: 1200px) {
@@ -117,16 +98,6 @@ h3 {
         max-width: 1800px;
         width: 100%;
     }
-}
-
-/* 右のサイドバーの幅を広げる */
-.right-sidebar {
-    width: 30%; /* 左右の幅を20%に */
-}
-
-.main-content {
-    width: 70%; /* メインコンテンツの幅を60%に */
-    margin: 0 auto;
 }
 
 .ad-placeholder {

@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="{% static 'css/app/index.css' %}">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-12 col-lg-8 main-content">
+            <div class="col-md-9 col-xs-12">
                 <!--news-->
                 {% if banner|length > 0 %}
                     {% for bannerimg in banner %}
@@ -23,7 +23,7 @@
                             <h3 class="col-12">新着テストはありません</h3>
                         {% else %}
                             {% for newpost in newposts reversed %}
-                            <div class="col-12 col-md-6 col-lg-{% if newposts|length == 1 %}12{% elif newposts|length == 2 %}6{% else %}4{% endif %} mb-4">
+                            <div class="col-12 col-lg-{% if newposts|length == 1 %}12{% elif newposts|length == 2 %}6{% else %}4{% endif %} mb-4">
                                 <div class="card h-100">
                                     <div class="card-body">
                                         <h3 class="card-title">{{ newpost.PostName }}</h3>
@@ -63,7 +63,7 @@
                 </div>
             </div>
             <!--right area-->
-            <div class="col-lg-2 d-none d-lg-block bg-light text-center right-sidebar">
+            <div class="col-md-3 col-lg-3 d-none d-md-block bg-light text-center right-sidebar">
                 <!--<div class="adArea">
                     <h2 class="mt-4"></h2>
                     <div class="ad-placeholder"></div>
@@ -83,7 +83,11 @@
                                             {% with message=dmMessage|get_item:dm.id %}
                                             <div class="row w-100 align-items-center">
                                                 <div class="col-auto">
-                                                    <img class="dm_user-image" src="{{ member.profile_img.url }}" alt="Profile Image">
+                                                    {% if member.profile_img != 'baseApp/static/org/user/profile/defalt.png' %}
+                                                        <img class="dm_user-image" src="{{ member.profile_img.url }}" alt="Profile Image">
+                                                    {% else %}
+                                                        <img class="dm_user-image" src="{% static 'org\user\profile\defalt.png' %}" alt="Default Profile Image">
+                                                    {% endif %}
                                                 </div>
                                                 <div class="col">
                                                     <div class="d-flex justify-content-between">

@@ -3,25 +3,27 @@
 {% block content %}
 <title>{% block title %}Terec - {{ profile.username }}{% endblock %}</title>
 <link rel="stylesheet" href="{% static 'css/app/profile.css' %}">
-<div class="profile-container">
-    <div class="profile-content">
-        <div class="profile-image">
+<div class="profile-content">
+    <div class="profile-image">
+        {% if profile.profile_img != 'baseApp/static/org/user/profile/defalt.png' %}
             <img src="{{ profile.profile_img.url }}" alt="{{ profile.username }}">
-        </div>
-        <div class="profile-info">
-            <h1>{{ profile.username }}</h1>
-            <h2>About</h2>
-            <ul>
-                <li><strong>Birthday:</strong> {{ profile.UserBirth|date:"F j" }}</li>
-                <li><strong>Gender:</strong> {{ profile.UserGender }}</li>
-            </ul>
-            {% if profile.username == request.user.username %}
-                <div class="profile-actions">
-                    <a href="{% url 'baseApp:ProfileEdit' user.username %}" class="btn btn-edit">Edit Profile</a>
-                    <a href="{% url 'baseApp:logout' %}" class="btn btn-logout">Logout</a>
-                </div>
-            {% endif %}
-        </div>
+        {% else %}
+            <img class="default-image" src="{% static 'org\user\profile\defalt.png' %}" alt="Default Profile Image">
+        {% endif %}
+    </div>
+    <div class="profile-info">
+        <h1>{{ profile.username }}</h1>
+        <h2>About</h2>
+        <ul>
+            <li><strong>Birthday:</strong> {{ profile.UserBirth|date:"F j" }}</li>
+            <li><strong>Gender:</strong> {{ profile.UserGender }}</li>
+        </ul>
+        {% if profile.username == request.user.username %}
+            <div class="profile-actions">
+                <a href="{% url 'baseApp:ProfileEdit' user.username %}" class="btn btn-edit">Edit Profile</a>
+                <a href="{% url 'baseApp:logout' %}" class="btn btn-logout">Logout</a>
+            </div>
+        {% endif %}
     </div>
 </div>
 {% endblock content %}
