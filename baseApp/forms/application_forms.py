@@ -37,6 +37,9 @@ class TestPostForm(forms.ModelForm):
     test_end_month = forms.ChoiceField(choices=MONTH_CHOICES, label='テスト終了月')
     test_end_day = forms.ChoiceField(choices=DAY_CHOICES, label='テスト終了日')
 
+    #自動クローズ機能
+    CanAutoClose = forms.BooleanField()
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         today = datetime.datetime.now()
@@ -54,8 +57,11 @@ class TestPostForm(forms.ModelForm):
         self.fields['test_end_year'].initial = today.year
         self.fields['test_end_month'].initial = today.month
         self.fields['test_end_day'].initial = today.day
-        for field in self.fields.values():
-            field.widget.attrs['class'] = 'form-control'
+        self.fields['CanAutoClose'].initial = True
+
+        for field_name, field in self.fields.items():
+            if field_name != 'CanAutoClose':
+                field.widget.attrs['class'] = 'form-control'
 
     class Meta:
         model = TestPost
@@ -63,7 +69,8 @@ class TestPostForm(forms.ModelForm):
             'PostName',
             'Discription',
             'TestType',
-            'TestTypeSubcls',]
+            'CanAutoClose',
+            'TestTypeSubcls']
         
 class ApplyForm(forms.ModelForm):
 
@@ -79,12 +86,15 @@ class AuthorizationForm(forms.ModelForm):
         model = JoinRequest
         fields = []
 
-class TestCloseForm(forms.ModelForm):
-    close = forms.BooleanField(required=True, label="クローズ")
-
-    class Meta:
-        model = TestPost
-        fields = []
+class TestCloseForm(forms.Form):
+    #close = forms.BooleanField(required=True, label="クローズ")
+    CLOSE_TYPE = [
+        ('1','cancel'),
+        ('2','postponement'),
+        ('3','shortage'),
+        ('4','other')
+    ]
+    close_type = forms.ChoiceField(choices=CLOSE_TYPE, widget=forms.RadioSelect)
 
 class contactForm(forms.Form):
     name = forms.CharField(max_length=100, label='名前')

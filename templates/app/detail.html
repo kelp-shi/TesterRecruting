@@ -5,6 +5,9 @@
 <link rel="stylesheet" href="{% static 'css/app/detail.css' %}">
 <body>
     <div class="row">
+        <div class="linknav col-12">
+            <p><a href="{% url 'baseApp:postlist' %}">Tests List</a> > {{postdetail.PostName}}</p>
+        </div>
         <div class="test-base-info col-12 mb-3">
             <h1 class="title fs-2 mb-2">{{postdetail.PostName}}</h1>
             {% if postdetail.TestType == 1 %}
@@ -42,7 +45,7 @@
             {% endif %}
 
             {% if existenceFlg == False %}
-                <a href="{% url 'baseApp:ApplyTask' pk=postdetail.pk %}" class="btn applybtn-primary ">テスター登録申請</a>
+                <a href="{% url 'baseApp:ApplyTask' pk=postdetail.pk %}" class="btn applybtn-primary ">テスター申請ページへ</a>
             {% else %}
                 <h3>申請済み</h3>
             {% endif %}

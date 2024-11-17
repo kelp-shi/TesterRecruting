@@ -12,6 +12,7 @@ from baseApp.views.dm.dmControl import createDirectMsgforApply, createExistingDi
 from baseApp.forms.application_forms import *
 from baseApp.views.utillity import randomNumver, combine_date
 from baseApp.models import CustomUser
+from baseApp.db.application.dm_models import DmRoom
 
 import datetime
 import logging
@@ -182,19 +183,42 @@ class PostDetail(LoginRequiredMixin, FormView):
     
     def post(self, request, pk):
         #対象テストの削除フラグをTrueにする
-        target_test = get_object_or_404(TestPost, id=pk)
-        target_test.DelFlg = True
-        target_test.save()
+        closeForm = TestCloseForm(request.POST)
+        if closeForm.is_valid():
+            target_test = get_object_or_404(TestPost, id=pk)
+            target_test.DelFlg = True
+            target_test.save()
 
-        #テスターを取得
-        tester_list = CustomUser.objects.filter(RunningTest=pk)
+            closeType = closeForm.cleaned_data['close_type']
+            
+            if closeType == '1':
+                closeTypeText = '開発中止'
+            elif closeType == '2':
+                closeTypeText = '開発延期'
+            elif closeType == '3':
+                closeTypeText = '募集人数不足'
+            else:
+                closeTypeText = '開発者側の事情'
+
+        #申請を出しているユーザーを取得
+        joinUser_list = JoinRequest.objects.filter(SubjectTest_id=pk)
+        #ユーザーIDをリスト化
+        user_ids = list(joinUser_list.values_list('Sender', flat=True))
+        #ユーザーIDで
+        #user_list = CustomUser.objects.filter(id__in=user_ids)
         createuser_info = {'userid':target_test.CreateUser.id, 'userName':target_test.CreateUser.username}
+        print(user_ids)
+        if len(user_ids) > 0:
+            for tester in user_ids:
+                getDmRoom = DmRoom.objects.filter(Member=tester, TargetTest=target_test.id)
+                print(getDmRoom)
+                if not getDmRoom:
+                    msg = target_test.CreateUser.username + "があなたとのDMを作成しました。"
+                    createDirectMsgforApply(self, request, createuser_info['userid'], tester, pk, msg)
 
-        if tester_list.count() > 0:
-            for tester in tester_list:
-                msg = target_test.PostName + " が" + createuser_info['userName'] + " によってクローズされました"
+                msg = target_test.PostName + " が" + createuser_info['userName'] + " によって" + closeTypeText + "によりクローズされました"
                 # DM作成メソッド実行(既存DmRoom)
-                createExistingDirectMsgforApply(self, request, createuser_info['userid'], pk, msg)
+                createExistingDirectMsgforApply(self, request, createuser_info['userid'], tester, pk, msg)
             
         return redirect('baseApp:postlist')
         
