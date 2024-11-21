@@ -12,12 +12,17 @@
         {% endif %}
     </div>
     <div class="profile-info">
-        <h1>{{ profile.username }}</h1>
-        <h2>About</h2>
-        <ul>
-            <li><strong>Birthday:</strong> {{ profile.UserBirth|date:"F j" }}</li>
-            <li><strong>Gender:</strong> {{ profile.UserGender }}</li>
-        </ul>
+        <div class="username-area mb-3">
+            <h1>{{ profile.username }}</h1>
+        </div>
+            {% if profile.bio_text %}
+            <div class="bio-area mb-3">
+                <p>{{ profile.bio_text|linebreaksbr }}</p>
+            </div>
+            {% endif %}
+        <div class="create-dt-area">
+            <p>登録日：{{ profile.date_joined|date:"Y-m-d" }}</p>
+        </div>
         {% if profile.username == request.user.username %}
             <div class="profile-actions">
                 <a href="{% url 'baseApp:ProfileEdit' user.username %}" class="btn btn-edit">Edit Profile</a>

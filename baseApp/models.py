@@ -58,6 +58,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         is_active(bool):論理削除フラグ
         profile_img(img):プロフィール画像
         age(int):ユーザーの年齢
+        email_for_test(email):テスト用Email
+        is_hideDescription(bool):説明表示フラグ(defaultはfalse)
+        bio_text(str):自己紹介文
+        
     """
 
     username_validator = UnicodeUsernameValidator()
@@ -113,12 +117,21 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     )
 
     #profile_img(img):プロフィール画像
-    profile_img = models.ImageField(upload_to='baseApp/static/user/profile', blank=True, null=True, default=DEFAULT_PROFILE_IMAGE_PATH)
+    profile_img = models.ImageField(upload_to='baseApp/contents/user/profile', blank=True, null=True, default=DEFAULT_PROFILE_IMAGE_PATH)
 
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
             
     #年齢(int):ユーザーの年齢
     age = models.IntegerField(blank=True, null=True)
+
+    #email_for_test(email):テスト用Email
+    email_for_test = models.EmailField(max_length=255, blank=True, null=True)
+
+    #is_hideDescription(bool):説明表示フラグ(defaultはfalse)
+    is_hideDescription = models.BooleanField(default=False)
+
+    #bio_text(str):自己紹介文
+    bio_text = models.CharField(max_length=250, blank=True, null=True)
 
     objects = CustomUserManager()
 

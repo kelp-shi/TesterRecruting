@@ -39,8 +39,6 @@ class ProfileEdit(LoginRequiredMixin, View):
     プロフイール編集ページ
     """
     template_name = 'auth/profileEdit.html'
-    slug_field = 'username'
-    slug_url_kwarg = 'username'
     
     def get(self, request, username):
         user = get_object_or_404(CustomUser, username=username)
@@ -52,23 +50,37 @@ class ProfileEdit(LoginRequiredMixin, View):
         editform = ProfileEditForm(request.POST, request.FILES, instance=user)
         #プロフイール編集フォーム バリデーションチェック
         if editform.is_valid():
-            user_birth = editform.cleaned_data['UserBirth']
-            today = date.today()
-            # 年齢計算
-            age = today.year - user_birth.year - ((today.month, today.day) < (user_birth.month, user_birth.day))
-            user.UserBirth = user_birth
-            user.UserGender = editform.cleaned_data['UserGender']
-            #プロフィール画像アップロード有無確認
-            if request.FILES.get('profile_img'):
-                beforeImg = request.FILES['profile_img']
-                #画像をjpgに変換
+            user_birth = editform.cleaned_data.get('UserBirth')
+            user_gender = editform.cleaned_data.get('UserGender')
+            email_for_test = editform.cleaned_data.get('email_for_test')
+            bio = editform.cleaned_data.get('bio_text')
+            profile_img = request.FILES.get('profile_img')
+
+            if user_birth:
+                today = date.today()
+                age = today.year - user_birth.year - ((today.month, today.day) < (user_birth.month, user_birth.day))
+                user.UserBirth = user_birth
+                user.age = age
+
+            if email_for_test:
+                user.email_for_test = email_for_test
+            
+            if user_gender:
+                user.UserGender = user_gender
+
+            if bio:
+                user.bio_text = bio
+
+            if profile_img:
+                beforeImg = profile_img
                 afterImg = imageConvert(beforeImg)
-                #画像名称をランダム設定
                 imgName = imageNameSelect()
                 user.profile_img.save(imgName, afterImg)
-            user.age = age  # Save the calculated age
+            elif not user.profile_img: user.profile_img = None # 既存の画像がない場合にNoneを設定
+            
             user.save()
             return redirect('baseApp:profile', username=username)
+
         return render(request, self.template_name, {'editform': editform, 'user': user})
             
 
