@@ -2,12 +2,13 @@ import csv
 from django.http import HttpResponse
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+from django.shortcuts import get_object_or_404
 from django.conf import settings
 from django.views.generic import TemplateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from baseApp.models import CustomUser
-from baseApp.db.application.utillity_models import news
+from baseApp.db.application.utillity_models import news, BannerImg
 from baseApp.forms.application_forms import contactForm
 import logging
 logger = logging.getLogger(__name__)
@@ -50,6 +51,21 @@ class newslist(LoginRequiredMixin, ListView):
     template_name = 'app/newsList.html'
     model = news
     ordering = '-Create_at'
+
+class newsDetail(LoginRequiredMixin, TemplateView):
+    """
+    newsのdetailを表示する
+    """
+
+    template_name = 'app/newsDetail.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        newsdata = get_object_or_404(news, pk=self.kwargs['pk'])
+
+        context['news'] = newsdata
+        return context
 
 class exportEmailCsv():
     """

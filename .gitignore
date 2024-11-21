@@ -14,7 +14,6 @@ venv.bak/
 # ignore static files
 test push
 
-
 #app----
 testerRecruting/__pycache__/
 log/*
@@ -24,6 +23,8 @@ baseApp/db/application/__pycache__/
 baseApp/views/auth/__pycache__/
 baseApp/views/dm/__pycache__/
 baseApp/forms/__pycache__/
+baseApp/management/commands/__pycache__/
+baseApp/management/__pycache__/
 
 baseApp/migrations/__init__.py
 baseApp/migrations/

@@ -113,7 +113,7 @@ def createDirectMsgforApply(self, request, member1, member2, testid, msg):
     )
     message.save()
 
-def createExistingDirectMsgforApply(self, request, member1, testid, msg):
+def createExistingDirectMsgforApply(self, request, member1, member2, testid, msg):
     """
     DM新規作成メソッド
 
@@ -123,7 +123,7 @@ def createExistingDirectMsgforApply(self, request, member1, testid, msg):
     """
 
     creatuser = CustomUser.objects.get(id=member1)
-    dmRoom = DmRoom.objects.get(TargetTest=testid)
+    dmRoom = DmRoom.objects.get(Member=member2, TargetTest=testid)
 
     # Message作成
     message = Massage.objects.create(

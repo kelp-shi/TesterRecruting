@@ -6,6 +6,7 @@ from baseApp.views.dm.dmControl import ThreadListView, MessageDetailView
 from baseApp.views.auth.authControl import *
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic import TemplateView
 
 app_name = 'baseApp'
 
@@ -33,6 +34,8 @@ urlpatterns = [
     #----------other----------
     #ニュースリスト
     path('news/', newslist.as_view(), name='newslist'),
+    #ニュース詳細
+    path('news/<int:pk>', newsDetail.as_view(), name='newsDetail'),
     #コンタクトページ
     path('contact/', contact.as_view(), name='contact'),
 
@@ -48,8 +51,11 @@ urlpatterns = [
     #仮登録画面
     path('register/done/', RegisterDone.as_view(), name='registerDone'),
     #本登録画面
-    path('register/complete/<token>/', RegisterComplete.as_view(), name='registerComplete')
+    path('register/complete/<token>/', RegisterComplete.as_view(), name='registerComplete'),
+
+    #クロール用robots.txt
+    path('robots.txt', TemplateView.as_view(template_name='robots.txt', content_type='text/plain'))
     
 ]
 
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_URL)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

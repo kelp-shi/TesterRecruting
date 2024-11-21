@@ -39,20 +39,19 @@ class ProfileEditForm(forms.ModelForm):
     """
     ユーザー情報更新フォーム
     """
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['UserBirth'].widget.attrs['class'] = 'form-control'
-        self.fields['UserGender'].widget.attrs['class'] = 'form-control'
-        self.fields['profile_img'].widget.attrs['class'] = 'form-control'
 
     class Meta:
         model = CustomUser
         fields = (
             'UserBirth',
             'UserGender',
-            'profile_img'
+            'profile_img',
+            'email_for_test',
+            'bio_text'
         )
     
     widgets = {
-        'UserBirth': forms.DateInput(attrs={'type': 'date'}),
+        'UserBirth': forms.DateInput(
+            attrs={'type': 'date', 'placeholder': 'yyyy-mm-dd', 'format': 'Y-m-d'}),
+        'UserGender': forms.Select( choices=CustomUser.GENDER_CHOICES, attrs={'class': 'form-select', 'aria-label': 'Default select example'}),
     }

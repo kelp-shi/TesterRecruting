@@ -2,12 +2,63 @@
 {% load static %}
 {% block content %}
 <title>{% block title %}Terec - コンタクト{% endblock %}</title>
+<link rel="stylesheet" href="{% static 'css/app/contact.css' %}">
 <div class="container">
-    <h1>お問い合わせ/要望</h1>
     <form id="contactForm" method="post" action="{% url 'baseApp:contact' %}">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="button" class="btn btn-primary" id="contactSubmitBtn">送信</button>
+        <div class="row">
+            <div class="name-label col-12 ">
+                <h1 class="fs-4">サービスに関するお問い合わせ</h2>
+                <hr>
+                <p class="pb-2">サービスの利用がまだわからない方、サービスに対する要望は下記のお問い合わせフォームよりお問い合わせください。</p>
+                <p class="pb-2">少しでも不安や疑問がありましたら、どうぞお気軽にお問い合わせください。</p>
+                <p class="pb-2">あなたからのご連絡を心よりお待ちしております。</p>
+                <div class="contact-area mt-4">
+                    <div class="row contact-inner">
+                        <div class="col-12 mb-2 mt-2 align-middle">
+                            <p class="fs-4">お問い合わせフォーム</p>
+                        </div>
+                        <hr>
+                        <div class="col-12 name-area mt-2 mb-4">
+                            <div class="row">
+                                <div class="col-3">
+                                    {{ form.name.label }}
+                                </div>
+                                <div class="col-9">
+                                    {{ form.name }}
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="col-12 email-area mt-2 mb-4">
+                            <div class="row">
+                                <div class="col-3">
+                                    {{ form.email.label }}
+                                </div>
+                                <div class="col-9">
+                                    {{ form.email }}
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="col-12 message-area mt-2 mb-4">
+                            <div class="row">
+                                <div class="col-3">
+                                    {{ form.message.label }}
+                                </div>
+                                <div class="col-9">
+                                    {{ form.message }}
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="col-12 submit-area mt-2">
+                            <button type="button" class="btn btn-primary" id="contactSubmitBtn">送信</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
 </div>
 
@@ -23,10 +74,10 @@
             </div>
             <div class="modal-body">
                 <p>以下の内容で送信します。よろしいですか？</p>
-                <ul>
-                    <li>名前: <span id="modalName"></span></li>
-                    <li>メールアドレス: <span id="modalEmail"></span></li>
-                    <li>本文: <span id="modalMessage"></span></li>
+                <ul class="list-group mt-4">
+                    <li class="list-group-item">名前: <span id="modalName"></span></li>
+                    <li class="list-group-item">メールアドレス: <span id="modalEmail"></span></li>
+                    <li class="list-group-item">本文: <span id="modalMessage"></span></li>
                 </ul>
             </div>
             <div class="modal-footer">

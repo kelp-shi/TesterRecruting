@@ -24,6 +24,7 @@ class TestPost (models.Model):
         RecrutingPeriodEnd(DateTime):募集終了日
         TestStart(DateTime):テスト開始日
         TestEnd(DateTime):テスト終了日
+        CanAutoClose(bool):自動クローズ機能フラグ
         DelFlg(bool):削除フラグ
         CreateUser(ForeignKey):投稿者
         Create_dt(DateTime):投稿日
@@ -62,6 +63,8 @@ class TestPost (models.Model):
     TestStart = models.DateTimeField('Test Start')
     #TestEnd(DateTime):テスト終了日
     TestEnd = models.DateTimeField('Test End')
+    #CanAutoClose(bool):自動クローズ機能フラグ
+    CanAutoClose = models.BooleanField('CanAutoClose', default=False)
     #DelFlg(bool):削除フラグ
     DelFlg = models.BooleanField('Delete Flag', default=False)
     #CreateUser(ForeignKey):投稿者

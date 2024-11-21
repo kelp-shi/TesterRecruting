@@ -1,0 +1,5 @@
+User-agent: * 
+Disallow: /createpost/
+Disallow: /postlist/
+Disallow: /detail/
+Disallow: /threads/

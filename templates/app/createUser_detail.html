@@ -31,6 +31,18 @@
                     <p class="textlabel fs-5">採用任数：</p>
                     <p class="textlabel fs-5">{{postdetail.ApplyNum}}人</p>
                 </div>
+                <div class="d-flex align-items-center mb-2">
+                    <p class="textlabel fs-5">テスター募集終了日：</p>
+                    <p class="textlabel fs-5">{{ postdetail.RecrutingPeriodEnd|date:"Y-m-d" }}</p>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                    <p class="textlabel fs-5">テスト開始日：</p>
+                    <p class="textlabel fs-5">{{ postdetail.TestStart|date:"Y-m-d" }}</p>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                    <p class="textlabel fs-5">テスト終了日：</p>
+                    <p class="textlabel fs-5">{{ postdetail.TestEnd|date:"Y-m-d" }}</p>
+                </div>
             </div>
         </div>
         <div class="applyButton">
@@ -48,19 +60,52 @@
                     <h5 class="modal-title" id="deleteModalLabel">確認削除</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    本当に削除しますか？
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
-                    <form method="post" action="{% url 'baseApp:detail' id %}">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger">削除</button>
-                    </form>
-                </div>
+                <form method="post" action="{% url 'baseApp:detail' id %}">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        削除事由を入力してください
+                        <div>
+                            <input type="radio" id="cancel" value="1" name="close_type" />
+                            <label for="cancel">開発中止</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="postponement" value="2" name="close_type" />
+                            <label for="postponement">開発延期</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="shortage" value="3" name="close_type" />
+                            <label for="shortage">募集人数不足</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="other" value="4" name="close_type" />
+                            <label for="other">その他</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                        <button type="submit" class="btn btn-danger" id="submitButton">削除</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function(event){
+        const targetButton = document.getElementById('submitButton');
+        const selectButton = document.querySelectorAll('input[name="close_type"]');
 
+        targetButton.disabled = true;
+
+        function checkSelectButton() {
+            let isChecked = Array.from(selectButton).some(radio => radio.checked);
+            targetButton.disabled = !isChecked;
+        }
+
+        selectButton.forEach(radio => {
+            radio.addEventListener("change",checkSelectButton )
+        })
+
+    })
+</script>
 {% endblock content %}

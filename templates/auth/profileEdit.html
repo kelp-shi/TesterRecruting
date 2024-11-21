@@ -1,44 +1,55 @@
 {% extends 'global_menu.html' %}
+{% load static %}
 {% block content %}
 <link href="https://cdn.jsdelivr.net/npm/datepicker/dist/css/datepicker.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/auth/profileEdit.css' %}">
 <title>{% block title %}Terec - プロフィール編集{% endblock %}</title>
-<form enctype="multipart/form-data" method="POST">
-  {% csrf_token %}
-  {{ form.non_field_errors }}
-
-  <div class="input-field">
-      <label for="id_UserBirth"><i class="fas fa-user"></i> 生年月日:</label>
-      <input type="text" id="id_UserBirth" name="UserBirth" value="{{ editform.UserBirth.value }}">
-      {% if editform.UserBirth.errors %}
-          <div class="error">
-              {{ editform.UserBirth.errors }}
-          </div>
-      {% endif %}
-  </div>
-
-  <div class="input-field">
-      <label for="id_UserGender"><i class="fas fa-user"></i> 性別:</label>
-      <input type="text" id="id_UserGender" name="UserGender" value="{{ editform.UserGender.value }}">
-      {% if editform.UserGender.errors %}
-          <div class="error">
-              {{ editform.UserGender.errors }}
-          </div>
-      {% endif %}
-  </div>
-
-  <div class="input-field">
-      <label for="id_profile_img"><i class="fas fa-user"></i> プロフィール画像:</label>
-      <input type="file" name="profile_img" accept="image/*" class="form-control" id="id_profile_img">
-      {% if editform.profile_img.errors %}
-          <div class="error">
-              {{ editform.profile_img.errors }}
-          </div>
-      {% endif %}
-  </div>
-
-  <button type="submit" class="btn btn-success btn-lg">送信</button>
-</form>
-<script src="https://cdn.jsdelivr.net/npm/datepicker"></script>
+<div class="container mt-5">
+    <form enctype="multipart/form-data" method="POST">
+        {% csrf_token %}
+        <div class="row input-inner">
+            <div class="mb-3">
+                <label for="bio_text" class="form-label">自己紹介文</label>
+                <textarea class="form-control" id="bio_text" name="bio_text" rows="3" >{{ editform.bio_text.value|default:'' }}</textarea>
+                <div class="counter">
+                    <div class="length">0 </div><div>/250</div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="email_for_test" class="form-label">テスト用Eメールアドレス（例：テストを受けるためのgoogleアカウントのメール）{% if editform.email_for_test.errors %}{{ editform.email_for_test.errors }}{% endif %}</label>
+                <input type="text" class="form-control" id="email_for_test" name="email_for_test" placeholder="example@email.com" value="{{ editform.email_for_test.value|default:'' }}">
+            </div>
+            <div class="mb-3">
+                <label for="UserBirth" class="form-label">生年月日{% if editform.UserBirth.errors %}{{ editform.UserBirth.errors }}{% endif %}</label>
+                <input type="text" class="form-control" id="id_UserBirth" name="UserBirth" placeholder="yyyy-mm-dd" value="{{ editform.UserBirth.value|default:'' }}" placeholder="yyyy-mm-dd">
+            </div>
+            <div class="input-field mb-3">
+                <label for="id_UserGender" class="form-label"><i class="fas fa-user"></i> 性別</label>
+                <select id="id_UserGender" name="UserGender" class="form-select" aria-label="Default select example">
+                    <option value="" selected disabled>性別を選択</option>
+                    {% for value, name in editform.fields.UserGender.choices %}
+                    <option value="{{ value }}" {% if editform.UserGender.value == value %}selected{% endif %}>{{ name }}</option>
+                    {% endfor %}
+                </select>
+                {% if editform.UserGender.errors %} 
+                <div class="error">{{ editform.UserGender.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="input-field mb-3">
+                <label for="id_profile_img"><i class="fas fa-user"></i> プロフィール画像</label>
+                <input type="file" name="profile_img" accept="image/*" class="form-control" id="id_profile_img">
+                {% if editform.profile_img.errors %}
+                    <div class="error">
+                        {{ editform.profile_img.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="area-a mb-3">
+                <button type="submit" class="btn btn-success btn-lg mb-3">送信</button>
+            </div>
+        </div>
+      </form>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/datepicker"></script>
 <script>
   window.addEventListener('DOMContentLoaded', (event) => {
@@ -50,7 +61,7 @@
   });
 
   const datepicker = new Datepicker(document.querySelector('#id_UserBirth'), {
-    format: 'yyyy年mm月dd日',
+    format: 'yyyy-mm-dd',
     autohide: true,
     weekStart: 0, // 週の開始曜日の設定 (0: 日曜日)
     language: 'ja', // 言語設定
@@ -60,12 +71,27 @@
     const datepickers = document.querySelectorAll('.datepicker');
     datepickers.forEach(function(datepicker) {
         new Datepicker(datepicker, {
-            format: 'yyyy年mm月dd日',
+            format: 'yyyy-mm-dd',
             autohide: true,
             weekStart: 0,
             language: 'ja',
         });
     });
   }); 
+</script>
+<script>
+    const textArea = document.querySelector('#bio')
+    const length = document.querySelector('.length')
+    const maxLength = 250;
+
+    textArea.addEventListener('input', () => {
+        length.textContent = maxLength - textArea.value.length;
+
+        if (maxLength - textArea.value.length < 0){
+            length.style.color = 'red';
+        }else{
+           length.style.color = '#444'
+        }
+    }, false)
 </script>
 {% endblock %}

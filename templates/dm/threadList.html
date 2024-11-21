@@ -22,7 +22,11 @@
                             {% with message=dmMessage|get_item:dm.id %}
                             <div class="row align-items-center">
                                 <div class="col-auto">
-                                    <img class="dm_user-image" src="{{ member.profile_img.url }}" alt="Profile Image">
+                                    {% if member.profile_img != 'baseApp/static/org/user/profile/defalt.png' %}
+                                        <img class="dm_user-image" src="{{ member.profile_img.url }}" alt="Profile Image">
+                                    {% else %}
+                                        <img class="dm_user-image" src="{% static 'org\user\profile\defalt.png' %}" alt="Default Profile Image">
+                                    {% endif %}
                                 </div>
                                 <div class="col">
                                     <div class="d-flex justify-content-between">
