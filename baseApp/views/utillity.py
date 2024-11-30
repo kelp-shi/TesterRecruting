@@ -1,5 +1,6 @@
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import AnonymousUser
 from baseApp.db.application.app_models import TestPost
 from baseApp.db.application.dm_models import DmRoom, Massage
 from baseApp.db.application.utillity_models import BannerImg
@@ -52,7 +53,7 @@ def errorEmailSender(self, errorMsg):
     message = render_to_string('admin/email/message.txt', context)
     user.email_user(subject, message)
 
-class index(LoginRequiredMixin, TemplateView):
+class index(TemplateView):
     """
     indexビュー
     """
@@ -69,22 +70,24 @@ class index(LoginRequiredMixin, TemplateView):
         context['newposts'] = TestPost.objects.filter(RecrutingPeriodFlg=True, DelFlg=False).order_by('RecrutingPeriodSt')[:3]
         # おすすめポスト(10件)
         context['recomendpost'] = TestPost.objects.filter(RecrutingPeriodFlg=True, DelFlg=False).order_by('?')[:10]
-        # 自身のDM
-        my_dms = DmRoom.objects.filter(Member=current_user)
         # バナー画像を取得
         banner_info = BannerImg.objects.filter(activeFlg=True)
-        
+        #DM変数
+        my_dms = []
 
         other_members = {}
         new_message = {}
-        for room in my_dms:
-            other_member = room.Member.exclude(id=current_user.id).first()  # 他のメンバーを取得
-            my_message = Massage.objects.filter(Room=room.id).latest('Created_at')
-            print(my_message)
-            if other_member:
-                other_members[room.id] = other_member
-                new_message[room.id] = my_message
-                print(new_message)
+        if current_user and isinstance(current_user, AnonymousUser) == False:
+            # 自身のDM
+            my_dms = DmRoom.objects.filter(Member=current_user)
+            for room in my_dms:
+                other_member = room.Member.exclude(id=current_user.id).first()  # 他のメンバーを取得
+                my_message = Massage.objects.filter(Room=room.id).latest('Created_at')
+                print(my_message)
+                if other_member:
+                    other_members[room.id] = other_member
+                    new_message[room.id] = my_message
+                    print(new_message)
 
         context['rooms'] = my_dms
         context['other_members'] = other_members

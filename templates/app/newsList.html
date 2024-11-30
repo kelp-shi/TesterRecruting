@@ -4,12 +4,12 @@
 <div class="listbox col-12 mt-5">
     {% for news in object_list %}
         <div class="col-12">
-            <a href="{% url 'baseApp:newsDetail' news.pk %}">
-            <div class="card h-40">
+            <a href="{% url 'baseApp:newsDetail' news.pk %}" class="text-decoration-none">
+            <div class="card h-40 mb-3">
                 <div class="card-body">
                     <h3 class="card-title fs-3">{{ news.NewsTitle }}</h3>
-                    <p class="card-text mb-3">{{ news.Newsinner | linebreaks  }}</p>
-                    <span>{{ news.Create_at }} : {{ news.CreateUser }}</span>
+                    <p class="card-text mb-2">{{ news.Newsinner | linebreaks  }}</p>
+                    <p class="card-text mt-2">{{ news.Create_at|date:"Y-m-d" }} : {{ news.CreateUser }}</p>
                 </div>
             </div>
             </a>

@@ -7,8 +7,18 @@ from baseApp.views.auth.authControl import *
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
+from django.contrib.sitemaps.views import sitemap
+from baseApp.sitemap import IndexSitemap, NewsSitemap, NewslistSitemap, ContactSitemap, RegisterSitemap
 
 app_name = 'baseApp'
+
+sitemaps = {
+    'index':IndexSitemap,
+    'news':NewsSitemap,
+    'newslist':NewslistSitemap,
+    'contact':ContactSitemap,
+    'register':RegisterSitemap
+}
 
 urlpatterns = [
     #----------app----------
@@ -53,6 +63,8 @@ urlpatterns = [
     #本登録画面
     path('register/complete/<token>/', RegisterComplete.as_view(), name='registerComplete'),
 
+    #サイトマップ
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
     #クロール用robots.txt
     path('robots.txt', TemplateView.as_view(template_name='robots.txt', content_type='text/plain'))
     

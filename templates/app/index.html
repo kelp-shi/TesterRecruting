@@ -29,7 +29,11 @@
                                         <h3 class="card-title">{{ newpost.PostName }}</h3>
                                         <p class="card-text app-type">アプリタイプ：{% if newpost.TestType == 1 %}ゲーム{% else %}アプリケーション{% endif %} : {{ newpost.TestTypeSubcls }}<br>オーナー：{{ newpost.CreateUser.username }}</p>
                                         <p class="card-text">テスト内容<br>{{ newpost.Discription | truncatechars:50 }}</p>
-                                        <a href="{% url 'baseApp:detail' newpost.pk %}" class="btn btn-link">詳細を見る &gt;</a>
+                                        {% if user.is_authenticated and user.username %}
+                                            <a href="{% url 'baseApp:detail' newpost.pk %}" class="btn btn-link">詳細を見る &gt;</a>
+                                        {% else %}
+                                            <a href="{% url 'baseApp:register' %}" class="btn btn-link">ログインして続きを見る &gt;</a>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -53,7 +57,11 @@
                                         <h3 class="card-title">{{ recopost.PostName }}</h3>
                                         <p class="card-text app-type">アプリタイプ：{% if recopost.TestType == 1 %}ゲーム{% else %}アプリケーション{% endif %} : {{ recopost.TestTypeSubcls }}<br>オーナー：{{ recopost.CreateUser.username }}</p>
                                         <p class="card-text">テスト内容<br>{{ recopost.Discription | truncatechars:100 }}</p>
-                                        <a href="{% url 'baseApp:detail' recopost.pk %}" class="btn btn-link">詳細を見る &gt;</a>
+                                        {% if user.is_authenticated and user.username %}
+                                            <a href="{% url 'baseApp:detail' recopost.pk %}" class="btn btn-link">詳細を見る &gt;</a>
+                                        {% else %}
+                                            <a href="{% url 'baseApp:register' %}" class="btn btn-link">ログインして続きを見る &gt;</a>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
