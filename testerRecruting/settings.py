@@ -1,94 +1,20 @@
-import io
 import os
 from pathlib import Path
 from django.contrib import messages
-from urllib.parse import urlparse
+import logging
 import environ
-import google.auth
-from google.cloud import secretmanager
-
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# 環境変数の読み込み
-env = environ.Env()
-env_file = os.path.join(BASE_DIR, ".env")
-
-# Cloud Run の環境変数設定
-env = environ.Env(DEBUG=(bool, True))
-env_file = os.path.join(BASE_DIR, ".env")
-# Attempt to load the Project ID into the environment, safely failing on error.
-print("アクセス開始")
-try:
-    _, os.environ["GOOGLE_CLOUD_PROJECT"] = google.auth.default()
-    print("アクセス")
-except google.auth.exceptions.DefaultCredentialsError:
-    pass
-
-if os.path.isfile(env_file):
-    print("ローカル参照")
-    # Use a local secret file, if provided
-
-    env.read_env(env_file)
-# [START_EXCLUDE]
-elif os.getenv("TRAMPOLINE_CI", None):
-    print("Ci実行")
-    # Create local settings if running with CI, for unit testing
-
-    placeholder = (
-        f"SECRET_KEY=a\n"
-        "GS_BUCKET_NAME=None\n"
-        f"DATABASE_URL=sqlite://{os.path.join(BASE_DIR, 'db.sqlite3')}"
-    )
-    env.read_env(io.StringIO(placeholder))
-# [END_EXCLUDE]
-elif os.environ.get("GOOGLE_CLOUD_PROJECT", None):
-    print("GOOGLE_CLOUD_PROJECT実行")
-    # Pull secrets from Secret Manager
-    project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
-
-    client = secretmanager.SecretManagerServiceClient()
-    settings_name = os.environ.get("SETTINGS_NAME", "terec_settings")
-    name = f"projects/{project_id}/secrets/{settings_name}/versions/latest"
-    payload = client.access_secret_version(name=name).payload.data.decode("UTF-8")
-
-    env.read_env(io.StringIO(payload))
-else:
-    raise Exception("No local .env or GOOGLE_CLOUD_PROJECT detected. No secrets found.")
-# [END cloudrun_django_secret_config]
-SECRET_KEY = env("SECRET_KEY")
-
-DEBUG = env("DEBUG")
-
-# Cloud Run 特有の設定
-CLOUDRUN_SERVICE_URLS = env("CLOUDRUN_SERVICE_URL", default=None)
-if CLOUDRUN_SERVICE_URLS and DEBUG == False:
-    # 環境変数のURLをカンマ区切りで分割
-    urls = CLOUDRUN_SERVICE_URLS.split(',')
-    
-    # ALLOWED_HOSTS のリストを作成
-    ALLOWED_HOSTS = [urlparse(url).netloc for url in urls if urlparse(url).netloc]
-    
-    # CSRF_TRUSTED_ORIGINS のリストを作成
-    CSRF_TRUSTED_ORIGINS = [url for url in urls if url]
-    
-    # セキュリティ設定
-    SECURE_SSL_REDIRECT = True
-    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-    print("ALLOWED_HOSTS", ALLOWED_HOSTS)
-    print("CSRF_TRUSTED_ORIGINS:", CSRF_TRUSTED_ORIGINS)
-    print("DEBUG:", DEBUG)
-else:
-    ALLOWED_HOSTS = ["*"]
-    CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000']
-    print("ALLOWED_HOSTS", ALLOWED_HOSTS)
-    print("DEBUG:", DEBUG)
-
-
+env = environ.Env(
+    DEBUG=(bool, False),
+    GOOGLE_CLOUD_PROJECT=(str, None),
+    USE_GCP_SECRETS=(bool, False),
+)
 
 # Application definition
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -97,9 +23,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_bootstrap5',
-    'baseApp',
-    'storages',  # 追加：Google Cloud Storage 用
+    'django.contrib.sitemaps',
+    'baseApp'
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -130,49 +58,105 @@ TEMPLATES = [
     },
 ]
 
-# Static files (CSS, JavaScript, Images)
-GS_BUCKET_NAME = env("GS_BUCKET_NAME")
-STATIC_URL = '/static/'
-STORAGES = {
+#media directory
+#MEDIA_ROOT = os.path.join(BASE_DIR)
+MEDIA_URL = '/contents/'
+
+# Database
+# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+
+# Load environment variables from .env file
+env.read_env(os.path.join(BASE_DIR, ".env"))
+
+#testkey
+SECRET_KEY = 'sfsadvnuarjovmncs5485749_143%&fdgbrfbd15646451sefwavcfarehghbr'
+
+DEBUG = True
+
+ALLOWED_HOSTS = ["*"]
+
+DATABASES = {
     'default': {
-        'BACKEND': 'storages.backends.gcloud.GoogleCloudStorage',
-        'BUCKET_NAME': GS_BUCKET_NAME,
-    },
-    'staticfiles': {
-        'BACKEND': 'storages.backends.gcloud.GoogleCloudStorage',
-        'BUCKET_NAME': GS_BUCKET_NAME,
-    },
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
-GS_DEFAULT_ACL = 'publicRead'
-# WSGI
-WSGI_APPLICATION = 'testerRecruting.wsgi.application'
-print("---DB接続----")
-# Database settings
-DATABASES = {"default": env.db()}
 
-print("---DB接続proxy判定----", os.getenv("USE_CLOUD_SQL_AUTH_PROXY"))
-if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
-    print("----USE_CLOUD_SQL_AUTH_PROXY----")
-    DATABASES["default"]["HOST"] = "127.0.0.1"
-    DATABASES["default"]["PORT"] = 5432
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = env("DJANGO_EMAIL")
+EMAIL_PORT = env("DJANGO_EMAIL_PORT")
+EMAIL_USE_TLS = env.bool("DJANGO_EMAIL_USE_TLS", default=False)
+EMAIL_HOST_USER = env("DJANGO_EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env("DJANGO_EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = env("DJANGO_DEFAULT_FROM_EMAIL")
+CONTACT_EMAIL = [env("DJANGO_CONTACT_EMAIL")]
 
+# Password validation
+# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
-# Email settings
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.environ.get("DJANGO_EMAIL")
-EMAIL_PORT = os.environ.get("DJANGO_EMAIL_PORT")
-EMAIL_USE_TLS = os.environ.get("DJANGO_EMAIL_USE_TLS")
-EMAIL_HOST_USER = os.environ.get("DJANGO_EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.environ.get("DJANGO_EMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL = os.environ.get("DJANGO_DEFAULT_FROM_EMAIL")
-CONTACT_EMAIL = [os.environ.get("DJANGO_CONTACT_EMAIL")]
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
 
-# その他の設定
+# Internationalization
+# https://docs.djangoproject.com/en/5.0/topics/i18n/
+
+LANGUAGE_CODE = 'ja'
+
 TIME_ZONE = 'Asia/Tokyo'
+
 USE_I18N = True
+
 USE_TZ = True
 
+USE_L10N = False 
+DATE_FORMAT = 'Y-m-d'
+
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.0/howto/static-files/
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, '/static')  # ここで静的ファイルが収集されるディレクトリ
+
+WSGI_APPLICATION = 'testerRecruting.wsgi.application'
+
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# 登録に使用するユーザーモデル
 AUTH_USER_MODEL = 'baseApp.CustomUser'
+
+#認証用トークン有効期限
+ACTIVATION_TIMEOUT_SECONDS = 60*60*24
+
+SITE_ID = 1 
+
+DEFAULT_PROFILE_IMAGE_PATH = 'baseApp/images/user/profile/defalt.png'
+
+# アプリケーション全体で使用するロガーの設定
+logger = logging.getLogger(__name__)
+
+# 使用例
+logger.info("アプリケーションが起動しました")
+logger.debug("これはデバッグメッセージです")
+logger.error("エラーが発生しました", exc_info=True)
+
+#MESSAGE LEVEL
 MESSAGE_TAGS = {
     messages.ERROR: 'alert alert-danger',
     messages.WARNING: 'alert alert-warning',
@@ -180,6 +164,7 @@ MESSAGE_TAGS = {
     messages.INFO: 'alert alert-info'
 }
 
+#Login url
 LOGIN_URL = 'register/'
 
 DEFAULT_PROFILE_IMAGE_PATH = 'baseApp/static/org/user/profile/defalt.png'

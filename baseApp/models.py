@@ -61,6 +61,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         email_for_test(email):テスト用Email
         is_hideDescription(bool):説明表示フラグ(defaultはfalse)
         bio_text(str):自己紹介文
+        token_created_at(dt):トークン作成日時
         
     """
 
@@ -132,6 +133,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     #bio_text(str):自己紹介文
     bio_text = models.CharField(max_length=250, blank=True, null=True)
+
+    #reset_token(str):リセット用トークン
+    reset_token = models.CharField(max_length=255, blank=True, null=True)
+    #token_created_at(dt):トークン作成日時
+    token_created_at = models.DateTimeField(blank=True, null=True)
 
     objects = CustomUserManager()
 
