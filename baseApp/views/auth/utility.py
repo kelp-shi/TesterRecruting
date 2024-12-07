@@ -6,6 +6,9 @@ from PIL import Image
 from baseApp.models import CustomUser
 from baseApp.views.utillity import randomString
 from django.core.files.base import ContentFile
+from django.contrib.auth.hashers import check_password
+from django.utils import timezone
+from datetime import timedelta
 
 logger = logging.getLogger(__name__)
 
@@ -39,7 +42,23 @@ def imageNameSelect():
     logger.debug('Failed to generate unique name after 2 attempts.')
     return None
 
+def get_user_from_token(self, token):
+    """
+    トークン存在チェック
+    """
+    try:
+        for user in CustomUser.objects.all():
+            if check_password(token, user.reset_token):
+                return user
+    
+    except CustomUser.DoesNotExist:
+        return None
 
+def is_token_expired(self, user):
+    """
+    トークン有効期限チェック
+    """
+    return timezone.now() > user.token_created_at + timedelta(hours=24)
 
         
 

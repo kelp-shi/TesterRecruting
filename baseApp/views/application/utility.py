@@ -13,7 +13,7 @@ from baseApp.forms.application_forms import contactForm
 import logging
 logger = logging.getLogger(__name__)
 
-class contact(LoginRequiredMixin, TemplateView):
+class contact(TemplateView):
     template_name = 'app/contact.html'
 
     def get(self, request, *args, **kwargs):
@@ -44,7 +44,7 @@ class contact(LoginRequiredMixin, TemplateView):
         return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
 
 
-class newslist(LoginRequiredMixin, ListView):
+class newslist(ListView):
     """
     ニュースリスト表示クラス
     """
@@ -52,7 +52,7 @@ class newslist(LoginRequiredMixin, ListView):
     model = news
     ordering = '-Create_at'
 
-class newsDetail(LoginRequiredMixin, TemplateView):
+class newsDetail(TemplateView):
     """
     newsのdetailを表示する
     """

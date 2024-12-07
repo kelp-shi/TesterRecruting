@@ -1,5 +1,6 @@
 {% extends 'global_menu.html' %}
 {% load static %}
+{% load custom_filters %}
 {% block content %}
 <link href="https://cdn.jsdelivr.net/npm/datepicker/dist/css/datepicker.min.css" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'css/auth/profileEdit.css' %}">
@@ -36,13 +37,23 @@
                 {% endif %}
             </div>
             <div class="input-field mb-3">
-                <label for="id_profile_img"><i class="fas fa-user"></i> プロフィール画像</label>
+                <label for="id_profile_img" class="form-label"><i class="fas fa-user"></i> プロフィール画像</label>
                 <input type="file" name="profile_img" accept="image/*" class="form-control" id="id_profile_img">
                 {% if editform.profile_img.errors %}
                     <div class="error">
                         {{ editform.profile_img.errors }}
                     </div>
                 {% endif %}
+            </div>
+            <div class="mb-3">
+                <div class="label-area">
+                    <label for="useremail" class="form-label"><i class="fas fa-user"></i>アカウントEメールアドレス　<a href="">変更する</a></label>
+                </div>
+                <input class="form-control" type="text" value="{{ user.email }}" aria-label="アカウントEメールアドレス" readonly>
+            </div>
+            
+            <div class="mb-3">
+                <a href="{% url 'baseApp:resetPasswordActive' %}"><p>パスワードを変更する</p></a>
             </div>
             <div class="area-a mb-3">
                 <button type="submit" class="btn btn-success btn-lg mb-3">送信</button>

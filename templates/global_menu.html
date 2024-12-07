@@ -27,14 +27,17 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" href="{% url 'baseApp:index' %}">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'baseApp:newslist' %}">News</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'baseApp:postlist' %}">Tests List</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'baseApp:profile' user.username %}">My Account</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'baseApp:thread_list'%}">DM</a></li>
+                        {% if user.is_authenticated and user.username %}
+                            <li class="nav-item"><a class="nav-link" href="{% url 'baseApp:postlist' %}">Tests List</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'baseApp:profile' user.username %}">My Account</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'baseApp:thread_list'%}">DM</a></li>
+                        {% endif %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'baseApp:contact' %}">contact</a></li>
-                        {% if user.is_superuser %}
+                        {% if user.is_authenticated and user.username and user.is_superuser %}
                             <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">admin</a></li>
                         {% endif %}
                     </ul>
+                    {% if user.is_authenticated and user.username %}
                     <div class="d-flex align-items-center">
                         <a href="{% url 'baseApp:createpost' %}" class="btn btn-primary me-2"><span>Post Test</span></a>
                         <a href="{% url 'baseApp:profile' user.username %}" class="profile-icon">
@@ -45,6 +48,12 @@
                             {% endif %}
                         </a>
                     </div>
+                    {% else %}
+                    <div class="d-flex align-items-center">
+                        <a href="{% url 'baseApp:register' %}" class="btn btn-primary me-2"><span>ログイン</span></a>
+                    </div>
+                    {% endif %}
+                    
                 </div>
             </div>
         </nav>

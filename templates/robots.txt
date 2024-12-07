@@ -3,3 +3,5 @@ Disallow: /createpost/
 Disallow: /postlist/
 Disallow: /detail/
 Disallow: /threads/
+
+Sitemap: https://www.testerrecruitment.com/sitemap.xml

@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 class BannerImg(models.Model):
     """
@@ -29,3 +30,6 @@ class news(models.Model):
 
     def __str__(self):
         return self.NewsTitle
+    
+    def get_absolute_url(self):
+        return reverse('baseApp:newsDetail', args=[str(self.id)])

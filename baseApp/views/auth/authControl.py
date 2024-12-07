@@ -13,6 +13,8 @@ from baseApp.forms.auth_forms import SignUpForm, SignInForm, ProfileEditForm
 from baseApp.models import CustomUser
 from baseApp.views.auth.utility import imageConvert, imageNameSelect
 from baseApp.views.utillity import errorEmailSender
+from django.urls import reverse_lazy
+from django.contrib.auth.views import PasswordChangeView, PasswordChangeDoneView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 
 from datetime import date
 import logging
@@ -43,7 +45,8 @@ class ProfileEdit(LoginRequiredMixin, View):
     def get(self, request, username):
         user = get_object_or_404(CustomUser, username=username)
         editform = ProfileEditForm(instance=user)
-        return render(request, self.template_name, {'editform': editform, 'user': user})
+        userToken = dumps(self.request.user.pk)
+        return render(request, self.template_name, {'editform': editform, 'user': user, 'token':userToken})
     
     def post(self, request, username):
         user = get_object_or_404(CustomUser, username=username)
@@ -112,7 +115,6 @@ class Register(TemplateView):
             if form_up.is_valid():
                 username = form_up.cleaned_data.get('username')
                 if username == 'username':
-                    logger.error(form_up.errors.as_json())
                     return render(request, 'auth/register.html', {'form_up': form_up, 'form_in': form_in, 'error_user':'Please use a name other than username'})
                 user = form_up.save(commit=False)
                 user.is_active = False
@@ -181,25 +183,131 @@ class RegisterComplete(TemplateView):
             user_pk = loads(token, max_age=self.timeout_seconds)
 
         # 期限切れ
-        except SignatureExpired:
-            return HttpResponseBadRequest()
+        except SignatureExpired:    
+            return HttpResponseBadRequest('SignatureExpired')
 
         # tokenが間違っている
         except BadSignature:
-            return HttpResponseBadRequest()
+            return HttpResponseBadRequest('BadSignature')
         
         else:
             try:
                 user = CustomUser.objects.get(pk=user_pk)
             except CustomUser.DoesNotExist:
-                return HttpResponseBadRequest()
+                return HttpResponseBadRequest('NoUser')
             else:
                 if not user.is_active:
                     user.is_active = True
                     user.save()
                     return super().get(request, **kwargs)
         
-        return HttpResponseBadRequest
+        return HttpResponseBadRequest('HttpResponseBadRequest')
+    
 
+from django.utils.crypto import get_random_string
+from django.contrib.auth.hashers import make_password
+from datetime import datetime
 
+class ResetPasswordActive(TemplateView):
+    """
+    ログイン中ユーザーのパスワードリセット
 
+    Note:ログインユーザーに対してパスワードをリセットメールを送信
+    """
+
+    template_name = 'auth/resetPasswordActive.html'
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        if 'password_reset' in request.POST:
+            user = self.request.user
+            token = get_random_string(32)
+            hashed_token = make_password(token)
+
+            user.reset_token = hashed_token
+            user.token_created_at = datetime.now()
+            user.save()
+
+            current_site = get_current_site(self.request)
+            domain = current_site.domain
+            context = {
+                'protocol': self.request.scheme,
+                'domain': domain,
+                'token': token,
+                'user': user,
+            }
+            # サブジェクト
+            subject = render_to_string('auth/resetmail/subject.txt', context)
+            # メッセージ
+            message = render_to_string('auth/resetmail/message.txt', context)
+
+            user.email_user(subject, message)
+            return redirect('baseApp:passwordResetDone')
+        else:
+            return render(request, self.template_name, {'error':'Invalid request'}, status=400)
+
+class ResetPasswordAnonymous(TemplateView):
+    """
+    未ログインユーザーのパスワードリセット
+
+    Note:未ログインユーザーに対してパスワードをリセットメールを送信
+    """
+    pass
+
+class PasswordResetDone(TemplateView):
+    """
+    パスワードリセットメール送信完了
+
+    Note:パスワードリセットメールを送信する
+    """
+    template_name = 'auth/passwordResetDone.html'
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+class ChangePasswordActive(TemplateView):
+    """
+    ログインユーザーのパスワード変更処理
+
+    Note:変更後プロフィール画面へ遷移
+    """
+    pass
+
+class ChangePasswordAnonymous(TemplateView):
+    """
+    未ログインユーザーのパスワード変更処理
+    """
+    pass
+
+class ChangePasswordDone(TemplateView):
+    """
+    未ログインユーザーのパスワード変更完了処理
+
+    Note:ログイン画面への遷移ボタン表示
+    """
+
+class ResetEmail(TemplateView):
+    """
+    Emailリセット
+
+    Note:Email変更メールを送信
+    """
+
+class ChangeEmail(TemplateView):
+    """
+    新Email登録
+
+    Note:
+    新しいEmailアドレスを入力
+    登録完了後はプロフィール画面へ遷移
+    """
+
+class UsernameRequest(TemplateView):
+    """
+    ユーザーネーム請求処理
+    
+    Note:未ログインユーザーに対してユーザーネーム通知メール送信
+    """
+    pass
